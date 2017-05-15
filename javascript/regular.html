@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>替换 “microsoft” 为 “Runoob”:</p>
+	<button onclick="myFunction()">点我</button>
+	<p id="demo">请访问 Microsoft!</p>
+	<script type="text/javascript">
+
+	/*
+		正则表达式 search 方法
+	*/
+		var patt = /runoob/i;
+
+		console.log(typeof(patt));
+
+		var str = "Visit Runoob!";
+		var n = str.search(patt);
+		console.log(n);
+	/*
+		正则表达式 replace 方法
+	*/
+
+	function myFunction(){
+		var str = document.getElementById("demo").innerHTML;
+		var txt = str.replace(/Microsoft/i,"Runoob");
+		document.getElementById('demo').innerHTML = txt;
+	}
+
+	/*
+		test 检测一个字符串是否匹配某个模式，有返回true，否则返回false
+	*/
+	var patt = /e/;
+	var r = patt.test("The best place",/e/i);
+	console.log(r);
+
+	/*
+		exec() 该函数返回一个数组，其中存放匹配的结果，如果未找到返回 null
+	*/
+
+	var patt1 = new RegExp("e");
+	var s = patt1.exec("The best things in life are free");
+	console.log(s);
+
+
+
+	</script>
+
+</body>
+</html>

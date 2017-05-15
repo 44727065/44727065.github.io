@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    </head>
+    <body>
+        <input type="file" id="test-input">
+        <script>
+            var file = $('#test-input')[0].files[0];
+
+            $.ajax('./', {
+            method: 'POST',
+            contentType: file.type,
+            processData: false,
+            data: file
+            });
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	// function 命令声明的代码区块，就是一个函数
+	function print(s){
+		console.log(s);
+	}
+
+
+	// 函数表达式
+	function print(s) {
+	  console.log(s);
+	}
+	/*这种写法讲一个匿名函数赋值给变量。又称函数表达式(function Expression) ,因为赋值雨具的等号右侧智能放表达式*/
+
+	// function 构造函数
+	var add = new Function(
+			'x',
+			'y',
+			'return x + y'
+		);
+
+	console.log(add(10,5));
+
+
+	function fib(num) {
+	  if (num === 0) return 0;
+	  if (num === 1) return 1;
+	  return fib(num - 2) + fib(num - 1);
+	}
+
+	var bb = fib(6);
+	console.log(bb);
+</script>	
+</body>
+</html>

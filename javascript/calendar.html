@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<!--日历-->
+<div id="pl-sign" class="L_cal hide">
+	<div class="cal_box">
+		<div class="outline">
+			<div>您累计签到：<span class="num">899</span> 天</div>
+			<div>本月连续签到：<span>2</span> 天</div>
+			<div>您今天是第 <span>67899</span> 位签到的乐迷！</div>
+		</div>
+		<div class="tab">
+			<div class="year"><a href="javascript:;" class="pre" data-role="btn-calendar-prev"></a><span data-role="text-date" id="text-date"></span><a href="javascript:;" class="nxt" data-role="btn-calendar-next"></a></div>
+			<ol class="week">
+				<li>Sun</li>
+				<li>Mon</li>
+				<li>Tue</li>
+				<li>Wed</li>
+				<li>Thu</li>
+				<li>Fri</li>
+				<li>Sat</li>
+			</ol>
+			<div class="day_wrap">
+				<table class="day" data-role="table-calendar">
+					<tr>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+					</tr>
+					<tr>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+					</tr>
+					<tr>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+					</tr>
+					<tr>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+					</tr>
+					<tr>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+					</tr>
+					<tr>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+						<td><span></span></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<a href="javascript:;" data-role="btn_close" class="C_f_cls"></a>
+</div>
+<!--/日历-->
+<script type="text/javascript" src="./jquery.js"></script>
+<script type="text/javascript">
+	var changedClass = {
+
+		};
+	// 创建日历对象
+	var Calendar = {
+		// 使用哪个dom
+		_initDom: function(){
+			this.PlSignNode = $("#pl-sign");
+		},
+		// 初始化变量
+		_intVars:function(){
+			// 当前时间对象
+			this.curDate = new Date();
+			// 获取当前年
+			this.fixYear = this.curYear = this.curDate.getFullYear();
+			console.log(this.fixYear);
+			// 当前月份
+			this.fixMonth = this.curMonth = this.curDate.getMonth() + 1;
+			console.log(this.fixMonth);
+			// 获得日期
+			this.curDay = this.curDate.getDate();
+			console.log(this.curDay);
+		},
+		//计算日期
+		_calDate: function(){
+			// 年月
+			this.PlSignNode.find('[data-role="text-date"]').html(this.curYear + '年' + this.curMonth + '月');
+			// 渲染日历
+			var days = this._getDaysInSomeMonth(this.curYear,this.curMonth);
+			var weekday = this._getFirstDay(this.curYear, this.curMonth);
+			this._renderDate(days,weekday);
+		},
+		// 计算某个月的总天数
+		// 传入参数年和月
+		_getDaysInSomeMonth : function(year, month){
+			// 解析字符串，返回整数
+			month = parseInt(month, 10);
+			var d = new Date(year, month,0);
+			return d.getDate();
+		},
+		// 算某个月第一天是星期几
+
+		_getFirstDay: function(year, month){
+			// month 是从0 开始的
+			month = month - 1;
+			var d = new Date(year, month ,1);
+			return d.getDay();
+		},
+		// 日期补零
+		_fixDate:function(s){
+			// 小于10 时返回 0+数字，否则返回数字
+			return s < 10 ? '0' + s : s;
+		},
+		// 获奖日期使用指定classname
+		//?????
+		_changeClass: function(date,className){
+			this.changedClass[date] = className;
+			var calendarTabNode = this.PlSignNode.find('[data-role="table-calendar"]');
+			calendarTabNode.find('td[data-dateid="'+date+'"]').addClass(className);
+			return date;
+		}，
+		// 渲染日历
+		_renderDate: function(days, weekday, classData){
+			var calendarTabNode = this.PlSignNode.find('[data-role="table-calendar"]');
+			var a = 1,dateid,className;
+			classData = classData || {};
+			for(var j=0 ; j<8 ; j++){
+				for(var i = 0; i<7;i++){
+					if( j==0 && i<weekday){
+						calendarTabNode.find('tr').eq(j).find('td').eq(i).html('<span></span>');
+						calendarTabNode.find('tr').eq(j).find('td').eq(i).removeAttr('data-dateid');
+					}else{
+
+					}
+				}
+			}
+		}
+
+
+		// 时间绑定
+
+		_bindEvent: function(){
+			var _this = this;
+			// 日历翻月
+			// 上一个月
+			_this.PlSignNode.find('[data-role="btn-calendar-prev"]').on('click', '.selector', function(event) {
+				_this.curMonth--;
+				if(_this.curMonth === 0){
+					_this.curMonth = 12;
+					_this.curYear--;
+				}
+				
+			});
+		}
+
+
+
+		// 初始化
+		init: function(){
+			this._initDom();
+			this._intVars();
+			//this._calDate();
+			console.log(this._getFirstDay(2017,2));//月份从周几开始
+
+		}
+
+
+	}
+
+	//var cal =  new Calendar;
+	Calendar.init();
+</script>
+</body>
+</html>

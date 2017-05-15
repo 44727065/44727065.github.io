@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf8">
+</head>
+<body>
+<script type="text/javascript">
+	// 声明一个全局变量，实际上就是赋予window对象的同名赋值
+	var a = 10;
+	console.log(window.a);	
+
+
+	window.name = "hello world";
+	console.log(window.name);
+
+	console.log(window.location == document.location);
+
+	// window.opener 属性返回打开当前窗口的父窗口
+
+
+
+
+</script>
+
+<a href="#" id="abc">获取坐标</a>
+<script type="text/javascript">
+	var abc = document.querySelectorAll("#abc")[0];
+	abc.addEventListener('click',function(e){
+		console.log("x:" + window.screenX + "  y:" + window.screenY);
+	},true); // 返回相对于屏幕左上脚的值,screen 是window对象的
+
+</script>
+<script type="text/javascript">
+	console.log(window.innerHeight); // 可是区域高度
+	console.log(window.innerWidth); // 可视区域宽度
+
+	console.log(window.pageXOffset); // 滚动X区域
+	console.log(window.pageYOffset); // 滚动Y区域
+
+	// navigator 对象，指向包涵浏览器信息的对象
+	console.log(navigator);
+
+// 利用 userAgent 属性识别浏览器
+var ua = navigator.userAgent.toLowerCase();
+console.log(ua);
+if(/mobi/i.test(ua)){
+	console.log("手机浏览器")
+}else{
+	console.log("桌面浏览器")
+}
+// 返回地理信息
+
+console.log(navigator.geolocation);
+
+
+</script>
+
+<div id="bbb">移动窗口</div>
+<script type="text/javascript">
+	var bbb = document.getElementById('bbb');
+	bbb.addEventListener('click',function(){
+		window.moveBy(100,200);
+		console.log("aaaa");
+	})
+</script>
+
+<script type="text/javascript">
+	// window.scrollTo() window.scrollBy()
+
+
+</script>
+
+<script type="text/javascript">
+	window.onerror = function(message, filename, lineno, colno, error){
+		console.log(error.stack);
+
+	}
+	console.log(window);
+</script>
+
+
+</body>
+</html>

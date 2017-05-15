@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./js/lib/vue.js"></script>
+        <meta charset="utf8" />
+    </head>
+    <body>
+        <div id="tem">
+            <my-component></my-component>
+        </div>
+        <script>
+        Vue.component('my-component',{
+            props:'pa',
+            template:'<div>custom compoent!</div>'
+        })
+
+        var tem = new Vue({
+            el:'#item',
+
+        })
+
+
+        </script>

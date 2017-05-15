@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./js/lib/vue.js"></script>
+        <meta charset="utf8" />
+    </head>
+    <body>
+        <div id="counter-event-example">
+            <p>{{total}}</p>
+            <button-counter v-on:increment="incrementTotal"></button-counter>
+            <button-counter v-on:increment="incrementTotal"></button-counter>
+        </div>
+
+        <script>
+        Vue.component('button-counter',{
+            template:'<button v-on:click="increment">{{counter}}</button>',
+            data:function(){
+                return {
+                    counter:0
+                }
+            },
+            methods:{
+                increment:function(){
+                    this.counter += 1;
+                    this.$emit('increment');
+                }
+            }
+        })
+
+        new Vue({
+            el:'#counter-event-example',
+            data:{
+                total:0
+            },
+            methods:{
+                incrementTotal:function(){
+                    this.total += 1
+                }
+            }
+        })
+
+        // 非父子组件通信
+        var bus = new Vue();
+        // 触发组件 A 中的时间
+        bus.$emit('id-selected',1);
+        // 在组建B 创建的狗子监听事件
+
+        bus.$on('id-selected',function(id){
+
+        })
+
+
+        </script>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8" />
+    </head>
+    <body>
+       <div id="app-4">
+            <ol>
+                <li v-for="todo in todos">
+                {{ todo.text }}
+                </li>
+            </ol>
+        </div>
+        <script src="./js/lib/vue.js"></script>
+        <script>
+            var app4 = new Vue({
+                el: '#app-4',
+                data: {
+                    todos: [
+                    { text: '学习 JavaScript' },
+                    { text: '学习 Vue' },
+                    { text: '整个牛项目' }
+                    ]
+                }
+                })
+        </script>
+        <!--组件化-->
+        <div id="app-7">
+            <ol>
+                <todo-item v-for="item in groceryList" v-bind:todo="item">
+                </todo-item>
+            </ol>
+        </div>
+        <div id="app-8">
+            <ol>
+                <todo-item v-for="item in fruits" v-bind:todo="item"></todo-item>
+            </ol>
+        </div>
+        <div id="app-9">
+            <ul>
+                <car-item v-for="item in cars" v-bind:car="item"></car-item>
+            </ul>
+        </div>
+        <script>
+            Vue.component('todo-item',{
+                props:['todo'],
+                template:'<li>{{ todo.text }}</li>'
+            });
+
+            Vue.component('car-item',{
+                props:['car'],
+                template:'<li>{{ car.text }}</li>'
+            });
+
+            var app7 = new Vue({
+                el:"#app-7",
+                data:{
+                    groceryList:[
+                        {text:'蔬菜'},
+                        {text:'奶酪'},
+                        {text:'随便吃点啥'},
+                    ]
+                }
+            });
+
+            var app8 = new Vue({
+                el:"#app-8",
+                data:{
+                    fruits:[
+                        {text:'apple'},
+                        {text:'pear'},
+                        {text:'pinapple'}
+                    ]
+                }
+            });
+
+            var app9 = new Vue({
+                el:"#app-9",
+                data:{
+                    cars:[
+                        {text:'BMW'},
+                        {text:'BENZ'},
+                        {text:'TOYOTA'}
+                    ]
+                }
+            })
+        </script>
+    </body>
+</html>

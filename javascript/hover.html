@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+	<style type="text/css">
+		.sub{display: none;}
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			$(".nav").parent('.abc').hover(
+			function(){
+				$(this).children('.sub').show(100);
+			},function(){
+				$(this).children('.sub').hide(100);
+			});
+		})
+	</script>
+</head>
+<body>
+<div class="abc">
+	<a href="" class="nav">测试一下</a>
+	<div class="sub">
+		我要测试一样
+	</div>
+</div>
+
+</body>
+</html>

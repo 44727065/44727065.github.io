@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+        <head>
+            <meta charset="utf8">
+                <style>
+                        body{background: #999;}
+                </style>
+                <style>
+                    body{font-size: 100px;}
+                    p{color:#999;}
+                </style>
+        </head>
+        <body>
+            <script>
+                var doctype = document.doctype;
+                console.log(doctype);
+                var firstChild = document.firstChild;
+                console.log(firstChild);
+                var view = document.defaultView;
+                console.log(view);
+                // 获取页面中获得焦点的那个元素
+                document.activeElement;
+                // 获取节点集合属性
+                console.log(document.links instanceof HTMLAllCollection);
+                document.forms;
+                document.images;
+
+                // documentscripts
+                console.log(document.scripts);
+                // document.styleSheets 属性返回一个类似数组的对象，代表当前网页的所有样式表。每个样式表对象都有 cssRules 属性，返回该样式表的所有 css 规则，这样可以操作具体的css规则。
+                var allSheets = [].slice.call(document.styleSheets);
+                console.log(allSheets);
+
+                // document.documentURI 所有的文档都具备
+                // document.documentURL html 文档返回
+
+                console.log(document.documentURI);
+                // 返回当前页面的 domain
+
+                console.log(document.domain + 'aaaa');
+
+                // 返回最后修改时间
+                console.log(document.lastModified);
+
+                // location 对象
+                console.log(document.location.href);
+                console.log(document.location.protocol);
+                console.log(document.location.host);
+                console.log(document.location)
+
+                // localtion 对象的方法
+                // 跳转到一个新的地址
+                //document.location.assign('http://le.com');
+                // 优先从服务器重新加载
+                //document.location.reload(true);
+                // 优先从本地重新加载
+                //document.location.reload(false);
+                // 跳转到新网址，并将取代掉 history 对象的当前记录
+                //document.location.replace('http://www.le.com');
+
+
+                // 可以指定相对url
+                //setTimeout(function(){document.location = 'page2.html';},2000)
+
+                // 可以指定锚点
+
+                // 如果不希望用户看到前一个网页地址，可以使用 location.replace 方法，浏览器的 history 对象就会用新的网址
+
+                // document.referrer 返回当前文档的访问来源
+                console.log(document.referrer);
+                console.log(document.title); //返回当前文档的标题
+                console.log(document.characterSet); // 返回当前文档的字符集
+
+                // document.readyState
+                console.log(document.readyState); // 只会显示loading
+
+                // 采用轮询检查
+                var interval = setInterval(function(){
+                    if(document.readyState === 'complete'){
+                        clearInterval(interval);
+                    }
+                });
+                console.log(interval); // 结果返回1 表示轮询结束
+
+                // document.designMode 属性控制当前文档是否可编辑，通常用在制作所见即所得的编辑器。
+
+                // document.cookie 操作浏览器 cookie
+                console.log(document.cookie);
+
+                // 读写相关的方法
+                document.open();
+                document.write("Hello");
+                document.write("world");
+                document.close();
+                document.write("无法写入");
+
+
+            </script>
+            <div class="myclass">aaaaa</div>
+            <div class="myclass">aaaaa</div>
+            <div id="aa">bbbb</div>
+            <script>
+                var docfrag = document.createDocumentFragment();
+
+                [1,2,3,4].forEach(function(e){
+                    var li = document.createElement("li");
+                    li.textContent = e ;
+                    docfrag.appendChild(li);
+                });
+                console.log(docfrag);
+                document.body.appendChild(docfrag);
+            </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </body>
+</html>
