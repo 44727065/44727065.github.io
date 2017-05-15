@@ -1,89 +1,39 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="./js/lib/vue.js"></script>
         <meta charset="utf8" />
     </head>
     <body>
-       <div id="app-4">
-            <ol>
-                <li v-for="todo in todos">
-                {{ todo.text }}
-                </li>
-            </ol>
-        </div>
-        <script src="./js/lib/vue.js"></script>
+        <div id="app"></div>
         <script>
-            var app4 = new Vue({
-                el: '#app-4',
-                data: {
-                    todos: [
-                    { text: '学习 JavaScript' },
-                    { text: '学习 Vue' },
-                    { text: '整个牛项目' }
-                    ]
-                }
-                })
-        </script>
-        <!--组件化-->
-        <div id="app-7">
-            <ol>
-                <todo-item v-for="item in groceryList" v-bind:todo="item">
-                </todo-item>
-            </ol>
-        </div>
-        <div id="app-8">
-            <ol>
-                <todo-item v-for="item in fruits" v-bind:todo="item"></todo-item>
-            </ol>
-        </div>
-        <div id="app-9">
-            <ul>
-                <car-item v-for="item in cars" v-bind:car="item"></car-item>
-            </ul>
-        </div>
-        <script>
-            Vue.component('todo-item',{
-                props:['todo'],
-                template:'<li>{{ todo.text }}</li>'
-            });
+            const NotFound = {
+                template: '<p>Page not found</p>'
+            }
+            const Home = {
+                template: '<p>Home Page</p>'
+            }
+            const About = {
+                template: '<p>About page</p>'
+            }
 
-            Vue.component('car-item',{
-                props:['car'],
-                template:'<li>{{ car.text }}</li>'
-            });
+            const routes = {
+                '/': Home,
+                '/about' : About,
+            }
 
-            var app7 = new Vue({
-                el:"#app-7",
-                data:{
-                    groceryList:[
-                        {text:'蔬菜'},
-                        {text:'奶酪'},
-                        {text:'随便吃点啥'},
-                    ]
-                }
-            });
-
-            var app8 = new Vue({
-                el:"#app-8",
-                data:{
-                    fruits:[
-                        {text:'apple'},
-                        {text:'pear'},
-                        {text:'pinapple'}
-                    ]
-                }
-            });
-
-            var app9 = new Vue({
-                el:"#app-9",
-                data:{
-                    cars:[
-                        {text:'BMW'},
-                        {text:'BENZ'},
-                        {text:'TOYOTA'}
-                    ]
+            new Vue({
+                el : '#app',
+                data : {
+                    currentRoute : window.location.pathname
+                },
+                computed:{
+                    ViewComponent(){
+                        return routes[this.currentRoute] || NotFound;
+                    }
+                },
+                render (h) {
+                    return h(this.ViewComponent);
                 }
             })
         </script>
-    </body>
-</html>
