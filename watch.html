@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./js/lib/vue.js"></script>
+        <meta charset="utf8" />
+    </head>
+    <body>
+        <div id="demo">
+            <button>Change</button>
+            <pre>{{$data}}</pre>
+        </div>
+        <script>
+            new Vue({
+                el:'#demo',
+                data:{
+                    thing :1
+                },
+                watch:{
+                    thing: function(val,oldVal){
+                        alert('Thing changed');
+                    }
+                },
+                methods:{
+                    change:function(){
+                        this.thing = 5
+                    }
+                }
+            })
+        </script>

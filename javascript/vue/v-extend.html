@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./js/lib/vue.js"></script>
+        <meta charset="utf8" />
+        <style>
+            .Alert__close{}
+            .Alert--success{height:200px;width:200px;background:yellow}
+            .Alert--warning{height:200px;width:200px;background:green}
+            .Alert--Error{height:200px;width:200px;background:purple}
+            </style>
+    </head>
+    <body>
+        <div id="aa">
+            <abc></abc>
+        </div>
+        <script>
+            var extend = Vue.extend({
+                template:'<div>这是是一些内容 {{ addNum }}</div>',
+                props:'',
+                data: function(){
+                    return {
+                        a:1
+                    }
+                },
+                computed:{
+                    addNum:function(){
+                        return this.a+1;
+                    }
+                }
+            })
+
+            Vue.component('abc',extend);
+
+            var a = new Vue({
+                el:"#aa"
+            })
+
+
+
+
+        </script>

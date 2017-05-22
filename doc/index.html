@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8" />
+        <script src="../javascript/vue/js/lib/vue.js"></script>
+        <script src="../javascript/vue/js/lib/vue-router.js"></script>
+        <link rel="stylesheet" href="./default.min.css">
+        <script src="./highlight.min.js"></script>
+        <style>
+            .code_wrap{position:absolute;display:flex;right:0;top:0;height:100%;width:450px;background:#f0f0f0;padding:10px; box-sizing: border-box;}
+            .nav li{font-size:14px;line-height:24px;}
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <h1>小技巧</h1>
+            <ul class="nav">
+                <!-- 使用 router-link 组件来导航. -->
+                <!-- 通过传入 `to` 属性指定链接. -->
+                <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+                <li><router-link to="/meta">Meta</router-link></li>
+                <li><router-link to="/js_meta"> js动态设置 meta </router-link></li>
+                <li><router-link to="/basic_meta"> 基本meta设置 </router-link></li>
+                <li><router-link to="/other_meta"> 其它meta标签 </router-link></li>
+                <li><router-link to="/font_en"> 字体中英文对照 </router-link></li>
+                <li><router-link to="/tel_msm_mailto"> 打电话发邮件 </router-link></li>
+                <li><router-link to="/touch"> 移动端touch事件 </router-link></li>
+                <li><router-link to="/click"> 移动端click屏幕产生200-300ms的延时响应 </router-link></li>
+                <li><router-link to="/retina"> Rentina显示屏原理及设计方案  </router-link></li>
+                <li><router-link to="/highlight"> Highlight  </router-link></li>
+                <li><router-link to="/form"> 表单元素  </router-link></li>
+                <li><router-link to="/rem"> rem  </router-link></li>
+                <li><router-link to="/tips">小技巧</router-link></li>
+                <li><router-link to="/input">首字母大写问题</router-link></li>
+                <li><router-link to="/upload">手机拍照上传</router-link></li>
+                <li><router-link to="/orient">监听横竖屏变化</router-link></li>
+                <li><router-link to="/audio_video">audio元素和video元素</router-link></li>
+                <li><router-link to="/motion">重力感应事件</router-link></li>
+                <li><router-link to="/fixed">fixed</router-link></li>
+                <li><router-link to="/airplay">播放视频不全屏</router-link></li>
+                <li><router-link to="/device">JS判断设备</router-link></li>
+                <li><router-link to="/isweixin">JS判断微信浏览器</router-link></li>
+                <li><router-link to="/android_bug">android bug</router-link></li>
+                <li><router-link to="/transform">消除transition闪屏</router-link></li>
+                <li><router-link to="/translate3d">开启硬件加速</router-link></li>
+                <li><router-link to="/optimize">优化技巧</router-link></li>
+            </ul>
+            <!-- 路由出口 -->
+            <!-- 路由匹配到的组件将渲染在这里 -->
+            <div class="code_wrap">
+            <router-view></router-view>
+            </div>
+        </div>
+        <script src="./tpl.js"></script>
+        <script>
+            // 0. 如果使用模块化机制编程，导入 vue 和 VueRouter ，要调用 Vue.use(VueRouter)
+
+            //  1. 定义路由组件。
+            // 可以从其它文件 import 进来
+            //const Foo = { template : '<div>Foo</div>'};
+            //const Bar = { template : '<div>Bar</div>'};
+            // 2. 定义路由
+            // 每个路由都应该映射到一个组件。其中“component”可以是 通过Vue.extend() 创建的组件构造器
+            // 或者，指示一个组件配置对象
+            const routes = [
+                { path:'/meta', component: tpl.meta},
+                { path:'/js_meta', component: tpl.js_meta},
+                { path:'/basic_meta', component: tpl.basic_meta},
+                { path:'/other_meta', component: tpl.other_meta},
+                { path:'/font_en', component: tpl.font_en},
+                { path:'/tel_msm_mailto', component: tpl.tel_msm_mailto},
+                { path:'/touch', component: tpl.touch},
+                { path:'/click', component: tpl.click},
+                { path:'/retina', component: tpl.retina},
+                { path:'/highlight', component: tpl.highlight},
+                { path:'/form', component: tpl.form},
+                { path:'/rem', component: tpl.rem},
+                { path:'/tips', component: tpl.tips},
+                { path:'/input', component: tpl.input},
+                { path:'/upload', component: tpl.upload},
+                { path:'/orient', component: tpl.orient},
+                { path:'/audio_video', component: tpl.audio_video},
+                { path:'/motion', component: tpl.motion},
+                { path:'/fixed', component: tpl.fixed},
+                { path:'/airplay', component: tpl.airplay},
+                { path:'/device', component: tpl.device},
+                { path:'/isweixin', component: tpl.isweixin},
+                { path:'/android_bug', component: tpl.android_bug},
+                { path:'/transform', component: tpl.transform},
+                { path:'/translate3d', component: tpl.translate3d},
+                { path:'/optimize', component: tpl.optimize}
+            ];
+
+            // 3. 创建 router 实例，然后传 ‘routes’ 配置
+            const router = new VueRouter({
+                routes // 缩写 相当于 routes: routes
+            })
+
+            // 4. 创建和挂载根实例
+            // 记得要通过 router 配置参数注入路由
+            // 从而让整个应用都有路由功能
+
+            const app = new Vue({
+                router
+            }).$mount('#app');
+            // 现在已经启动了
+            hljs.initHighlightingOnLoad();
+
+        </script>

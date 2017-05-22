@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./js/lib/vue.js"></script>
+        <meta charset="utf8" />
+        <style>
+            .Alert__close{}
+            .Alert--success{height:200px;width:200px;background:yellow}
+            .Alert--warning{height:200px;width:200px;background:green}
+            .Alert--Error{height:200px;width:200px;background:purple}
+            </style>
+    </head>
+    <body>
+        <div id="aa">
+        <template id="alert-template">
+            <div :class="alertClasses" v-show="show">
+                <slot>
+                    <strong>Default!</strong> Hello Wolrd
+                </slot>
+                <span class="Alert__close" @click="show = false">X</span>
+            </div>
+        </template>
+        </div>
+        <script>
+
+            Vue.component('alert',{
+                template:'#alert-template',
+                props:['type'],
+                computed:{
+                    alertClasses:function(){
+                        return {
+                            'Alert--success':this.type === 'success',
+                            'Alert--warning':this.type === 'warning',
+                            'Alert--Error':this.type === 'Error',
+                        }
+                    }
+                },
+                data:function(){
+                    return {
+                        show: true
+                    }
+                }
+            })
+
+            var a = new Vue({
+                el:'#aa'
+            })
+        </script>

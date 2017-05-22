@@ -2,41 +2,51 @@
 <html>
     <head>
         <script src="./javascript/vue/js/lib/vue.js"></script>
+        <script src="./javascript/vue/js/lib/vue-router.js"></script>
         <meta charset="utf8" />
     </head>
     <body>
-        <div id="app"><a v-on:click="onClickNew">路由实现</a></div>
+        <div id="app">
+            <h1>Hello App!</h1>
+            <p>
+                <!-- 使用 router-link 组件来导航. -->
+                <!-- 通过传入 `to` 属性指定链接. -->
+                <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+                <router-link to="/foo">Go to Foo</router-link>
+                <router-link to="/bar">Go to Bar</router-link>
+            </p>
+            <!-- 路由出口 -->
+            <!-- 路由匹配到的组件将渲染在这里 -->
+            <router-view></router-view>
+        </div>
         <script>
-            const NotFound = {
-                template: '<p>Page not found</p>'
-            }
-            const Home = { template: '<p>home page  </p>' }
-            const About = {
-                template: '<p>About page</p>'
-            }
+            // 0. 如果使用模块化机制编程，导入 vue 和 VueRouter ，要调用 Vue.use(VueRouter)
 
-            const routes = {
-                '/': Home,
-                '/about' : About,
-            }
+            //  1. 定义路由组件。
+            // 可以从其它文件 import 进来
+            const Foo = { template : '<div>Foo</div>'};
+            const Bar = { template : '<div>Bar</div>'};
+            // 2. 定义路由
+            // 每个路由都应该映射到一个组件。其中“component”可以是 通过Vue.extend() 创建的组件构造器
+            // 或者，指示一个组件配置对象
+            const routes = [
+                { path:'/foo', component: Foo},
+                { path:'/bar', component: Bar}
+            ];
 
-            new Vue({
-                el : '#app',
-                data : {
-                    currentRoute : window.location.pathname
-                },
-                computed:{
-                    ViewComponent(){
-                        return routes[this.currentRoute] || NotFound;
-                    }
-                },
-                methods:{
-                    onClickNew : function(){
-                        currentRoute : window.location.pathname + '/about';
-                    }
-                },
-                render (h) {
-                    return h(this.ViewComponent);
-                }
+            // 3. 创建 router 实例，然后传 ‘routes’ 配置
+            const router = new VueRouter({
+                routes // 缩写 相当于 routes: routes
             })
+
+            // 4. 创建和挂载根实例
+            // 记得要通过 router 配置参数注入路由
+            // 从而让整个应用都有路由功能
+
+            const app = new Vue({
+                router
+            }).$mount('#app')
+            // 现在已经启动了
+
+
         </script>

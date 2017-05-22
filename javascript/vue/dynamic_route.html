@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./js/lib/vue.js"></script>
+        <script src="./js/lib/vue-router.js"></script>
+        <meta charset="utf8" />
+    </head>
+    <body>
+        <div id="app">
+            <!--router-link 组件来导航-->
+            <router-link to="/user/foo">/user/foo</router-link>
+            <router-link to="/user/bar">/user/bar</router-link>
+        </div>
+        　<!--路由出口，匹配到组件在这里渲染-->
+        <router-view></router-view>
+        <script>
+        const User = {
+        template: '<div>User {{ $route.params.id }}</div>'
+        }
+
+        const router = new VueRouter({
+        routes: [
+            { path: '/user/:id', component: User }
+        ]
+        })
+
+        const app = new Vue({ router }).$mount('#app')
+
+        </script>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./js/lib/vue.js"></script>
+        <meta charset="utf8" />
+    </head>
+    <body>
+        <div id="app">{{value}}</div>
+
+        <script>
+            new Vue({
+                el:'#app',
+                data(){
+                    return {value:42}
+                },
+                mounted(){
+                    setTimeout(this.a,1000)
+                },
+                methods:{
+                    a(){
+                        this.value++
+                        console.log(this.value);
+                        setTimeout(this.a,1000)
+                    }
+                }
+            })
+        </script>
+        <div id="class">
+            <div v-bind:class="{active:isActive,'text-danger':hasError}"></div>
+            <div v-bind:style="styleObject">这里写一些文字</div>
+            <div v-on:click="who">点击一下</div>
+            <div v-if="isLogin">已经登录</div>
+            <div v-else>没有登录</div>
+            <ul>
+                <li v-for="(v,k) in person">{{k}}:{{v}}</li>
+            </ul>
+        </div>
+        <script>
+        new Vue({
+            el:'#class',
+            data:{
+                isActive: false,
+                hasError : true,
+                styleObject : {
+                    color:'red',
+                    fontSize: '13px'
+                },
+                isLogin:false,
+                person:{
+                    name : 'fr',
+                    group : 'ring'
+                }
+            },
+            methods:{
+                who :function(e){
+                    alert(e.target.tagName);
+                }
+            }
+        })
+        </script>
+
+        <div id="app1"><ul>
+            <li v-for="(v,k) in person">{{ k }}:{{ v }}</li>
+        </ul></div>
+        <script>
+        var a= new Vue({
+            el: '#app1',
+            data:{
+                person :{
+                name:'frodo',
+                group:'ring fellow'
+                }
+
+            }}
+        )
+        </script>
+         <div id="app2">
+            <input type="checkbox" v-model:checked="checked"> v-bind<br />
+            <label>{{checked}}</label>
+       </div>
+        <script>
+            var a = new Vue({
+                el:"#app2",
+                data: {
+                    checked: true
+                }
+            })
+        </script>
+
+
