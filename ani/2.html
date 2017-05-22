@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style type="text/css">
+            *{margin: 0;padding: 0;}
+            html,body{width: 100%;height: 100%;overflow: hidden;transform: scale(1.05);}
+            .backgroundDiv{
+                width: 100%;height: 100%;
+                position: fixed;z-index: -1;
+                background: url(http://cdn.attach.qdfuns.com/notes/pics/201705/19/144931fpltgxgi7gbjggtj.jpg) center center no-repeat;
+                background-size: 100% 100%;filter: blur(10px);
+            }
+            canvas{
+                position: absolute;z-index: 1;border-radius: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="backgroundDiv"></div>
+        <script type="text/javascript">
+            var rainAnimate = {
+                init:function(){
+                    this.img = new Image();
+                    this.img.src = 'http://cdn.attach.qdfuns.com/notes/pics/201705/19/144931fpltgxgi7gbjggtj.jpg';
+                    this.img.width = window.innerWidth;
+                    this.img.height = window.innerHeight;
+                    this.rainArr = [];
+                    this.rainCvsArr = [];
+                    for(var i=0;i<200;i++){
+                        this.rainArr.push({
+                            x : Math.random() * window.innerWidth,
+                            y : Math.random() * window.innerHeight,
+                            z: Math.random() * 5 + 10,
+                            r : 3,
+                            sx:Math.random(),
+                            sy:Math.random()*2
+                        });
+                    }
+                    
+                    this.img.onload = function(){
+                        for(var i=0;i<rainAnimate.rainArr.length;i++){
+                            var rain = rainAnimate.rainArr[i];
+                            var cvs = document.createElement('canvas');
+                            cvs.style.left = rain.x + 'px';
+                            cvs.style.top = rain.y + 'px';
+                            cvs.width = rain.z;
+                            cvs.height = rain.z;
+                            var ctx = cvs.getContext('2d');
+                            //drawImg(ctx,rain.x,rain.y,rain.z);
+                            ctx.drawImage(rainAnimate.img,rain.x, rain.y+80, 100, 100 , 0 , 0 , rain.z, rain.z);
+                            document.body.insertBefore(cvs,document.body.childNodes[0]);
+                            rainAnimate.rainCvsArr.push(cvs);
+                        }
+                        rainAnimate.play();
+                    };
+                },
+                play:function(){
+                    var raincvsarr = rainAnimate.rainCvsArr;
+                    for(var i=0;i<raincvsarr.length;i++){
+                        var rain = rainAnimate.rainArr[i];
+                        var cvs = raincvsarr[i];
+                        rain.y += rain.sy;
+                        rain.sy = Math.random()*2;
+                        if(rain.y > window.innerHeight){
+                            rain.y = 0;
+                        }
+                        //cvs.style.left = rain.x - rain.sx + 'px';
+                        cvs.style.top = rain.y + rain.sy + 'px';
+                        var ctx = cvs.getContext('2d');
+                        ctx.drawImage(rainAnimate.img,rain.x, rain.y+80, 100, 100 , 0 , 0 , rain.z, rain.z);
+                    }
+                    window.requestAnimationFrame(rainAnimate.play);
+                }
+            };
+            rainAnimate.init();
+        </script>
+    </body>
+</html>

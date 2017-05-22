@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style type="text/css">
+        /*var path = document.querySelector('path');var length = path.getTotalLength(); 获取路径的长度*/
+            body{ background: #042757;}
+            .clearfix:after{display:block; height:0px; content:'.'; visibility:hidden; clear:both;}
+            ul,li,h1,h2,h3,h4,h5,h6,dl,dt,dd,ol,label,form,p,header,nav,footer,aside,section{display:block;}
+            *{margin:0; padding:0;}
+            h2{ margin: 40px; font: 30px simsun; font-weight: bold; color: #FFFFFF; text-align: center;}
+            .box{ width: 800px; margin: 0 auto; text-align: center;}
+            .box div{ margin-bottom: 40px; overflow: hidden;}
+            .left{ float: left; width: 300px; height: 400px; background: rgba(255, 255, 255, 1); position: relative; box-shadow: inset 0 0 0 4px #2c3e50; }
+            .right{ float: right; width: 300px; height: 400px; background: rgba(255, 255, 255, 1); position: relative; box-shadow: inset 0 0 0 4px #2c3e50; }
+            h3{font: 60px/1.4 simsun; color: #042757;  font-weight: bold; padding-top: 20px; }
+            span{font: 20px/40px "微软雅黑";  color: #042757; display: block;}
+            .one,.two/*:hover*/{ background:rgba(255, 255, 255, 0); margin-bottom: 40px;}
+            .one h3,.one span,.two h3,.two span{color: #FFFFFF; } 
+            .box svg{ display: block; position: absolute; left: 0; top: 0;}
+            .box svg line {
+                stroke-width: 3;
+                stroke: #ECF0F1;
+                fill: none;
+                -webkit-transition: all .6s ease-in-out;
+                transition: all .6s ease-in-out;
+                -ms-transition: all .6s ease-in-out;
+            }       
+            .one svg line.top,
+            .one  svg line.bottom {
+                -ms-stroke-dasharray: 330 240;
+                stroke-dasharray: 330 240;
+            }           
+            .one  svg line.left,
+            .one  svg line.right {
+                -ms-stroke-dasharray: 430 340;
+                stroke-dasharray: 430 340;
+            }
+            /*第一种*/
+            .one:hover svg line.top{ transform: translateX(-600px); -ms-transform: translateX(-600px);}
+            .one:hover svg line.bottom{ transform: translateX(600px);  -ms-transform: translateX(600px);}
+            .one:hover svg line.left{ transform: translateY(800px); -ms-transform: translateY(800px);}
+            .one:hover svg line.right{ transform: translateY(-800px); -ms-transform: translateY(-800px);}
+            /*第二种*/
+            .two svg line.top,.two svg line.bottom{ stroke-dashoffset: 0; stroke-dasharray:300;}
+            .two svg line.left,.two svg line.right{ stroke-dashoffset: 0; stroke-dasharray:400;}
+            .two:hover svg line.top,.two:hover svg line.bottom{ stroke-dashoffset: 300;}
+            .two:hover svg line.left,.two:hover svg line.right{ stroke-dashoffset: 400;}
+            /*第三种*/
+            .three{ background: rgba(255,255,255,1);}
+            .three svg line.top,
+            .three svg line.bottom {
+                stroke-dasharray: 330 240;
+            }           
+            .three svg line.left,
+            .three svg line.right {
+                stroke-dasharray: 430 340;
+            }
+            .three{ -webkit-transition: background 0.4s 0.5s;
+                transition: background 0.4s 0.5s;}
+            .three:hover{
+                background: rgba(255, 255, 255, 0);
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s;
+            }
+            .three h3,
+            .three span {
+                -webkit-transition: color 0.4s 0.5s;
+                transition: color 0.4s 0.5s;
+            }
+            
+            .three:hover h3,
+            .three:hover span {
+                color: #fff;
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s;
+            }
+            
+            .three:hover svg line.top{ transform: translateX(-600px);}
+            .three:hover svg line.bottom{ transform: translateX(600px);}
+            .three:hover svg line.left{ transform: translateY(800px);}
+            .three:hover svg line.right{ transform: translateY(-800px);}
+            /*第四种*/
+            .four{ box-shadow: inset 0 0 0 10px #2c3e50;}
+            .four svg line {
+                stroke-width: 10;
+    
+            }       
+            .four svg line.top,
+            .four svg line.bottom {
+                stroke-dasharray: 330 240;
+            }           
+            .four svg line.left,
+            .four svg line.right {
+                stroke-dasharray: 430 340;
+            }
+            .four{  -webkit-transition: background 0.4s 0.5s;
+                transition: background 0.4s 0.5s;}
+            .four:hover{
+                background: rgba(255, 255, 255, 0);
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s;
+            }
+            .four h3,
+            .four span {
+                -webkit-transition: color 0.4s 0.5s;
+                transition: color 0.4s 0.5s;
+            }
+            
+            .four:hover h3,
+            .four:hover span {
+                color: #fe6f83;
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s;
+            }
+            .four:hover svg line{ stroke: #fe6f83;}
+            .four:hover svg line.top{ transform: translateX(-600px);}
+            .four:hover svg line.bottom{ transform: translateX(600px);}
+            .four:hover svg line.left{ transform: translateY(800px);}
+            .four:hover svg line.right{ transform: translateY(-800px);}
+            /*第5种*/
+            .five{ background: rgba(0,0,0,0);box-shadow: none;}
+            .five h3,
+            .five span {
+                color: #fff;
+            }
+            .five svg line.top,
+            .five svg line.bottom {
+                stroke-dasharray: 330 240;
+            }   
+            .five svg line.left,
+            .five svg line.right {
+                stroke-dasharray: 430 340;
+            }
+            .five{  -webkit-transition: background 0.4s 0.5s;
+                transition: background 0.4s 0.5s;}
+            .five:hover{
+                background: rgba(0, 0, 0, .6);
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s;
+            }
+            .five:hover svg line{ stroke-width:10 ;}
+            .five:hover svg line.top{ transform: translateX(-300px);}
+            .five:hover svg line.bottom{ transform: translateX(300px);}
+            .five:hover svg line.left{ transform: translateY(400px);}
+            .five:hover svg line.right{ transform: translateY(-400px);}
+            /*第6种*/
+            .six{ background: rgba(0,0,0,0.4);box-shadow: none;}
+            .six h3,
+            .six span {
+                color: #fff;
+                transform: scale(0.9);
+                transition: all .5s;
+                /*-webkit-backface-visibility: hidden;
+                backface-visibility: hidden;*/
+            }
+            .six svg line{
+                stroke-width:40 ;
+            }
+            .six svg line.top,
+            .six svg line.bottom {
+                stroke-dasharray: 300;
+            }   
+            .six svg line.left,
+            .six svg line.right {
+                stroke-dasharray: 400;
+            }
+            .six:hover h3,
+            .six:hover span {
+                transform: scale(1);
+            }
+            .six:hover svg line{ stroke-width:0 ; }
+            .six:hover svg line.top{ transform: translateX(-300px);}
+            .six:hover svg line.bottom{ transform: translateX(300px);}
+            .six:hover svg line.left{ transform: translateY(400px);}
+            .six:hover svg line.right{ transform: translateY(-400px);}
+        </style>
+    </head>
+    <body>
+        <h2>边框动画</h2>
+        <div class="box clearfix">
+            <div class="left one">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                            <line class="top" x1="0" y1="0" x2="900" y2="0" />
+                            <line class="left" x1="0" y1="400" x2="0" y2="-800" />
+                            <line class="bottom" x1="300" y1="400" x2="-600" y2="400" />
+                            <line class="right" x1="300" y1="0" x2="300" y2="1200" />
+                </svg>
+                <h3>侯<br />晋<br />龙</h3>
+                <span>2017</span>
+                <span>随风，随缘，随她</span>
+            </div>
+            <div class="right two">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                            <line class="top" x1="0" y1="0" x2="900" y2="0" />
+                            <line class="left" x1="0" y1="400" x2="0" y2="-800" />
+                            <line class="bottom" x1="300" y1="400" x2="-600" y2="400" />
+                            <line class="right" x1="300" y1="0" x2="300" y2="1200" />
+                </svg>
+                <h3>路<br />明<br />泽</h3>
+                <span>0000</span>
+                <span>倔强的小怪兽</span>
+            </div>
+            <div class="left three">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                            <line class="top" x1="0" y1="0" x2="900" y2="0" />
+                            <line class="left" x1="0" y1="400" x2="0" y2="-800" />
+                            <line class="bottom" x1="300" y1="400" x2="-600" y2="400" />
+                            <line class="right" x1="300" y1="0" x2="300" y2="1200" />
+                </svg>
+                <h3>绘<br />梨<br />衣</h3>
+                <span>0002</span>
+                <span>她说世界很温柔</span>
+            </div>
+            <div class="right four">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                            <line class="top" x1="0" y1="0" x2="900" y2="0" />
+                            <line class="left" x1="0" y1="400" x2="0" y2="-800" />
+                            <line class="bottom" x1="300" y1="400" x2="-600" y2="400" />
+                            <line class="right" x1="300" y1="0" x2="300" y2="1200" />
+                </svg>
+                <h3>路<br />明<br />非</h3>
+                <span>0003</span>
+                <span>我也是一个偶尔会发疯的人 </span>
+            </div>
+            <div class="left five">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                            <line class="top" x1="0" y1="0" x2="900" y2="0" />
+                            <line class="left" x1="0" y1="400" x2="0" y2="-800" />
+                            <line class="bottom" x1="300" y1="400" x2="-600" y2="400" />
+                            <line class="right" x1="300" y1="0" x2="300" y2="1200" />
+                </svg>
+                <h3>陈<br />墨<br />瞳</h3>
+                <span>0004</span>
+                <span>因为不太明白怎样喜欢一个人<!--，所以就找个能配自己的人 --></span>
+            </div>
+            <div class="right six">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                            <line class="top" x1="0" y1="0" x2="900" y2="0" />
+                            <line class="left" x1="0" y1="400" x2="0" y2="-800" />
+                            <line class="bottom" x1="300" y1="400" x2="-600" y2="400" />
+                            <line class="right" x1="300" y1="0" x2="300" y2="1200" />
+                </svg>
+                <h3>陈<br />长<br />生</h3>
+                <span>0005</span>
+                <span>通读道藏，无畏死生</span>
+            </div>
+        </div>
+    </body>
+</html>
