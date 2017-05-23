@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+    </head>
+    <body>
+        <script type="text/javascript">
+            function outFunc(){
+                var name = "Vicfeel";
+                function inFunc(){
+                    console.log(name);
+                }
+                return inFunc(); // InFunc 可以访问父函数的 局部变量 name
+            }
+
+            console.log(outFunc());
+
+            function User(){
+                this.name = "Vicefell";
+                var age = 23;
+                this.sayAge = function(){
+                    console.log("my age is " + age);
+                }
+            }
+
+            var user = new User();
+            console.log(user.name);
+            console.log(user.age);
+            user.sayAge();
+
+            // 封包应用举例，模拟类的私有属性，利用闭包的性质，局部变量直邮 sayAge 方法中才可以访问，而name可以在外部访问。，从而实现了私有属性。
+        </script>
+    </body>
+</html>
