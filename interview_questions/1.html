@@ -23,7 +23,8 @@
                 var result=[],hash={};
                 this.forEach(function(value){
                     var type = typeof(value); // 获取元素类型
-                    hash[value] || (hash[value] = new Array());
+                    //hash[value] || (hash[value] = new Array());
+                    if(!hash[value]){hash[value] = new Array()};
                     if(hash[value].indexOf(type) < 0){
                         hash[value].push(type); // 存储类型
                         result.push(value);

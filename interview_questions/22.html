@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+    </head>
+    <body>
+        <p>给你一个 DOM 元素，创建一个能访问该元素所有子元素的函数，并且要将每个子元素传递给指定的回调函数。</p>
+        <p>
+            函数接受两个参数:<br />
+            1. DOM
+            2. 指定的回调函数
+        </p>
+        <div id="a">
+            <div>
+                <div></div>
+            </div>
+        </div>
+        <script>
+
+            function Traverse(p_element,p_callback){
+                p_callback(p_element);
+                var list = p_element.children;
+                for(var i = 0; i< list.length;i++){
+                    Traverse(list[i],p_callback); // recursive call
+                }
+            }
+
+
+        </script>
+
+
+
+    </body>
+</html>

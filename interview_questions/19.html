@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+    </head>
+    <body>
+        <p>如果 list 很大，下面的这段递归代码会造成堆栈溢出。如果在不改变递归模式的前提下修善这段代码？</p>
+        <script>
+        var list = [1,2,3,3];
+        var nextListItem = function() {
+            var item = list.pop();
+            console.log(item);
+            if (item) {
+                // process the list item...
+                 setTimeout(nextListItem(),0); //递归
+            }
+        };
+        nextListItem();
+        </script>
+        <p>// 解决方案加个定时器。</p>
+    </body>
+</html>

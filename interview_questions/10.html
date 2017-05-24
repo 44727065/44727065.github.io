@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+    </head>
+    <body>
+        <!--typeof bar 判断bar是不是对象的弊端-->
+        <script>
+        (function(){
+            var a = b = 3;
+        })();
+        // b 是全局变量
+        // a 是局部变量
+
+        console.log("a defined?" + (typeof a !== 'undefined'));
+        console.log("b defined?" + (typeof b !== 'undefined'));
+        console.log(b); //3
+        console.log(typeof a);
+
+        </script>
+
+    </body>
+</html>
