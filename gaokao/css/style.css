@@ -16,7 +16,7 @@ body{height:100%;font-size:62.5%;}
 body{min-height:100%;}
 body:after{content:'';display: block;height: 0;clear:both;}
 /*框架*/
-.F_wrap{height:100%;background-repeat:no-repeat;background-size: 100% auto;background-position:top center;}
+.F_wrap{min-height:100%;background-repeat:no-repeat;background-size: 100% auto;background-position:top center;}
 .F_wrap.f_bg1{background-image:url(../images/bg_1.jpg)}
 .F_wrap.f_cover{background-image:url(../images/cover_bg.jpg)}
 .F_wrap.f_win{background-image:url(../images/bg_win.jpg);background-color:#000;}
