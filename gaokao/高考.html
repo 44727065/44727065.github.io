@@ -39,6 +39,7 @@
             var pointer = document.getElementById('pointer');
             var fengtiao = document.getElementById('fengtiao');
             pointer.onclick= function(){
+                this.style.display = "none";
                 fengtiao.setAttribute("class","fengtiao slice");
                 setTimeout(function(){
                     window.location="./问题.html";
