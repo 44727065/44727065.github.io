@@ -67,8 +67,8 @@ body{height:100%;font-size:62.5%;}
 .M_login .C_btn{margin-top:4rem;}
 
 /*封皮*/
-.M_cover{height:100%;}
-.M_cover .fengtiao{position: absolute;left:0;top:0;margin-top:65%;width:100%;padding-bottom:24.68%;background:url(../images/fengtiao.png) no-repeat center center;background-size:100% 100%;}
+.M_cover .cover_cnt{position:relative;padding-top:50%;}
+.M_cover .fengtiao{position: relative;left:0;top:0;margin-top:65%;width:100%;padding-bottom:24.68%;background:url(../images/fengtiao.png) no-repeat center center;background-size:100% 100%;}
 .M_cover .fengtiao.slice{animation: fengtiao 1.5s ease-out;}
 /*封条动画*/
 @keyframes fengtiao
@@ -88,28 +88,28 @@ body{height:100%;font-size:62.5%;}
     from{left:0;}
     to {left:100%;top:50%}
 }
-.M_cover .pointer{position: absolute;left:0;top:0;width:100%;top:70%;padding-bottom:25%;}
-.M_cover .pointer span{position: absolute;left:35%;top:40%;width:2.8rem;height:4rem;background:url(../images/push_btn.png) no-repeat center center;background-size:100% auto;animation: pointer 2s infinite ease-in-out;}
+.M_cover .pointer{position: absolute;left:0;top:74%;width:100%;top:70%;padding-bottom:25%;}
+.M_cover .pointer span{position: absolute;left:35%;width:2.8rem;height:4rem;background:url(../images/push_btn.png) no-repeat center center;background-size:100% auto;animation: pointer 2s infinite ease-in-out;}
 /*手指动画*/
 @keyframes pointer
 {
-    0% {transform: scale(1);left:35%;top:40%;}
-    50% {transform: scale(1.6);left:45%;top:50%;}
-    100% {transform: scale(1);left:35%;top:40%;}
+    0% {transform: scale(1);left:35%;top:80%;}
+    50% {transform: scale(1.6);left:45%;top:100%;}
+    100% {transform: scale(1);left:35%;top:80%;}
 }
 
 @-moz-keyframes pointer /* Firefox */
 {
-    0% {-moz-transform: scale(1);left:35%;top:40%;}
-    50% {-moz-transform: scale(1.6);left:45%;top:50%;}
-    100% {-moz-transform: scale(1);left:35%;top:40%;}
+    0% {-moz-transform: scale(1);left:35%;top:80%;}
+    50% {-moz-transform: scale(1.6);left:45%;top:100%;}
+    100% {-moz-transform: scale(1);left:35%;top:80%;}
 }
 
 @-webkit-keyframes pointer /* Safari 和 Chrome */
 {
-    0% {-webkit-transform: scale(1);left:35%;top:40%;}
-    50% {-webkit-transform: scale(1.6);left:45%;top:50%;}
-    100% {-webkit-transform: scale(1);left:35%;top:40%;}
+    0% {-webkit-transform: scale(1);left:35%;top:80%;}
+    50% {-webkit-transform: scale(1.6);left:45%;top:100%;}
+    100% {-webkit-transform: scale(1);left:35%;top:80%;}
 }
 
 
