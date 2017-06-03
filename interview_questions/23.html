@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+    </head>
+    <body>
+        <h2>不起眼的开始</h2>
+        <script>
+            //理解js中的同步和异步代码的区别、变量作用域、闭包等概念。
+            // for(var i = 0;i<5;i++){
+            //     setTimeout(function(){
+            //         console.log(new Date,i)
+            //     },1000)
+            // }
+            // console.log(new Date,i)
+            // 定时器工作机制，先输出一个 时间和5，然后五个定时器同时输出
+        </script>
+        <h2>闭包</h2>
+        <p>如何将代码变成 5-》0，1，2，3，4</p>
+        <script>
+            for(var j =0; j<5 ; j++){
+                (function(k){
+                    setTimeout(
+                        function(){
+                            console.log(new Date,k)
+                        },1000)
+                })(j)
+            }
+        </script>
+        <p>巧妙的利用 IIFE 来解决闭包造成的问题，稍微晦涩，使用中基类型（primitive Type）的参数传递是按值传递（Pass by value）的特称改造。</p>
+        <script>
+        var output = function(i){
+            setTimeout(function(){
+                console.log(new Date,i)
+            },1000)
+        }
+
+        for(var i=0;i<5;i++){
+            output(i)
+        }
+
+        </script>
+    </body>
+</html>

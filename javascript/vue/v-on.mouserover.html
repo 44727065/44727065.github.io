@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title> mouseover 控制限制隐藏</title>
+        <script src="./js/lib/vue.js"></script>
+        <meta charset="utf8" />
+        <style type="text/css">
+        	.fade-enter-active, .fade-leave-active {
+			  transition: opacity 1s
+			}
+			.fade-enter, .fade-leave-active {
+			  opacity: 0
+			}
+        </style>
+    </head>
+    <body>
+    	<div id="app">
+    		<div v-on:mouseover="isShow = !isShow" v-on:mouseout="isShow = !isShow"> {{isShow}}鼠标悬浮显示隐藏</div>
+    		<transition name="fade">
+	    		<div v-if="isShow">
+	    			北toggle内容
+	    		</div>
+    		</transition>
+    	</div>
+    	<script>
+    		new Vue({
+    			el:"#app",
+    			//控制显示隐藏
+    			data:{
+    				isShow:false
+    			}
+    		});
+    	</script>
+    	<div id="app1">
+    		<div v-on:mouseover="toggleShow" v-on:mouseout="toggleShow"> {{isShow}}鼠标悬浮显示隐藏</div>
+    		<transition name="fade">
+	    		<div v-if="isShow">
+	    			北toggle内容
+	    		</div>
+    		</transition>
+    	</div>
+    	<script type="text/javascript">
+    		// 另一种方法
+    		new Vue({
+    			el:"#app1",
+    			//控制显示隐藏
+    			data:{
+    				isShow:false
+    			},
+    			methods:{
+    				toggleShow :function(){
+    					this.isShow = !this.isShow;
+    				}
+    			}
+    		});
+    	</script>
+       
+      
+
+
