@@ -13,7 +13,6 @@ a{color: #333;}
 a:hover{color:#86ccd1; cursor: pointer;}
 html,
 body{height:100%;font-size:62.5%;overflow: visible}
-body{padding-bottom:10000px;margin-bottom:-10000px;}
 /*框架*/
 .F_wrap{height:100%;background-repeat:no-repeat;background-size: 100% auto;background-position:top center;}
 .F_wrap.f_bg1{background-image:url(../images/bg_1.jpg)}
