@@ -67,7 +67,7 @@ body{height:100%;font-size:62.5%;}
 .M_login .C_btn{margin-top:4rem;}
 
 /*封皮*/
-.M_cover{height:100%;}
+.M_cover{height:100%;background:#f00;}
 .M_cover .fengtiao{position: absolute;left:0;top:65%;width:100%;padding-bottom:24.68%;background:url(../images/fengtiao.png) no-repeat center center;background-size:100% 100%;}
 .M_cover .fengtiao.slice{animation: fengtiao 1.5s ease-out;}
 /*封条动画*/
