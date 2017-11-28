@@ -1,0 +1,81 @@
+{
+  "name": "loppo",
+  "version": "0.6.4",
+  "description": "an extremely easy static site generator of markdown documents",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint './**/*.@(js|jsx)'",
+    "lint:msg": "validate-commit-msg",
+    "test": "tape test/*.test.js | tap-spec",
+    "commit": "git cz",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
+    "precommit": "npm run lint",
+    "commitmsg": "npm run lint:msg"
+  },
+  "bin": {
+    "loppo": "./bin/cmd.js"
+  },
+  "keywords": [
+    "static",
+    "document"
+  ],
+  "homepage": "https://github.com/ruanyf/loppo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ruanyf/loppo.git"
+  },
+  "author": "Ruan Yifeng",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "connect": "3.x",
+    "debug": "3.x",
+    "fs-extra": "^4.0.2",
+    "html-to-text": "^3.0.0",
+    "js-yaml": "^3.6.1",
+    "lodash": "^4.16.2",
+    "log-symbols": "2.x",
+    "log4js": "2.x",
+    "loppo-theme-oceandeep": "2.x",
+    "serve-static": "1.x",
+    "tarim": "0.x",
+    "turpan": "^0.2.0",
+    "walk-sync": "^0.3.1",
+    "wordcount": "^1.1.1",
+    "yargs": "9.x"
+  },
+  "devDependencies": {
+    "commitizen": "^2.8.2",
+    "conventional-changelog-cli": "latest",
+    "cz-conventional-changelog": "2.x",
+    "eslint": "4.x",
+    "eslint-config-airbnb": "15.x",
+    "eslint-plugin-import": "2.x",
+    "eslint-plugin-jsx-a11y": "5.x",
+    "eslint-plugin-react": "7.x",
+    "ghooks": "^2.0.0",
+    "husky": "0.x",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.0",
+    "validate-commit-msg": "^2.6.1"
+  },
+  "config": {
+    "validate-commit-msg": {
+      "types": [
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "perf",
+        "test",
+        "chore",
+        "revert"
+      ],
+      "warnOnFail": false,
+      "maxSubjectLength": 100
+    },
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 函数又 4 种调用方式
+		// 区别在玉 this 的初始化
+
+		// 一般而言，this 指向函数执行时的当前对象
+
+		var myObject = {
+			firstName : "John",
+			lastName : "Doe" ,
+			fullname : function(){
+				return this.firstName + " " + this.lastName;
+			}
+		}
+
+		myObject.fullname(); // 返回 "John Doe"
+
+		console.log(myObject.fullname());
+
+		// 函数时对象， javascript 函数有他的属性和方法
+
+		function myFunction (a,b){
+			return a * b;
+		}
+
+		console.log(myFunction.call(myObject, 10 ,2));
+
+
+	</script>
+	<p id="demo">
+		
+	</p>
+</body>
+</html>

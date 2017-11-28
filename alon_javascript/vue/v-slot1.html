@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./js/lib/vue.js"></script>
+        <meta charset="utf8" />
+    </head>
+    <body>
+        <div id="app">
+            <children>
+                <span slot="first" @click="tobeknow">12345</span>
+                <span slot="second">56789</span>
+                <!--上面这行不会显示-->
+            </children>
+        </div>
+        <script>
+            // slot 引用的是名称
+            var vm = new Vue({
+                el: '#app',
+                methods:{
+                    tobeknow:function(){
+                        console.log("It's the parent's method");
+                    }
+                },
+                components: {
+                    children: {    //这个无返回值，不会继续派发
+                        template: "<button><slot name='second'></slot>为了明确作用范围，<slot name='first'></slot>所以使用button标签</button>"
+                    }
+                }
+            });
+        </script>
+
+        <div id="app1">
+            <button @click="toshow">点击让子组件显示</button>
+            <children v-if="abc"></children>
+        </div>
+        <script>
+            var vm1 = new Vue({
+                el:"#app1",
+                methods:{
+                    toshow:function(){
+                        this.abc = !this.abc;
+                    }
+                },
+                components:{
+                    children:{
+                        template:"<div>这里是子组件</div>"
+                    }
+                },
+                data:{
+                    abc:false
+                }
+            });
+        </script>
+
+
+
+

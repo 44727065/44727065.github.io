@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 函数表达式
+
+		var x = function(a,b){ return a + b ;};
+
+		console.log(x(10,5));
+
+
+		// 函数自调用
+		(function(){
+			var x = "Hello!!";
+			console.log(x);
+		})();
+
+		// 函数作为一个值使用
+		function myNewFunction(a,b){
+			return a*b;
+		}
+
+		var xx = myNewFunction(10,22);
+		console.log(xx);
+
+		// 函数作为表达式使用
+		function myNewNewFunction(a,b){
+			return a*b;
+		}
+
+		var xxx = myNewNewFunction(10,33) * 2;
+
+		console.log(xxx);
+
+		console.log(typeof(myNewNewFunction));
+
+		function my2Function(a,b){
+			return a * b;
+		}
+
+		// 作为字符串返回
+		var txt11 = my2Function.toString();
+		console.log(txt11);
+
+		// 参数规则
+		function my3Function(x,y){
+			/*
+			if (y === undefined){
+				y = 0;
+			}
+			*/
+			y = y || 0;
+			return x + y;
+		}
+
+		console.log(my3Function(3));
+
+		// Arguments 对象
+		x = findMax(1, 123, 500, 115, 44, 88);
+		console.log(x);
+		function findMax(){
+			var i, max = arguments[0];
+
+			if(arguments.length < 2 ) return max;
+
+			for (var i = 0; i < arguments.length; i++) {
+				if (arguments[i] > max ){
+					max = arguments [i];
+				}
+			}
+			return max;
+		}
+
+
+
+	</script>
+	<p id="demo">
+		
+	</p>
+</body>
+</html>

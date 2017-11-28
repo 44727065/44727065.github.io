@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>原生Js实现ajax的原理 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="ajax技术相关.html" class="breadcrumb-item">ajax技术相关</a></div>
+    <h1 class="article-title">原生Js实现ajax的原理</h1>
+    <div class="article">
+      <p>Ajax 的全称是Asynchronous JavaScript and XML，其中，Asynchronous 是异步的意思，它有别于传统web开发中采用的同步的方式。</p>
+<p>Ajax的原理简单来说通过XmlHttpRequest对象来向服务器发异步请求，从服务器获得数据，然后用javascript来操作DOM而更新页面。</p>
+<p>XMLHttpRequest是ajax的核心机制，它是在IE5中首先引入的，是一种支持异步请求的技术。简单的说，也就是javascript可以及时向服务器提出请求和处理响应，而不阻塞用户。达到无刷新的效果。</p>
+<p>XMLHttpRequest这个对象的属性有：</p>
+<ul>
+<li>onreadystatechang    每次状态改变所触发事件的事件处理程序。</li>
+<li>responseText    从服务器进程返回数据的字符串形式。</li>
+<li>responseXML    从服务器进程返回的DOM兼容的文档数据对象。</li>
+<li>status    从服务器返回的数字代码，比如常见的404（未找到）和200（已就绪）</li>
+<li>status Text    伴随状态码的字符串信息</li>
+<li>readyState    对象状态值</li>
+<li>1 0 (未初始化) 对象已建立，但是尚未初始化（尚未调用open方法）</li>
+<li>1 (初始化) 对象已建立，尚未调用send方法</li>
+<li>2 (发送数据) send方法已调用，但是当前的状态及http头未知</li>
+<li>3 (数据传送中) 已接收部分数据，因为响应及http头不全，这时通过responseBody和responseText获取部分数据会出现错误，</li>
+<li>4 (完成) 数据接收完毕,此时可以通过通过responseXml和responseText获取完整的回应数据</li>
+</ul>
+<pre class="hljs"><code>ajax({
+    url: &quot;./TestXHR.aspx&quot;,              //请求地址
+    type: &quot;POST&quot;,                       //请求方式
+    data: { name: &quot;super&quot;, age: 20 },        //请求参数
+    dataType: &quot;json&quot;,
+    success: function (response, xml) {
+        // 此处放成功后执行的代码
+    },
+    fail: function (status) {
+        // 此处放失败后执行的代码
+    }
+});
+
+function ajax(options) {
+    options = options || {};
+    options.type = (options.type || &quot;GET&quot;).toUpperCase();
+    options.dataType = options.dataType || &quot;json&quot;;
+    var params = formatParams(options.data);
+
+    //创建 - 非IE6 - 第一步
+    if (window.XMLHttpRequest) {
+        var xhr = new XMLHttpRequest();
+    } else { //IE6及其以下版本浏览器
+        var xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+
+    //接收 - 第三步
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            var status = xhr.status;
+            if (status &gt;= 200 &amp;&amp; status &lt; 300) {
+                options.success &amp;&amp; options.success(xhr.responseText, xhr.responseXML);
+            } else {
+                options.fail &amp;&amp; options.fail(status);
+            }
+        }
+    }
+
+    //连接 和 发送 - 第二步
+    if (options.type == &quot;GET&quot;) {
+        xhr.open(&quot;GET&quot;, options.url + &quot;?&quot; + params, true);
+        xhr.send(null);
+    } else if (options.type == &quot;POST&quot;) {
+        xhr.open(&quot;POST&quot;, options.url, true);
+        //设置表单提交时的内容类型
+        xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);
+        xhr.send(params);
+    }
+}
+//格式化参数
+function formatParams(data) {
+    var arr = [];
+    for (var name in data) {
+        arr.push(encodeURIComponent(name) + &quot;=&quot; + encodeURIComponent(data[name]));
+    }
+    arr.push((&quot;v=&quot; + Math.random()).replace(&quot;.&quot;));
+    return arr.join(&quot;&amp;&quot;);
+}
+</code></pre>
+<h2 id="jsonp-json-with-padding">Jsonp (JSON with Padding) <a class="markdownIt-Anchor" href="#jsonp-json-with-padding">#</a></h2>
+<p>Jsonp：(JSON with Padding)是一种跨域请求方式。主要原理是利用了script 标签可以跨域请求的特点，由其 src 属性发送请求到服务器，服务器返回 js 代码，网页端接受响应，然后就直接执行了，这和通过 script 标签引用外部文件的原理是一样的。JSONP由两部分组成：回调函数和数据，回调函数一般是由网页端控制，作为参数发往服务器端，服务器端把该函数和数据拼成字符串返回。</p>
+<h2 id="pjax">pjax <a class="markdownIt-Anchor" href="#pjax">#</a></h2>
+<p>pjax：pjax是一种基于ajax+history.pushState的新技术，该技术可以无刷新改变页面的内容，并且可以改变页面的URL。（关键点：可以实现ajax无法实现的后退功能）pjax是ajax+pushState的封装，同时支持本地存储、动画等多种功能。目前支持jquery、qwrap、kissy等多种版本。</p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="jQuery插件开发.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link link-disabled"><span class="icon icon-next-disabled" data-icon="next-disabled"></span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item chapter-item-current"><a href="ajax技术相关.html">ajax技术相关</a></li></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'ajax技术相关.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#jsonp-json-with-padding\">Jsonp (JSON with Padding)</a></li>\n<li><a href=\"#pjax\">pjax</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+

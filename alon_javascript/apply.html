@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	var cat = {
+		name : 'kitty',
+	}
+	function sayName(){
+		console.log(this.name);
+	}
+
+	sayName.call(cat,''); // 用sayName对象替换cat对象，并改变 this.Obj 的引用
+
+
+	function getArray(){
+		return Array.prototype.slice.call(arguments); // 将Array的slice方法用于 arguments 对象
+	}
+
+	console.log(getArray(1,2,3));
+
+	var slice1 = Array.prototype.slice.call.bind(Array.prototype.slice);//slice 是数组方法，可以被其它类数组（包括数组）借用。同时数组的其它方法也可以被人家使用
+	function getArray1(){
+		return slice1(arguments);
+	}
+
+	console.log(getArray1(1,2,3));
+
+	// 解决this丢失的问题
+	var cat = {
+		name :'kitty',
+		sayName : function(){
+			console.log(this.name);
+		}
+	}
+
+	//var sayName = cat.sayName();
+	//sayName(); // 没有任何输出内容
+
+	var sayName = cat.sayName.bind(cat); //使用 bind 解决 this 丢失的问题
+	sayName();
+
+
+	var push = Array.prototype.push.call.bind(Array.prototype.push); 
+	var Array = [1,2,3,4];
+	push(Array,5);
+	console.log(Array);
+
+	var obj = {
+		0:0,
+		1:1,
+		2:2,
+		3:3,
+		4:4,
+		5:5,
+		6:6,
+		length: 7
+	}
+
+	push(obj,5);
+	console.log(obj);
+
+
+	function add(a,b){
+		console.log(a + b);
+	}
+
+	function sub(a,b){
+		console.log(a-b);
+	}
+
+	sub.call(add,1,2); // sub 调用 add 方法
+	add.call(sub,1,2); // add 替换 sub 方法
+
+
+	function Animal(){//构造函数的名字大写
+		this.name = "Animal";
+		this.showName = function(){
+			console.log(this.name);
+		}
+	}
+
+	function Cat(){
+		this.name = "Cat";
+	}
+
+	var animal = new Animal();
+	var cat = new Cat();
+
+	animal.showName.call(cat); //将 animal 的showName方法给cat用
+	animal.showName.apply(cat); //将 animal 的showName方法给cat用
+
+	function Animal(name){
+		this.name = name;
+		this.showName = function(){
+			console.log(this.name);
+		};
+	}
+
+	function Cat(name){
+		Animal.call(this,name);
+	}
+
+	var cat = new Cat("Black Cat");
+	cat.showName();
+
+
+
+
+</script>
+
+</body>
+</html>

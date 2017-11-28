@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+	<div id="box" style="width: 100px;height: 100px;padding:20px;margin:50px;color:#999">
+		这里是一些文字
+	</div>
+	<button id="aaa">看一下相关属性</button>
+	<script type="text/javascript">
+		$(function(){
+			$("#aaa").click(function(event) {
+				/* Act on the event */
+				console.log("width:" + $("#box").width());
+				console.log("height:" + $("#box").height());
+				console.log("innerWidth:" + $("#box").innerWidth());
+				console.log("outerWidth:" + $("#box").outerWidth(true));
+				console.log("color:" + $("#box").css("color"));
+			});
+		})
+	</script>
+</body>
+</html>

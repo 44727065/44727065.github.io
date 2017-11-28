@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	//接口
+
+	// 可重用面向对象设计的第一条原则：”针对接口而不是实现编程“
+
+	// javascript 没有内置的创建或实现接口的方法。他也没有内置的方法可以用于判断一个对象是否实现了与另一个对象相同的一套方法，这使对象很难互换使用。因此需要自己添加这些特性
+
+	//2.1 什么是接口
+	/* 接口提供了一种用以说明一个对象应该具有哪些方法的手段。尽管它可以表明（或者暗示）这些方法的语义，但他并不规定这些方法应该如何实现。例如，如果一个接口包含有一个名为setName的方法，那么你有理由认为这个方法的视线应该具有一个字符串参数，并且会把这个参数赋给一个name变量。
+
+	*/
+
+	//2.11 接口之利
+
+	var CompositeForm = function(id,method,action){
+
+	}
+
+	// Implement the Composite interface
+	CompositeForm.prototype.add = function(child){
+
+	};
+	CompositeForm.prototype.remove = function(child){
+
+	};
+	CompositeForm.prototype.getChild = function(index){
+
+	}
+
+	// Implement the FormItem interface
+	CompositeForm.prototype.save = function(){
+		...
+	}
+
+	// 2.3.2 用属性检查模仿接口
+
+	var Composite ＝  new Interface('Composite',['add','remove','getChild'])
+
+
+</script>
+
+</body>
+</html>

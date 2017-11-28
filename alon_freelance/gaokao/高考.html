@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- uc强制竖屏 -->
+        <meta name="screen-orientation" content="portrait">
+        <!-- QQ强制竖屏 -->
+        <meta name="x5-orientation" content="portrait">
+        <!-- UC强制全屏 -->
+        <meta name="full-screen" content="yes">
+        <!-- QQ强制全屏 -->
+        <meta name="x5-fullscreen" content="true">
+        <!-- UC应用模式 -->
+        <meta name="browsermode" content="application">
+        <!-- QQ应用模式 -->
+        <meta name="x5-page-mode" content="app">
+        <!-- windows phone 点击无高光 -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="email=no" name="format-detection" />
+        <meta name="format-detection" content="telephone=no" />
+        <link rel="stylesheet" type="text/css" href="./css/style.css?aaccb">
+    </head>
+    <body>
+        <div class="F_wrap f_cover">
+            <div class="M_cover">
+                    <div class="cover_cnt">
+                    <div class="fengtiao" id="fengtiao"></div>
+                    <div class="pointer" id="pointer">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var pointer = document.getElementById('pointer');
+            var fengtiao = document.getElementById('fengtiao');
+            pointer.onclick= function(){
+                this.style.display = "none";
+                fengtiao.setAttribute("class","fengtiao slice");
+                setTimeout(function(){
+                    window.location="./问题.html";
+                },1300)
+            }
+        </script>
+    </body>
+</html>

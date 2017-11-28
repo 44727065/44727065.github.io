@@ -1,0 +1,7 @@
+dir: docs
+output: dist
+site: 老郭记事
+theme: oceandeep
+customization: false
+themeDir: loppo-theme
+direction: ltr

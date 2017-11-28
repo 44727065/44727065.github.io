@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+        <head></head>
+        <body>
+            <a href="####">aaaaa</a>
+            <script>
+                // 对象是核心概念，所有数据都可以被视为对象。
+                // 无序数据集合，由 “键值对” 构成
+                var o ={
+                    p:"hello world"
+                }
+                console.log(o.p);
+
+                // 对象的每个键名又称为“属性”，键值可以是任何数据类型，如果一个属性的值为函数，被称为方法
+                // 注意怎么给方法传递参数
+                var o1 ={
+                    p: function(x){
+                            return 2 * x;
+                    }
+                }
+                console.log(o1.p(2));
+
+                // 对象的引用
+                // 不同的变量名指向同一个对象，他们都是对这个对象的引用，也就是指向同一个内存地址。修改一个变量会影响到其他所有变量
+                var o1 = {}
+                var o2 = o1;
+
+                o1.a = 1;
+                console.log(o2.a);
+
+                // 这种引用只局限于对象，对于原始类型的数据类型则是传值引用，就是值的拷贝。
+                var x = 1;
+                var y = x;
+
+                x = 2;
+                console.log(y); // 传值和传址的区别
+
+                // 表达式还是语句,通过 eval 方法来执行代码
+                console.log(eval('{ foo : 123 }'));
+                // 上面代码是对象还是表达式？
+                // javascript 规定，行首是大括号，一律解释为语句。如果要解释为表达式，需要在大括号前加上圆括号。
+                console.log(eval('({foo:123})'));
+
+                // 读取属性有两种方法，一种是实用点运算符，还有一种是实用方括号运算符。
+                var o = {
+                    'p': "hello world",
+                    0.1: 123
+                }
+
+                console.log(o.p);
+                console.log(o['p']);
+
+                // 数值键名不能使用点运算符，只能使用方括号运算符
+
+                console.log(o[0.1]);
+
+                // 检查键名是否被声明
+                // if(a){
+                //     console.log('已经声明');
+                // }//报错 a 未声明
+                if(window.a){
+                    console.log('已经声明');
+                } // 不报错
+
+                if('a' in window ){
+                    console.log('生命过');
+                }else{
+                    console.log("未声明");
+                }
+
+                // 属性fu值
+
+                var o3 = {};
+                o3['a'] = '9999';
+                console.log(o3.a);
+
+                // 查看所有属性
+                var o4 = {
+                    key1: 1,
+                    key2: 2
+                }
+                // 查看所有的键
+                console.log(Object.keys(o4));
+
+
+                var o5 = {
+                    p: 1
+                }
+                delete o5.p;
+                console.log(o5.p);
+
+                // 属性不得删除的情况
+                var o6 = Object.defineProperty({},'p',{
+                    value:123,
+                    configurable :false // 修饰属性不可删除
+                })
+
+                console.log(o6.p);
+                if(delete o6.p){ //返回false
+                    console.log("可以删除");
+                }else{
+                    console.log("属性不可删除");
+                }
+
+                // delete 只能删除属性，不能删除命令声明的变量
+
+                // in 运算符用于检查对象是否包含某个属性
+
+                var o7 ={
+                    p: 999
+                }
+                if('p' in o7){
+                    console.log("拥有这个属性");
+                }
+
+                // for in 用来循环遍历一个对象的全部属性
+
+                var a = {a:1,b:2,c:3}
+
+                for(var i in a){
+                    console.log(a[i]);
+                }
+
+                // name 是person本身的属性
+                function Person(name){
+                    this.name = name;
+                }
+                // describe 是 Person.prototype 是person本身的属性
+                Person.prototype.describe = function(){
+                    return 'Name ' + this.name;
+                }
+
+                var person = new Person('Bill');
+
+                console.log(person.describe());
+
+                for(var i in person){
+                    console.log(i);
+                }
+
+                // 如果只想遍历对象本身的属性，可以使用 hasOwnProperty 方法，再循环内部判断是不是自身的属性
+                for(var key in person){
+                    if(person.hasOwnProperty(key)){
+                        console.log(i);
+                    }
+                }
+
+                // 对象的 toString() 方法
+                //console.log(person.toString())
+
+                // with 语句的意义是操作一个对象的多个属性时，方便操作
+
+                with (document.links[0]){
+                    console.log(href);
+                    console.log(title);
+                    console.log(style);
+                }
+
+                // with 必需是区块内部的变量，必需是当前对象已经存在的属性，否则会创造一个全局变量。这是因为 with 区块没有改变作用域，它的内部依然是当前作用域。
+                var o = {};
+                with (o) {
+                    x = "abc";
+                }
+
+                console.log(o.x); // undefined
+                console.log(x);
+
+                // width 语句一个很大的弊病就是必需绑定明确的属性。
+
+
+
+
+
+
+
+
+
+
+
+            </script>
+        </body>
+</html>

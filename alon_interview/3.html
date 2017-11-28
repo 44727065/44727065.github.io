@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+    </head>
+    <body>
+        <script type="text/javascript">
+            // javascript 变量在声明之前已经可用，声明提前 hoisting
+            var scope = "global";
+            function myFunc(){
+                console.log(scope); // 返回值 undefined
+                var scope = "local";
+            }
+            myFunc();
+        </script>
+    </body>
+</html>

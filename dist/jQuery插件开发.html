@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>jQuery 插件开发的三种方式 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="jQuery插件开发.html" class="breadcrumb-item">jQuery插件开发</a></div>
+    <h1 class="article-title">jQuery 插件开发的三种方式</h1>
+    <div class="article">
+      <ul>
+<li>
+<ol>
+<li>$.extend() 来扩展 jQuery</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>$.fn 向jQuery 添加新的方法</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>$.widget() 应用 jQuery UI 的部件工厂方式创建</li>
+</ol>
+</li>
+</ul>
+<p>通常用第二种方式创建，第三种方式开发更高级的 jQuery 部件，该模块开发出来的部件带有很多 jQuery 内建的特性。</p>
+<h2 id="第一种方式">第一种方式 <a class="markdownIt-Anchor" href="#第一种方式">#</a></h2>
+<pre class="hljs"><code>    $.extend({
+        <span class="hljs-attr">sayHello</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>)</span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Hello '</span> + (name ? name : <span class="hljs-string">'Alon'</span>) + <span class="hljs-string">' !'</span>);
+        }
+    })
+    $.sayHello();
+    $.sayHello(<span class="hljs-string">'Carlos'</span>)
+</code></pre>
+<p>上面就是通过 $.extend() 向 jQuery 添加了一个 sayHello 函数，然后通过 $ 直接调用.</p>
+<h2 id="第二种开发">第二种开发 <a class="markdownIt-Anchor" href="#第二种开发">#</a></h2>
+<p>基本就是往 $.fn 上面添加一个方法，名字是我们的插件名称。然后我们的插件代码就在这个方法里面展开。<br>
+比如我们将页面中的所有链接颜色转化成红色，则可以这样写插件。</p>
+<pre class="hljs"><code>    $.fn.myPlugin = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-comment">// 在这里，this 指的是用 jQuery 选中的元素</span>
+        <span class="hljs-comment">// example: $('a),则 this = $('a')</span>
+        <span class="hljs-keyword">this</span>.css(<span class="hljs-string">'color'</span>,<span class="hljs-string">'red'</span>);
+    }
+</code></pre>
+<p>在插件名字定义的这个函数内部，this指代的是我们在调用该插件时，用jQuery 选择器选中的元素，一般是一个jQuery 类型的集合。并且这个集合已经是 jQuery 包装类型了，也就是说不用再用美元符号包装了／<br>
+所以上面的代码，我们在 this 身上调用 jQuery 的 css 方法，也就相当于在调用 $('a').css();</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">""</span>&gt;</span>链接地址1<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">""</span>&gt;</span>链接地址2<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">""</span>&gt;</span>链接地址3<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">""</span>&gt;</span>链接地址4<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>这里的内容不受影响<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</code></pre>
+<pre class="hljs"><code>    $(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        $(<span class="hljs-string">'ul a'</span>).myPlugin();
+    })
+</code></pre>
+<p>插件代码里处理每个具体的元素，而不是一个集合进行处理，这样我们就可以针对每个元素进行相应的操作。<br>
+我们知道 this 指代 jQuery 选择器返回的集合，那么通过调用 jQuery 的 .each() 方法就可以处理合集中的每个元素了，但此刻要注意的是，在 each 方法内部，this 指代的是普通 dom 元素了，因此如果调用 jQuery方法就需要用 $ 来重新包装一下。<br>
+下面就是遍历链接的真实地址，将href加到后面</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">ol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"http://varhi.com"</span>&gt;</span>这里是一些内容1<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"http://varhi.com"</span>&gt;</span>这里是一些内容2<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"http://varhi.com"</span>&gt;</span>这里是一些内容3<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"http://varhi.com"</span>&gt;</span>这里是一些内容4<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ol</span>&gt;</span>
+</code></pre>
+<pre class="hljs"><code>$.fn.myPlugin1 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-comment">// 在这里，this 指的是用 jQuery 选中的元素</span>
+    <span class="hljs-keyword">this</span>.css(<span class="hljs-string">'color'</span>,<span class="hljs-string">'green'</span>);
+    <span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-comment">// 对每个元素进行操作</span>
+        $(<span class="hljs-keyword">this</span>).append(<span class="hljs-string">' '</span> + $(<span class="hljs-keyword">this</span>).attr(<span class="hljs-string">'href'</span>));
+    })
+}
+
+$(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $(<span class="hljs-string">'ol a'</span>).myPlugin1();
+})
+</code></pre>
+<h3 id="支持链式调用">支持链式调用 <a class="markdownIt-Anchor" href="#支持链式调用">#</a></h3>
+<p>jQuery 一个非常优雅的特性是支持链式调用，选择好 Eom 元素后可以不断地调用其他方法。<br>
+要想让插件不打破这种链式调用，只需 return 一下即可。</p>
+<pre class="hljs"><code>$.fn.myPlugin1 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">//在这里面,this指的是用jQuery选中的元素</span>
+    <span class="hljs-keyword">this</span>.css(<span class="hljs-string">'color'</span>, <span class="hljs-string">'green'</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-comment">//对每个元素进行操作</span>
+        $(<span class="hljs-keyword">this</span>).append(<span class="hljs-string">' '</span> + $(<span class="hljs-keyword">this</span>).attr(<span class="hljs-string">'href'</span>));
+    })
+}
+</code></pre>
+<h3 id="让插件接收参数">让插件接收参数 <a class="markdownIt-Anchor" href="#让插件接收参数">#</a></h3>
+<p>一个强劲的插件可以让使用者随意定制，尽量提供合适的参数。<br>
+插件可以使用调用时传入的参数，也可以在插件中给出默认的值。<br>
+在处理插件参数的接收上，通常使用 jQuery 的 extend 方法，上面也提到过，但那是给 extend 方法传递参数的情况下，这个对象会合并到 jQuery 身上，所以我们就可以在 jQuery 身上调用新合并对象里包含的方法。当给extend 方法合并一个以上的参数时，他会将所有参数对象合并到第一个里。同时，如果对象中有同名属性，合并的时候后面的会覆盖前面的。<br>
+我们可以在插件里定义一个保存插件参数默认值的对象，同时将接收来的参数对象合并到默认对象上，最后就实现了用户指定了值的参数使用指定的值，未指定的参数使用插件默认值。</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">dl</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dt</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">""</span>&gt;</span>aaaa<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dt</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dd</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">""</span>&gt;</span>bbbb<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dd</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dl</span>&gt;</span>
+</code></pre>
+<pre class="hljs"><code>$.fn.myPlugin2 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)</span>{
+    <span class="hljs-keyword">var</span> defaults = {
+        <span class="hljs-string">'color'</span> : <span class="hljs-string">'blue'</span>,
+        <span class="hljs-string">'fontSize'</span> : <span class="hljs-string">'20px'</span>
+    };
+    <span class="hljs-keyword">var</span> settings = $.extend(defaults, options);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.css({
+        <span class="hljs-string">'color'</span> : settings.color,
+        <span class="hljs-string">'fontSize'</span> : settings.fontSize
+    })
+}
+
+$(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $(<span class="hljs-string">'dl a'</span>).myPlugin2();
+})
+$(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $(<span class="hljs-string">'dl a'</span>).myPlugin2({
+        <span class="hljs-string">'color'</span>:<span class="hljs-string">'purple'</span>,
+        <span class="hljs-string">'fontSize'</span> : <span class="hljs-string">'30px'</span>
+    });
+})
+</code></pre>
+<h3 id="保护好默认参数">保护好默认参数 <a class="markdownIt-Anchor" href="#保护好默认参数">#</a></h3>
+<p>上面代码调用 extend 时会将 defaults 的值改变，这样不好，因为它作为插件因有一些东西维持原样，另外就是如果你在后续代码中还要使用这些默认值的话，当你再次访问它时它已经被用户传进来的参数更改了。<br>
+一个好的办法是讲一个新的空对象作为 $.extend 的第一个参数，defaults 和用户传递的参数对象紧随气候，这样做的好处是将所有值被合并到这个空对象上，保护了插件里面的值。</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>这里是一些文字<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<pre class="hljs"><code>$.fn.myPlugin3 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)</span>{
+    <span class="hljs-keyword">var</span> defaults = {
+        <span class="hljs-string">'color'</span> : <span class="hljs-string">'red'</span>,
+        <span class="hljs-string">'fontSize'</span> : <span class="hljs-string">'18px'</span>
+    }
+    <span class="hljs-keyword">var</span> settings = $.extend({},defaults,options);
+    <span class="hljs-built_in">console</span>.log(settings);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.css({
+        <span class="hljs-string">'color'</span> : settings.color,
+        <span class="hljs-string">'fontSize'</span> : settings.fontSize
+    })
+}
+
+$(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $(<span class="hljs-string">'div span'</span>).myPlugin3();
+})
+$(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $(<span class="hljs-string">'div span'</span>).myPlugin3({
+        <span class="hljs-string">'color'</span>:<span class="hljs-string">'orange'</span>,
+        <span class="hljs-string">'fontSize'</span> :<span class="hljs-string">'10px'</span>
+    });
+})
+</code></pre>
+<h2 id="面向对象的插件开发">面向对象的插件开发 <a class="markdownIt-Anchor" href="#面向对象的插件开发">#</a></h2>
+<p>如果将需要的重要变量定义到对象的属性上，函数变成对象的方法，当我们需要的时候通过对象来获取，一来方便管理，二来不会影响外部命名空间，因为这些变量名和方法名都在对象内部。<br>
+接上面的例子，我们可以将这个插件抽象称一个美化页面的对象。</p>
+<pre class="hljs"><code><span class="hljs-comment">// 定义 Beautifier 的构造函数</span>
+<span class="hljs-keyword">var</span> Beautifier = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ele,opt</span>)</span>{
+    <span class="hljs-keyword">this</span>.$element = ele;
+    <span class="hljs-keyword">this</span>.defaults = {
+        <span class="hljs-string">'color'</span> : <span class="hljs-string">'red'</span>,
+        <span class="hljs-string">'fontSize'</span> : <span class="hljs-string">'12px'</span>,
+        <span class="hljs-string">'textDecoration'</span> : <span class="hljs-string">'none'</span>
+    },
+    <span class="hljs-keyword">this</span>.options = $.extend( {} , <span class="hljs-keyword">this</span>.defaults , opt );
+}
+
+<span class="hljs-comment">// 定义 beautifier 的方法</span>
+
+Beautifier.prototype = {
+    <span class="hljs-attr">beautify</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$element.css({
+            <span class="hljs-string">'color'</span> : <span class="hljs-keyword">this</span>.options.color,
+            <span class="hljs-string">'fontSize'</span> : <span class="hljs-keyword">this</span>.options.fontSize,
+            <span class="hljs-string">'textDecoration'</span> : <span class="hljs-keyword">this</span>.textDecoration
+        })
+    }
+}
+<span class="hljs-comment">// 在插件中使用 Beautifier 对象</span>
+$.fn.myPlugin4 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)</span>{
+    <span class="hljs-comment">//  创建 Beautifier 的实体</span>
+    <span class="hljs-keyword">var</span> beautifier = <span class="hljs-keyword">new</span> Beautifier(<span class="hljs-keyword">this</span>,options);
+    <span class="hljs-comment">// 调用其方法</span>
+    <span class="hljs-keyword">return</span> beautifier.beautify();
+}
+</code></pre>
+<p>通过上面的改造，我们的代码变得更加面向对象了，也更好维护和理解，以后要加新功能新方法，只需要向对象添加新变量及方法即可，然后在插件实例化后调用。</p>
+<h2 id="关于命名空间">关于命名空间 <a class="markdownIt-Anchor" href="#关于命名空间">#</a></h2>
+<h3 id="用自调用匿名函数包裹你的代码">用自调用匿名函数包裹你的代码 <a class="markdownIt-Anchor" href="#用自调用匿名函数包裹你的代码">#</a></h3>
+<p>javascript 中无法用花括号方便的创建作用域，但函数却可以形成一个作用域，域内的代码是无法被外界访问的。如果我们将代码放入一个函数中，那么将不会污染全局命名空间，同时不会和别的代码冲突。<br>
+如上面我们定义了一个 Beautifier 全局变量，它会被附到 window　对象上，为了防止这种事情发生，我们在保持原来代码不变，我们将所有代码用自调用匿名函数包裹。</p>
+<pre class="hljs"><code>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">//定义Beautifier的构造函数</span>
+    <span class="hljs-keyword">var</span> Beautifier = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ele, opt</span>) </span>{
+        <span class="hljs-keyword">this</span>.$element = ele,
+        <span class="hljs-keyword">this</span>.defaults = {
+            <span class="hljs-string">'color'</span>: <span class="hljs-string">'red'</span>,
+            <span class="hljs-string">'fontSize'</span>: <span class="hljs-string">'12px'</span>,
+            <span class="hljs-string">'textDecoration'</span>: <span class="hljs-string">'none'</span>
+        },
+        <span class="hljs-keyword">this</span>.options = $.extend({}, <span class="hljs-keyword">this</span>.defaults, opt)
+    }
+    <span class="hljs-comment">//定义Beautifier的方法</span>
+    Beautifier.prototype = {
+        <span class="hljs-attr">beautify</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$element.css({
+                <span class="hljs-string">'color'</span>: <span class="hljs-keyword">this</span>.options.color,
+                <span class="hljs-string">'fontSize'</span>: <span class="hljs-keyword">this</span>.options.fontSize,
+                <span class="hljs-string">'textDecoration'</span>: <span class="hljs-keyword">this</span>.options.textDecoration
+            });
+        }
+    }
+    <span class="hljs-comment">//在插件中使用Beautifier对象</span>
+    $.fn.myPlugin = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>) </span>{
+        <span class="hljs-comment">//创建Beautifier的实体</span>
+        <span class="hljs-keyword">var</span> beautifier = <span class="hljs-keyword">new</span> Beautifier(<span class="hljs-keyword">this</span>, options);
+        <span class="hljs-comment">//调用其方法</span>
+        <span class="hljs-keyword">return</span> beautifier.beautify();
+    }
+})();
+</code></pre>
+<p>这样做的好处，也就是上面所阐述的那样，另一个好处就是，自调用匿名函数里面的代码会在第一时间执行，页面准备好过后，上面的代码就将插件准备好了，以方便在后面的代码中使用插件。<br>
+到目前为止似乎接近完美，如果在考虑到其他一些因素，比如我们会讲这段代码放到页面后，前面别人谢的代码没有用分号结尾，活着前面的代码将window、undefined等这些系统变量或者关键字修改掉了，正好我们又在自己的代码里面进行了使用，那结果也是不可预测的，这不是我们想要的。</p>
+<h3 id="将系统变量以变量形式传递到插件内部">将系统变量以变量形式传递到插件内部 <a class="markdownIt-Anchor" href="#将系统变量以变量形式传递到插件内部">#</a></h3>
+<p>看看下面的代码，会出现什么结果？</p>
+<pre class="hljs"><code>    <span class="hljs-keyword">var</span> foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-comment">// 别人的代码</span>
+    } <span class="hljs-comment">// 注意这里没有用分号结尾</span>
+
+    <span class="hljs-comment">// 开始我们的代码</span>
+    ;(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{ <span class="hljs-comment">// 前面增加分号修正</span>
+        <span class="hljs-comment">// 我们的代码</span>
+        alert(<span class="hljs-string">'有没有执行到这里'</span>);
+    })() <span class="hljs-comment">// jquery插件.html:236 Uncaught TypeError: (intermediate value)(...) is not a function</span>
+</code></pre>
+<p>同时，将系统变量以参数形式传递到插件内部也是不错的选择。</p>
+<pre class="hljs"><code>;(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$,window,document,undefined</span>)</span>{
+    <span class="hljs-comment">//我们的代码。。</span>
+    <span class="hljs-comment">//blah blah blah...</span>
+})(jQuery,<span class="hljs-built_in">window</span>,<span class="hljs-built_in">document</span>);
+</code></pre>
+<p>而至于这个undefined，稍微有意思一点，为了得到没有被修改的undefined，我们并没有传递这个参数，但却在接收时接收了它，因为实际并没有传，所以‘undefined’那个位置接收到的就是真实的'undefined'了。是不是有点hack的味道，值得细细体会的技术，当然不是我发明的，都是从前人的经验中学习。<br>
+所以最后我们的插件成了这样：</p>
+<pre class="hljs"><code>;(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$, window, document,undefined</span>) </span>{
+    <span class="hljs-comment">//定义Beautifier的构造函数</span>
+    <span class="hljs-keyword">var</span> Beautifier = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ele, opt</span>) </span>{
+        <span class="hljs-keyword">this</span>.$element = ele,
+        <span class="hljs-keyword">this</span>.defaults = {
+            <span class="hljs-string">'color'</span>: <span class="hljs-string">'red'</span>,
+            <span class="hljs-string">'fontSize'</span>: <span class="hljs-string">'12px'</span>,
+            <span class="hljs-string">'textDecoration'</span>: <span class="hljs-string">'none'</span>
+        },
+        <span class="hljs-keyword">this</span>.options = $.extend({}, <span class="hljs-keyword">this</span>.defaults, opt)
+    }
+    <span class="hljs-comment">//定义Beautifier的方法</span>
+    Beautifier.prototype = {
+        <span class="hljs-attr">beautify</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$element.css({
+                <span class="hljs-string">'color'</span>: <span class="hljs-keyword">this</span>.options.color,
+                <span class="hljs-string">'fontSize'</span>: <span class="hljs-keyword">this</span>.options.fontSize,
+                <span class="hljs-string">'textDecoration'</span>: <span class="hljs-keyword">this</span>.options.textDecoration
+            });
+        }
+    }
+    <span class="hljs-comment">//在插件中使用Beautifier对象</span>
+    $.fn.myPlugin = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>) </span>{
+        <span class="hljs-comment">//创建Beautifier的实体</span>
+        <span class="hljs-keyword">var</span> beautifier = <span class="hljs-keyword">new</span> Beautifier(<span class="hljs-keyword">this</span>, options);
+        <span class="hljs-comment">//调用其方法</span>
+        <span class="hljs-keyword">return</span> beautifier.beautify();
+    }
+})(jQuery, <span class="hljs-built_in">window</span>, <span class="hljs-built_in">document</span>);
+</code></pre>
+<h2 id="关于变量定义及命名">关于变量定义及命名 <a class="markdownIt-Anchor" href="#关于变量定义及命名">#</a></h2>
+<p>现在谈谈关于变量及方法等的命名，没有硬性规定，但为了规范，遵循一些约定还是很有必要的。</p>
+<p>变量定义：好的做法是把将要使用的变量名用一个var关键字一并定义在代码开头，变量名间用逗号隔开。原因有二：</p>
+<ul>
+<li>一是便于理解，知道下面的代码会用到哪些变量，同时代码显得整洁且有规律，也方便管理，变量定义与逻辑代码分开；</li>
+<li>二是因为JavaScript中所有变量及函数名会自动提升，也称之为JavaScript的Hoist特性，即使你将变量的定义穿插在逻辑代码中，在代码解析运行期间，这些变量的声明还是被提升到了当前作用域最顶端的，所以我们将变量定义在一个作用域的开头是更符合逻辑的一种做法。当然，再次说明这只是一种约定，不是必需的。<br>
+变量及函数命名 一般使用驼峰命名法（CamelCase），即首个单词的首字母小写，后面单词首字母大写，比如resultArray，requestAnimationFrame。对于常量，所有字母采用大写，多个单词用下划线隔开，比如WIDTH=100，BRUSH_COLOR='#00ff00'。当变量是jQuery类型时，建议以开头，开始会不习惯，但经常用了之后会感觉很方便，因为可以很方便地将它与普通变量区别开来，一看到以开头我们就知道它是jQuery类型可以直接在其身上调用jQuery相关的方法，比如var <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>e</mi><mi>l</mi><mi>e</mi><mi>m</mi><mi>e</mi><mi>n</mi><mi>t</mi><mo>=</mo></mrow><annotation encoding="application/x-tex">element=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">e</span><span class="mord mathit" style="margin-right:0.01968em;">l</span><span class="mord mathit">e</span><span class="mord mathit">m</span><span class="mord mathit">e</span><span class="mord mathit">n</span><span class="mord mathit">t</span><span class="mrel">=</span></span></span></span>('a'); 之后就可以在后面的代码中很方便地使用它，并且与其他变量容易区分开来。</li>
+</ul>
+<p>引号的使用：既然都扯了这些与插件主题无关的了，这里再多说一句，一般HTML代码里面使用双引号，而在JavaScript中多用单引号，比如下面代码所示：</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> name = <span class="hljs-string">'Wayou'</span>;
+<span class="hljs-built_in">document</span>.getElementById(‘example’).innerHTML = <span class="hljs-string">'&lt; a href="http: //wayouliu.duapp.com/"&gt;'</span>+name+<span class="hljs-string">'&lt;/a&gt;'</span>; <span class="hljs-comment">//href=".." HTML中保持双引号，JavaScript中保持单引号</span>
+</code></pre>
+<p>一方面，HTML代码中本来就使用的是双引号，另一方面，在JavaScript中引号中还需要引号的时候，要求我们单双引号间隔着写才是合法的语句，除非你使用转意符那也是可以的。再者，坚持这样的统一可以保持代码风格的一致，不会出现这里字符串用双引号包着，另外的地方就在用单引号。</p>
+<h2 id="代码混淆与压缩">代码混淆与压缩 <a class="markdownIt-Anchor" href="#代码混淆与压缩">#</a></h2>
+<p>进行完上面的步骤，已经小有所成了。或许你很早就注意到了，你下载的插件里面，一般都会提供一个压缩的版本一般在文件名里带个'min'字样。也就是minified的意思，压缩浓缩后的版本。并且平时我们使用的jQuery也是官网提供的压缩版本，jquery.min.js。</p>
+<p>这里的压缩不是指代码进行功能上的压缩，而是通过将代码里面的变量名，方法函数名等等用更短的名称来替换，并且删除注释（如果有的话）删除代码间的空白及换行所得到的浓缩版本。同时由于代码里面的各种名称都已经被替代，别人无法阅读和分清其逻辑，也起到了混淆代码的作用。</p>
+<h3 id="压缩的好处">压缩的好处 <a class="markdownIt-Anchor" href="#压缩的好处">#</a></h3>
+<p>源码经过混淆压缩后，体积大大减小，使代码变得轻量级，同时加快了下载速度，两面加载变快。比如正常jQuery v1.11.0的源码是276kb，而压缩后的版本仅94.1kb！体积减小一半还多。这个体积的减小对于文件下载速度的提升不可小觑。<br>
+经过压缩混淆后，代码还能阅读嘛？当然不能，所以顺带还起到了代码保护的作用。当然只是针对你编写了一些比较酷的代码又不想别人抄袭的情况。对于jQuery社区，这里本身就是开源的世界，同时JavaScript这东西其实也没什么实质性方法可以防止别人查看阅读你的代码，毕竟有混淆就有反混淆工具，这里代码压缩更多的还是上面提到的压缩文件的作用，同时一定程度上防止别人抄袭。</p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="前端面试题.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="ajax技术相关.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item chapter-item-current"><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'jQuery插件开发.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F\">第一种方式</a></li>\n<li><a href=\"#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E5%BC%80%E5%8F%91\">第二种开发</a>\n<ul>\n<li><a href=\"#%E6%94%AF%E6%8C%81%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8\">支持链式调用</a></li>\n<li><a href=\"#%E8%AE%A9%E6%8F%92%E4%BB%B6%E6%8E%A5%E6%94%B6%E5%8F%82%E6%95%B0\">让插件接收参数</a></li>\n<li><a href=\"#%E4%BF%9D%E6%8A%A4%E5%A5%BD%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0\">保护好默认参数</a></li>\n</ul>\n</li>\n<li><a href=\"#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91\">面向对象的插件开发</a></li>\n<li><a href=\"#%E5%85%B3%E4%BA%8E%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4\">关于命名空间</a>\n<ul>\n<li><a href=\"#%E7%94%A8%E8%87%AA%E8%B0%83%E7%94%A8%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E5%8C%85%E8%A3%B9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81\">用自调用匿名函数包裹你的代码</a></li>\n<li><a href=\"#%E5%B0%86%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F%E4%BB%A5%E5%8F%98%E9%87%8F%E5%BD%A2%E5%BC%8F%E4%BC%A0%E9%80%92%E5%88%B0%E6%8F%92%E4%BB%B6%E5%86%85%E9%83%A8\">将系统变量以变量形式传递到插件内部</a></li>\n</ul>\n</li>\n<li><a href=\"#%E5%85%B3%E4%BA%8E%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89%E5%8F%8A%E5%91%BD%E5%90%8D\">关于变量定义及命名</a></li>\n<li><a href=\"#%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86%E4%B8%8E%E5%8E%8B%E7%BC%A9\">代码混淆与压缩</a>\n<ul>\n<li><a href=\"#%E5%8E%8B%E7%BC%A9%E7%9A%84%E5%A5%BD%E5%A4%84\">压缩的好处</a></li>\n</ul>\n</li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+

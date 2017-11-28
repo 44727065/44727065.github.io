@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		var text = '{ "employees" : [' +
+					'{ "firstName":"John" , "lastName":"Doe" },' +
+					'{ "firstName":"Anna" , "lastName":"Smith" },' +
+					'{ "firstName":"Peter" , "lastName":"Jones" } ]}';
+		console.log(typeof(text));
+
+		var obj = JSON.parse(text);
+
+		console.log(typeof(obj));
+	</script>
+	<p id="demo">
+		
+	</p>
+	<script type="text/javascript">
+		document.getElementById("demo").innerHTML = obj.employees[1].firstName + " " + obj.employees[1].lastName;
+	</script>
+</body>
+</html>
