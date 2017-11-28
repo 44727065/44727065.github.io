@@ -1,52 +1,95 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="./javascript/vue/js/lib/vue.js"></script>
-        <script src="./javascript/vue/js/lib/vue-router.js"></script>
-        <meta charset="utf8" />
-    </head>
-    <body>
-        <div id="app">
-            <h1>Hello App!</h1>
-            <p>
-                <!-- 使用 router-link 组件来导航. -->
-                <!-- 通过传入 `to` 属性指定链接. -->
-                <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
-                <router-link to="/foo">Go to Foo</router-link>
-                <router-link to="/bar">Go to Bar</router-link>
-            </p>
-            <!-- 路由出口 -->
-            <!-- 路由匹配到的组件将渲染在这里 -->
-            <router-view></router-view>
-        </div>
-        <script>
-            // 0. 如果使用模块化机制编程，导入 vue 和 VueRouter ，要调用 Vue.use(VueRouter)
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="./assets/css/bulma.min.css">
+<link rel="stylesheet" href="./assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
 
-            //  1. 定义路由组件。
-            // 可以从其它文件 import 进来
-            const Foo = { template : '<div>Foo</div>'};
-            const Bar = { template : '<div>Bar</div>'};
-            // 2. 定义路由
-            // 每个路由都应该映射到一个组件。其中“component”可以是 通过Vue.extend() 创建的组件构造器
-            // 或者，指示一个组件配置对象
-            const routes = [
-                { path:'/foo', component: Foo},
-                { path:'/bar', component: Bar}
-            ];
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="./index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
 
-            // 3. 创建 router 实例，然后传 ‘routes’ 配置
-            const router = new VueRouter({
-                routes // 缩写 相当于 routes: routes
-            })
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="./index.html" class="breadcrumb-item">Home</a></div>
+    <h1 class="article-title">老郭记事</h1>
+    <div class="article">
+      <p>准备从 wordpress 转向 loppo 博客了，从心开始，砥砺前行 ～～～～</p>
 
-            // 4. 创建和挂载根实例
-            // 记得要通过 router 配置参数注入路由
-            // 从而让整个应用都有路由功能
+      
+        <h2>Table of Contents</h2>
+        <ul class="chapter-area"><li class="chapter-item "><a href="./option.html">Option Object</a></li><li class="chapter-item "><a href="./前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="./jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="./ajax技术相关.html">ajax技术相关</a></li></ul>
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link link-disabled"><span class="icon icon-previous-disabled" data-icon="previous-disabled"></span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="./option.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
 
-            const app = new Vue({
-                router
-            }).$mount('#app')
-            // 现在已经启动了
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
 
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="./option.html">Option Object</a></li><li class="chapter-item "><a href="./前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="./jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="./ajax技术相关.html">ajax技术相关</a></li></ul>
+</div>
 
-        </script>
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = '/';
+  LOPPO.relative_root_path = './';
+  LOPPO.article_toc = "";
+</script>
+<script src="./assets/js/app.js"></script>
+
+</body>
+</html>
+
