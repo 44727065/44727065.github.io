@@ -34,20 +34,20 @@
     <div class="article">
       <h2 id="实现-objectsetab-和objectgeta方法">实现 object.set('a','b') 和object.get('a')方法 <a class="markdownIt-Anchor" href="#实现-objectsetab-和objectgeta方法">#</a></h2>
 <h3 id="实现方法一">实现方法一 <a class="markdownIt-Anchor" href="#实现方法一">#</a></h3>
-<pre class="hljs"><code>  <span class="hljs-keyword">var</span> hashMap = {
-        <span class="hljs-attr">set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key,value</span>) </span>{
-            <span class="hljs-keyword">this</span>[key] = value;
-        },
-        <span class="hljs-attr">get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[key];
-        },
-        <span class="hljs-attr">contains</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.get(key) == <span class="hljs-literal">null</span> ? <span class="hljs-literal">false</span> : <span class="hljs-literal">true</span>;
-        },
-        <span class="hljs-attr">remove</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
-            <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>[key];
-        }
-    };
+<pre class="hljs"><code><span class="hljs-keyword">var</span> hashMap = {
+    <span class="hljs-attr">set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key,value</span>) </span>{
+        <span class="hljs-keyword">this</span>[key] = value;
+    },
+    <span class="hljs-attr">get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[key];
+    },
+    <span class="hljs-attr">contains</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.get(key) == <span class="hljs-literal">null</span> ? <span class="hljs-literal">false</span> : <span class="hljs-literal">true</span>;
+    },
+    <span class="hljs-attr">remove</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
+        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>[key];
+    }
+};
 </code></pre>
 <h3 id="第二中方法，es6">第二中方法，ES6 <a class="markdownIt-Anchor" href="#第二中方法，es6">#</a></h3>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> m = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
@@ -55,38 +55,38 @@
 <span class="hljs-built_in">console</span>.log(m.get(<span class="hljs-string">'a'</span>));
 </code></pre>
 <h3 id="第三种方法构造函数方法">第三种方法,构造函数方法 <a class="markdownIt-Anchor" href="#第三种方法构造函数方法">#</a></h3>
-<pre class="hljs"><code>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">People</span>(<span class="hljs-params">key,value</span>)</span>{
-            <span class="hljs-keyword">this</span>.name = {};
-            <span class="hljs-keyword">var</span> len = <span class="hljs-built_in">arguments</span>.length;
-            <span class="hljs-keyword">this</span>.getName = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>)</span>{
-                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[key];
-            }
-            <span class="hljs-keyword">this</span>.setName = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key,value</span>)</span>{
-                <span class="hljs-keyword">var</span> str = <span class="hljs-string">'{"'</span>+ key + <span class="hljs-string">'":"'</span> + value + <span class="hljs-string">'"}'</span>;
-                _this.name = <span class="hljs-built_in">JSON</span>.parse(str);
-            };
-    }
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">People</span>(<span class="hljs-params">key,value</span>)</span>{
+        <span class="hljs-keyword">this</span>.name = {};
+        <span class="hljs-keyword">var</span> len = <span class="hljs-built_in">arguments</span>.length;
+        <span class="hljs-keyword">this</span>.getName = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>)</span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[key];
+        }
+        <span class="hljs-keyword">this</span>.setName = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key,value</span>)</span>{
+            <span class="hljs-keyword">var</span> str = <span class="hljs-string">'{"'</span>+ key + <span class="hljs-string">'":"'</span> + value + <span class="hljs-string">'"}'</span>;
+            _this.name = <span class="hljs-built_in">JSON</span>.parse(str);
+        };
+}
 
-    People(<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>)
+People(<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>)
 
-    <span class="hljs-built_in">console</span>.log(People.name);
+<span class="hljs-built_in">console</span>.log(People.name);
 </code></pre>
 <p>JSON.parse 可以做更多的事情 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" target="_blank" rel="noopener">MDN</a>;</p>
 <h2 id="理解-settimeout-是-window-对象的方法">理解 setTimeout 是 window 对象的方法 <a class="markdownIt-Anchor" href="#理解-settimeout-是-window-对象的方法">#</a></h2>
 <p>setTimeout的常见用法是让某个方法延迟执行。setTimeout方法是挂在window对象下的。《JavaScript高级程序设计》第二版中，写到：“超时调用的代码都是在全局作用域中执行的，因此函数中this的值在非严格模式下指向window对象，在严格模式下是undefined”。在这里，我们只讨论非严格模式。<br>
 setTimeout接受两个参数，第一个是要执行的代码或函数，第二个是延迟的时间。</p>
-<pre class="hljs"><code>  <span class="hljs-keyword">var</span> obj = {
-        <span class="hljs-attr">name</span>: <span class="hljs-string">'aaaa'</span>,
-        <span class="hljs-attr">getName</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-            <span class="hljs-comment">// console.log(this);</span>
-            alert(<span class="hljs-keyword">this</span>.name);
-        },
-        <span class="hljs-attr">testGet</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-            <span class="hljs-comment">// console.log(this);</span>
-            setTimeout(<span class="hljs-keyword">this</span>.getName, <span class="hljs-number">0</span>); <span class="hljs-comment">// 这里的 js 指向就是 window 了，因此就是 undifined</span>
-        }
-    };
-    obj.testGet();
+<pre class="hljs"><code><span class="hljs-keyword">var</span> obj = {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'aaaa'</span>,
+    <span class="hljs-attr">getName</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-comment">// console.log(this);</span>
+        alert(<span class="hljs-keyword">this</span>.name);
+    },
+    <span class="hljs-attr">testGet</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-comment">// console.log(this);</span>
+        setTimeout(<span class="hljs-keyword">this</span>.getName, <span class="hljs-number">0</span>); <span class="hljs-comment">// 这里的 js 指向就是 window 了，因此就是 undifined</span>
+    }
+};
+obj.testGet();
 </code></pre>
 <p>再来看看下面的输出顺序</p>
 <pre class="hljs"><code>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'a'</span>);
@@ -102,31 +102,37 @@ setTimeout接受两个参数，第一个是要执行的代码或函数，第二�
         <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>55555<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
 </code></pre>
-<pre class="hljs"><code>    <span class="hljs-keyword">var</span> li = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#lst"</span>).querySelectorAll(<span class="hljs-string">'li'</span>);
-    <span class="hljs-keyword">var</span> len = li.length;
-    <span class="hljs-comment">// 第一种方案，通过闭包</span>
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;i&lt;len;i++){
-        (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">i</span>)</span>{
-            li[i].onclick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-                <span class="hljs-built_in">console</span>.log(i);
-            }
-        })(i)
-    }
-    <span class="hljs-comment">// 第二种方案，将执行函数写到外面</span>
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getConsoleLog</span>(<span class="hljs-params">i</span>)</span>{
+<pre class="hljs"><code><span class="hljs-keyword">var</span> li = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#lst"</span>).querySelectorAll(<span class="hljs-string">'li'</span>);
+<span class="hljs-keyword">var</span> len = li.length;
+<span class="hljs-comment">// 第一种方案，通过闭包</span>
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;i&lt;len;i++){
+    (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">i</span>)</span>{
         li[i].onclick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
             <span class="hljs-built_in">console</span>.log(i);
         }
+    })(i)
+}
+<span class="hljs-comment">// 第二种方案，将执行函数写到外面</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getConsoleLog</span>(<span class="hljs-params">i</span>)</span>{
+    li[i].onclick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-built_in">console</span>.log(i);
     }
+}
 
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span> ; i&lt;len ; i++){
-        getConsoleLog(i);
-    }
-
-    <span class="hljs-comment">// 第三种方案，ES6</span>
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>;i &lt;len; i++){
-        li[i].onclick = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(i); <span class="hljs-comment">// 因为每一次的 i 都是新的</span>
-    }
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span> ; i&lt;len ; i++){
+    getConsoleLog(i);
+}
+<span class="hljs-comment">// 第三种方案，foreach</span>
+<span class="hljs-keyword">var</span> node = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'ul li'</span>)
+<span class="hljs-built_in">Array</span>.from(node).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nodeItem,index</span>)</span>{
+    nodeItem.addEventListener(<span class="hljs-string">'click'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        alert(<span class="hljs-string">'click'</span>+index)
+    })
+})
+<span class="hljs-comment">// 第四种方案，ES6</span>
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>;i &lt;len; i++){
+    li[i].onclick = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(i); <span class="hljs-comment">// 因为每一次的 i 都是新的</span>
+}
 
 </code></pre>
 <h2 id="写一个mul函数，使用方法如下，使用方法如下-mul234-output24-mul434-output48">写一个mul函数，使用方法如下，使用方法如下 mul(2)(3)(4) output:24 mul(4)(3)(4) output:48 <a class="markdownIt-Anchor" href="#写一个mul函数，使用方法如下，使用方法如下-mul234-output24-mul434-output48">#</a></h2>
@@ -636,6 +642,62 @@ b();
 <li>浏览器解析html代码，并请求html代码中的资源</li>
 <li>浏览器对页面进行渲染呈现给用户</li>
 </ol>
+<h2 id="用javascript实现静态对象、静态方法和静态属性">用JAVASCRIPT实现静态对象、静态方法和静态属性 <a class="markdownIt-Anchor" href="#用javascript实现静态对象、静态方法和静态属性">#</a></h2>
+<pre class="hljs"><code><span class="hljs-comment">/****************************************
+* 方法一
+* 类、方法、属性都为静态类型
+* 不能创建实例
+*****************************************/</span>
+<span class="hljs-keyword">var</span> Time = {
+    <span class="hljs-attr">today</span>: ‘<span class="hljs-number">2009</span><span class="hljs-number">-3</span><span class="hljs-number">-8</span>′,
+    <span class="hljs-attr">weather</span>: ‘rain’,
+    <span class="hljs-attr">show</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert(‘Today is ‘ + <span class="hljs-keyword">this</span>.today);
+}
+};
+
+<span class="hljs-comment">//静态对象可直接使用，无需创建实例</span>
+alert(‘It is ‘ + Time.weather + ‘ today.’);
+Time.show();
+
+<span class="hljs-comment">//下面的代码会出错，因为静态类不能创建实例</span>
+<span class="hljs-comment">//var t = new Time();</span>
+<span class="hljs-comment">//t.show();</span>
+
+<span class="hljs-comment">/****************************************
+* 方法二
+* 普通对象，同时拥有静态和非静态属性、方法
+* 可以用实例化
+* 注意：
+*   1.静态方法/属性使用类名访问
+*   2.非静态方法/属性使用实例名访问
+*****************************************/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params">name</span>) </span>{
+<span class="hljs-comment">//非静态属性</span>
+<span class="hljs-keyword">this</span>.name = name;
+<span class="hljs-comment">//非静态方法</span>
+<span class="hljs-keyword">this</span>.show = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert(‘My name is ‘ + <span class="hljs-keyword">this</span>.name + ‘.’);
+}
+}
+<span class="hljs-comment">//添加静态属性，人都是一张嘴</span>
+Person.mouth = <span class="hljs-number">1</span>;
+<span class="hljs-comment">//添加静态方法，哇哇大哭</span>
+Person.cry = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+alert(‘Wa wa wa …’);
+};
+<span class="hljs-comment">//使用prototype关键字添加非静态属性，每个人的牙可能不一样多</span>
+Person.prototype.teeth = <span class="hljs-number">32</span>;
+
+<span class="hljs-comment">//非静态方法必须通过类的实例来访问</span>
+<span class="hljs-keyword">var</span> me = <span class="hljs-keyword">new</span> Person(‘Zhangsan’);
+<span class="hljs-comment">//使用非静态方法、属性</span>
+me.show();
+alert(‘I have ‘ + me.teeth + ‘ teeth.’);
+<span class="hljs-comment">//使用静态方法、属性</span>
+Person.cry();
+alert(‘I have ‘ + Person.mouth + ‘ mouth.’);
+</code></pre>
 <h1 id="html-css-方面">HTML CSS 方面 <a class="markdownIt-Anchor" href="#html-css-方面">#</a></h1>
 <h2 id="在cssjs代码上线之后开发人员经常会优化性能，从用户刷新网页开始，一次js请求一般情况下有哪些地方会有缓存处理？">在css/js代码上线之后开发人员经常会优化性能，从用户刷新网页开始，一次js请求一般情况下有哪些地方会有缓存处理？ <a class="markdownIt-Anchor" href="#在cssjs代码上线之后开发人员经常会优化性能，从用户刷新网页开始，一次js请求一般情况下有哪些地方会有缓存处理？">#</a></h2>
 <p>答案：dns缓存，cdn缓存，浏览器缓存，服务器缓存。</p>
@@ -818,7 +880,7 @@ Vuex可以被看作项目中所有组件的数据中心,我们将所有组件中
 
 <div class="book-toc notification is-warning is-hidden">
   <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
-  <ul class="chapter-area"><li class="chapter-item chapter-item-current"><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li></ul>
+  <ul class="chapter-area"><li class="chapter-item chapter-item-current"><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
 </div>
 
 <div class="progress-indicator"></div>
@@ -828,7 +890,7 @@ Vuex可以被看作项目中所有组件的数据中心,我们将所有组件中
   var LOPPO = {};
   LOPPO.current_path = '前端面试题.md';
   LOPPO.relative_root_path = '';
-  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E5%AE%9E%E7%8E%B0-objectsetab-%E5%92%8Cobjectgeta%E6%96%B9%E6%B3%95\">实现 object.set('a','b') 和object.get('a')方法</a>\n<ul>\n<li><a href=\"#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%E4%B8%80\">实现方法一</a></li>\n<li><a href=\"#%E7%AC%AC%E4%BA%8C%E4%B8%AD%E6%96%B9%E6%B3%95%EF%BC%8Ces6\">第二中方法，ES6</a></li>\n<li><a href=\"#%E7%AC%AC%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%96%B9%E6%B3%95\">第三种方法,构造函数方法</a></li>\n</ul>\n</li>\n<li><a href=\"#%E7%90%86%E8%A7%A3-settimeout-%E6%98%AF-window-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95\">理解 setTimeout 是 window 对象的方法</a></li>\n<li><a href=\"#%E5%BE%AA%E7%8E%AF%E7%9A%84%E9%97%AE%E9%A2%98\">循环的问题</a></li>\n<li><a href=\"#%E5%86%99%E4%B8%80%E4%B8%AAmul%E5%87%BD%E6%95%B0%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%A6%82%E4%B8%8B%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%A6%82%E4%B8%8B-mul234-output24-mul434-output48\">写一个mul函数，使用方法如下，使用方法如下 mul(2)(3)(4) output:24 mul(4)(3)(4) output:48</a></li>\n<li><a href=\"#%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA-object-%E6%98%AF%E5%90%A6%E6%98%AF%E6%95%B0%E7%BB%84%EF%BC%88array%EF%BC%89\">判断一个 object 是否是数组（array）</a></li>\n<li><a href=\"#%E6%93%8D%E4%BD%9C-object-%E5%B1%9E%E6%80%A7\">操作 object 属性</a></li>\n<li><a href=\"#instanceof-%E6%93%8D%E4%BD%9C%E7%AC%A6\">instanceof 操作符</a></li>\n<li><a href=\"#%E6%80%8E%E4%B9%88%E8%AE%A1%E7%AE%97%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6\">怎么计算关联数组长度</a></li>\n<li><a href=\"#%E5%AE%9E%E7%8E%B0-var-arr--123456%E8%BD%AC%E6%88%90-123456\">实现 var arr = [1,2,3,[4,5,6]...]转成 [1,2,3,4,5,6,...]</a></li>\n<li><a href=\"#stringnumber-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E5%8C%96\">String/Number 类型转化</a></li>\n<li><a href=\"#%E6%95%B0%E7%BB%84%E6%93%8D%E4%BD%9C\">数组操作</a></li>\n<li><a href=\"#sort-%E6%8E%92%E5%BA%8F%E7%9A%84%E5%9D%91\">sort() 排序的坑</a></li>\n<li><a href=\"#%E6%93%8D%E4%BD%9C%E9%94%AE%E5%80%BC%E5%AF%B9\">操作键值对</a></li>\n<li><a href=\"#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0var-regnew-regexpxxx%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%AD%97%E9%9D%A2%E9%87%8Fvar-reg%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%EF%BC%9F\">正则表达式构造函数var reg=new RegExp(&quot;xxx&quot;)与正则表达字面量var reg=//有什么不同？</a></li>\n<li><a href=\"#%E5%86%99%E4%B8%80%E4%B8%AAfunction%EF%BC%8C%E6%B8%85%E9%99%A4%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%90%8E%E7%9A%84%E7%A9%BA%E6%A0%BC%E3%80%82%EF%BC%88%E5%85%BC%E5%AE%B9%E6%89%80%E6%9C%89%E6%B5%8F%E8%A7%88%E5%99%A8%EF%BC%89\">写一个function，清除字符串前后的空格。（兼容所有浏览器）</a></li>\n<li><a href=\"#javascript%E4%B8%ADcallee%E5%92%8Ccaller%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9F\">Javascript中callee和caller的作用？</a></li>\n<li><a href=\"#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0clone%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%AF%B9javascript%E4%B8%AD%E7%9A%845%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%8C%85%E6%8B%ACnumber%E3%80%81string%E3%80%81object%E3%80%81array%E3%80%81boolean%EF%BC%89%E8%BF%9B%E8%A1%8C%E5%80%BC%E5%A4%8D%E5%88%B6\">实现一个函数clone，可以对JavaScript中的5种主要的数据类型（包括Number、String、Object、Array、Boolean）进行值复制</a></li>\n<li><a href=\"#%E5%80%92%E8%AE%A1%E6%97%B6\">倒计时</a></li>\n<li><a href=\"#js-%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%A0%BC\">js 创建表格</a></li>\n<li><a href=\"#js%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6\">JS如何实现面向对象和继承机制</a>\n<ul>\n<li><a href=\"#%E6%9E%84%E9%80%A0%E5%99%A8%E7%BB%A7%E6%89%BF\">构造器继承</a></li>\n<li><a href=\"#%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6%89%BF\">原型继承</a></li>\n<li><a href=\"#%E6%B7%B7%E5%90%88%E7%BB%A7%E6%89%BF\">混合继承</a></li>\n<li><a href=\"#%E5%AF%84%E7%94%9F%E7%BB%A7%E6%89%BF\">寄生继承</a></li>\n</ul>\n</li>\n<li><a href=\"#foo--foobar-%EF%BC%8C%E8%BF%99%E8%A1%8C%E4%BB%A3%E7%A0%81%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%99%E6%A0%B7%E5%86%99%EF%BC%9F\">foo = foo||bar ，这行代码是什么意思？为什么要这样写？</a></li>\n<li><a href=\"#caller-%E5%92%8C-callee-%E7%9A%84%E5%8C%BA%E5%88%AB\">caller 和 callee 的区别</a></li>\n<li><a href=\"#%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E7%9A%84http%E4%BA%8B%E5%8A%A1%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E8%BF%87%E7%A8%8B\">一次完整的HTTP事务是怎样的一个过程</a></li>\n<li><a href=\"#%E5%9C%A8cssjs%E4%BB%A3%E7%A0%81%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E7%BB%8F%E5%B8%B8%E4%BC%9A%E4%BC%98%E5%8C%96%E6%80%A7%E8%83%BD%EF%BC%8C%E4%BB%8E%E7%94%A8%E6%88%B7%E5%88%B7%E6%96%B0%E7%BD%91%E9%A1%B5%E5%BC%80%E5%A7%8B%EF%BC%8C%E4%B8%80%E6%AC%A1js%E8%AF%B7%E6%B1%82%E4%B8%80%E8%88%AC%E6%83%85%E5%86%B5%E4%B8%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9C%B0%E6%96%B9%E4%BC%9A%E6%9C%89%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86%EF%BC%9F\">在css/js代码上线之后开发人员经常会优化性能，从用户刷新网页开始，一次js请求一般情况下有哪些地方会有缓存处理？</a></li>\n<li><a href=\"#%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2%E4%B8%8A%E6%9C%89%E5%A4%A7%E9%87%8F%E7%9A%84%E5%9B%BE%E7%89%87%EF%BC%88%E5%A4%A7%E5%9E%8B%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99%EF%BC%89%EF%BC%8C%E5%8A%A0%E8%BD%BD%E5%BE%88%E6%85%A2%EF%BC%8C%E4%BD%A0%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E4%BC%98%E5%8C%96%E8%BF%99%E4%BA%9B%E5%9B%BE%E7%89%87%E7%9A%84%E5%8A%A0%E8%BD%BD%EF%BC%8C%E7%BB%99%E7%94%A8%E6%88%B7%E6%9B%B4%E5%A5%BD%E7%9A%84%E4%BD%93%E9%AA%8C%E3%80%82\">一个页面上有大量的图片（大型电商网站），加载很慢，你有哪些方法优化这些图片的加载，给用户更好的体验。</a></li>\n<li><a href=\"#%E8%AF%B7%E7%94%A8css%E5%86%99%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%B9%BB%E7%81%AF%E7%89%87%E6%95%88%E6%9E%9C%E9%A1%B5%E9%9D%A2\">请用Css写一个简单的幻灯片效果页面</a></li>\n<li><a href=\"#%E5%A4%96%E8%BE%B9%E8%B7%9D%E9%87%8D%E5%8F%A0%E5%B0%B1%E6%98%AFmargin-collapse\">外边距重叠就是margin-collapse</a></li>\n<li><a href=\"#%E5%A6%82%E4%BD%95%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E4%B8%80%E4%B8%AA%E6%B5%AE%E5%8A%A8%E5%85%83%E7%B4%A0%EF%BC%9F\">如何垂直居中一个浮动元素？</a></li>\n<li><a href=\"#%E5%A6%82%E4%BD%95%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E4%B8%80%E4%B8%AAimg\">如何垂直居中一个<img></a></li>\n<li><a href=\"#vue-%E9%9D%A2%E8%AF%95%E9%A2%98\">VUE 面试题</a>\n<ul>\n<li><a href=\"#%E8%AF%B7%E8%B0%88%E8%B0%88vue%E4%B8%AD%E7%9A%84mvvm%E6%A8%A1%E5%BC%8F\">请谈谈Vue中的MVVM模式</a></li>\n<li><a href=\"#v-show%E5%92%8Cv-if%E6%8C%87%E4%BB%A4%E7%9A%84%E5%85%B1%E5%90%8C%E7%82%B9%E5%92%8C%E4%B8%8D%E5%90%8C%E7%82%B9\">v-show和v-if指令的共同点和不同点?</a></li>\n<li><a href=\"#%E5%A6%82%E4%BD%95%E8%AE%A9css%E5%8F%AA%E5%9C%A8%E5%BD%93%E5%89%8D%E7%BB%84%E4%BB%B6%E4%B8%AD%E8%B5%B7%E4%BD%9C%E7%94%A8\">如何让CSS只在当前组件中起作用?</a></li>\n<li><a href=\"#keep-alive%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88\">keep-alive的作用是什么?</a></li>\n<li><a href=\"#vue%E4%B8%AD%E5%BC%95%E5%85%A5%E7%BB%84%E4%BB%B6%E7%9A%84%E6%AD%A5%E9%AA%A4\">Vue中引入组件的步骤?</a></li>\n<li><a href=\"#%E5%9C%A8vue%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E6%AD%A5%E9%AA%A4\">在Vue中使用插件的步骤</a></li>\n<li><a href=\"#%E8%AF%B7%E5%88%97%E4%B8%BE%E5%87%BA3%E4%B8%AAvue%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0\">请列举出3个Vue中常用的生命周期钩子函数?</a></li>\n<li><a href=\"#%E8%AF%B7%E7%AE%80%E8%BF%B0%E4%B8%8Bvuex%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95\">请简述下Vuex的原理和使用方法</a></li>\n</ul>\n</li>\n</ul>\n";
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E5%AE%9E%E7%8E%B0-objectsetab-%E5%92%8Cobjectgeta%E6%96%B9%E6%B3%95\">实现 object.set('a','b') 和object.get('a')方法</a>\n<ul>\n<li><a href=\"#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%E4%B8%80\">实现方法一</a></li>\n<li><a href=\"#%E7%AC%AC%E4%BA%8C%E4%B8%AD%E6%96%B9%E6%B3%95%EF%BC%8Ces6\">第二中方法，ES6</a></li>\n<li><a href=\"#%E7%AC%AC%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%96%B9%E6%B3%95\">第三种方法,构造函数方法</a></li>\n</ul>\n</li>\n<li><a href=\"#%E7%90%86%E8%A7%A3-settimeout-%E6%98%AF-window-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95\">理解 setTimeout 是 window 对象的方法</a></li>\n<li><a href=\"#%E5%BE%AA%E7%8E%AF%E7%9A%84%E9%97%AE%E9%A2%98\">循环的问题</a></li>\n<li><a href=\"#%E5%86%99%E4%B8%80%E4%B8%AAmul%E5%87%BD%E6%95%B0%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%A6%82%E4%B8%8B%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%A6%82%E4%B8%8B-mul234-output24-mul434-output48\">写一个mul函数，使用方法如下，使用方法如下 mul(2)(3)(4) output:24 mul(4)(3)(4) output:48</a></li>\n<li><a href=\"#%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA-object-%E6%98%AF%E5%90%A6%E6%98%AF%E6%95%B0%E7%BB%84%EF%BC%88array%EF%BC%89\">判断一个 object 是否是数组（array）</a></li>\n<li><a href=\"#%E6%93%8D%E4%BD%9C-object-%E5%B1%9E%E6%80%A7\">操作 object 属性</a></li>\n<li><a href=\"#instanceof-%E6%93%8D%E4%BD%9C%E7%AC%A6\">instanceof 操作符</a></li>\n<li><a href=\"#%E6%80%8E%E4%B9%88%E8%AE%A1%E7%AE%97%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6\">怎么计算关联数组长度</a></li>\n<li><a href=\"#%E5%AE%9E%E7%8E%B0-var-arr--123456%E8%BD%AC%E6%88%90-123456\">实现 var arr = [1,2,3,[4,5,6]...]转成 [1,2,3,4,5,6,...]</a></li>\n<li><a href=\"#stringnumber-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E5%8C%96\">String/Number 类型转化</a></li>\n<li><a href=\"#%E6%95%B0%E7%BB%84%E6%93%8D%E4%BD%9C\">数组操作</a></li>\n<li><a href=\"#sort-%E6%8E%92%E5%BA%8F%E7%9A%84%E5%9D%91\">sort() 排序的坑</a></li>\n<li><a href=\"#%E6%93%8D%E4%BD%9C%E9%94%AE%E5%80%BC%E5%AF%B9\">操作键值对</a></li>\n<li><a href=\"#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0var-regnew-regexpxxx%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%AD%97%E9%9D%A2%E9%87%8Fvar-reg%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%EF%BC%9F\">正则表达式构造函数var reg=new RegExp(&quot;xxx&quot;)与正则表达字面量var reg=//有什么不同？</a></li>\n<li><a href=\"#%E5%86%99%E4%B8%80%E4%B8%AAfunction%EF%BC%8C%E6%B8%85%E9%99%A4%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%90%8E%E7%9A%84%E7%A9%BA%E6%A0%BC%E3%80%82%EF%BC%88%E5%85%BC%E5%AE%B9%E6%89%80%E6%9C%89%E6%B5%8F%E8%A7%88%E5%99%A8%EF%BC%89\">写一个function，清除字符串前后的空格。（兼容所有浏览器）</a></li>\n<li><a href=\"#javascript%E4%B8%ADcallee%E5%92%8Ccaller%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9F\">Javascript中callee和caller的作用？</a></li>\n<li><a href=\"#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0clone%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%AF%B9javascript%E4%B8%AD%E7%9A%845%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%8C%85%E6%8B%ACnumber%E3%80%81string%E3%80%81object%E3%80%81array%E3%80%81boolean%EF%BC%89%E8%BF%9B%E8%A1%8C%E5%80%BC%E5%A4%8D%E5%88%B6\">实现一个函数clone，可以对JavaScript中的5种主要的数据类型（包括Number、String、Object、Array、Boolean）进行值复制</a></li>\n<li><a href=\"#%E5%80%92%E8%AE%A1%E6%97%B6\">倒计时</a></li>\n<li><a href=\"#js-%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%A0%BC\">js 创建表格</a></li>\n<li><a href=\"#js%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6\">JS如何实现面向对象和继承机制</a>\n<ul>\n<li><a href=\"#%E6%9E%84%E9%80%A0%E5%99%A8%E7%BB%A7%E6%89%BF\">构造器继承</a></li>\n<li><a href=\"#%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6%89%BF\">原型继承</a></li>\n<li><a href=\"#%E6%B7%B7%E5%90%88%E7%BB%A7%E6%89%BF\">混合继承</a></li>\n<li><a href=\"#%E5%AF%84%E7%94%9F%E7%BB%A7%E6%89%BF\">寄生继承</a></li>\n</ul>\n</li>\n<li><a href=\"#foo--foobar-%EF%BC%8C%E8%BF%99%E8%A1%8C%E4%BB%A3%E7%A0%81%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%99%E6%A0%B7%E5%86%99%EF%BC%9F\">foo = foo||bar ，这行代码是什么意思？为什么要这样写？</a></li>\n<li><a href=\"#caller-%E5%92%8C-callee-%E7%9A%84%E5%8C%BA%E5%88%AB\">caller 和 callee 的区别</a></li>\n<li><a href=\"#%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E7%9A%84http%E4%BA%8B%E5%8A%A1%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E8%BF%87%E7%A8%8B\">一次完整的HTTP事务是怎样的一个过程</a></li>\n<li><a href=\"#%E7%94%A8javascript%E5%AE%9E%E7%8E%B0%E9%9D%99%E6%80%81%E5%AF%B9%E8%B1%A1%E3%80%81%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7\">用JAVASCRIPT实现静态对象、静态方法和静态属性</a></li>\n<li><a href=\"#%E5%9C%A8cssjs%E4%BB%A3%E7%A0%81%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E7%BB%8F%E5%B8%B8%E4%BC%9A%E4%BC%98%E5%8C%96%E6%80%A7%E8%83%BD%EF%BC%8C%E4%BB%8E%E7%94%A8%E6%88%B7%E5%88%B7%E6%96%B0%E7%BD%91%E9%A1%B5%E5%BC%80%E5%A7%8B%EF%BC%8C%E4%B8%80%E6%AC%A1js%E8%AF%B7%E6%B1%82%E4%B8%80%E8%88%AC%E6%83%85%E5%86%B5%E4%B8%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9C%B0%E6%96%B9%E4%BC%9A%E6%9C%89%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86%EF%BC%9F\">在css/js代码上线之后开发人员经常会优化性能，从用户刷新网页开始，一次js请求一般情况下有哪些地方会有缓存处理？</a></li>\n<li><a href=\"#%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2%E4%B8%8A%E6%9C%89%E5%A4%A7%E9%87%8F%E7%9A%84%E5%9B%BE%E7%89%87%EF%BC%88%E5%A4%A7%E5%9E%8B%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99%EF%BC%89%EF%BC%8C%E5%8A%A0%E8%BD%BD%E5%BE%88%E6%85%A2%EF%BC%8C%E4%BD%A0%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E4%BC%98%E5%8C%96%E8%BF%99%E4%BA%9B%E5%9B%BE%E7%89%87%E7%9A%84%E5%8A%A0%E8%BD%BD%EF%BC%8C%E7%BB%99%E7%94%A8%E6%88%B7%E6%9B%B4%E5%A5%BD%E7%9A%84%E4%BD%93%E9%AA%8C%E3%80%82\">一个页面上有大量的图片（大型电商网站），加载很慢，你有哪些方法优化这些图片的加载，给用户更好的体验。</a></li>\n<li><a href=\"#%E8%AF%B7%E7%94%A8css%E5%86%99%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%B9%BB%E7%81%AF%E7%89%87%E6%95%88%E6%9E%9C%E9%A1%B5%E9%9D%A2\">请用Css写一个简单的幻灯片效果页面</a></li>\n<li><a href=\"#%E5%A4%96%E8%BE%B9%E8%B7%9D%E9%87%8D%E5%8F%A0%E5%B0%B1%E6%98%AFmargin-collapse\">外边距重叠就是margin-collapse</a></li>\n<li><a href=\"#%E5%A6%82%E4%BD%95%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E4%B8%80%E4%B8%AA%E6%B5%AE%E5%8A%A8%E5%85%83%E7%B4%A0%EF%BC%9F\">如何垂直居中一个浮动元素？</a></li>\n<li><a href=\"#%E5%A6%82%E4%BD%95%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E4%B8%80%E4%B8%AAimg\">如何垂直居中一个<img></a></li>\n<li><a href=\"#vue-%E9%9D%A2%E8%AF%95%E9%A2%98\">VUE 面试题</a>\n<ul>\n<li><a href=\"#%E8%AF%B7%E8%B0%88%E8%B0%88vue%E4%B8%AD%E7%9A%84mvvm%E6%A8%A1%E5%BC%8F\">请谈谈Vue中的MVVM模式</a></li>\n<li><a href=\"#v-show%E5%92%8Cv-if%E6%8C%87%E4%BB%A4%E7%9A%84%E5%85%B1%E5%90%8C%E7%82%B9%E5%92%8C%E4%B8%8D%E5%90%8C%E7%82%B9\">v-show和v-if指令的共同点和不同点?</a></li>\n<li><a href=\"#%E5%A6%82%E4%BD%95%E8%AE%A9css%E5%8F%AA%E5%9C%A8%E5%BD%93%E5%89%8D%E7%BB%84%E4%BB%B6%E4%B8%AD%E8%B5%B7%E4%BD%9C%E7%94%A8\">如何让CSS只在当前组件中起作用?</a></li>\n<li><a href=\"#keep-alive%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88\">keep-alive的作用是什么?</a></li>\n<li><a href=\"#vue%E4%B8%AD%E5%BC%95%E5%85%A5%E7%BB%84%E4%BB%B6%E7%9A%84%E6%AD%A5%E9%AA%A4\">Vue中引入组件的步骤?</a></li>\n<li><a href=\"#%E5%9C%A8vue%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E6%AD%A5%E9%AA%A4\">在Vue中使用插件的步骤</a></li>\n<li><a href=\"#%E8%AF%B7%E5%88%97%E4%B8%BE%E5%87%BA3%E4%B8%AAvue%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0\">请列举出3个Vue中常用的生命周期钩子函数?</a></li>\n<li><a href=\"#%E8%AF%B7%E7%AE%80%E8%BF%B0%E4%B8%8Bvuex%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95\">请简述下Vuex的原理和使用方法</a></li>\n</ul>\n</li>\n</ul>\n";
 </script>
 <script src="assets/js/app.js"></script>
 

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>setTimeout 和 setInterval 的使用区别 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="setTimeout_setInterval.html" class="breadcrumb-item">setTimeout 和 setInterval 的使用区别</a></div>
+    <h1 class="article-title">setTimeout 和 setInterval 的使用区别</h1>
+    <div class="article">
+      <p>表面上看，setTimeout 只能应用在 on-off 方式的动作上，通过创建一个函数循环重复调用setTimeout，以实现重复的操作</p>
+<pre class="hljs"><code>showTime();
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showTime</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> today = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'This time is :'</span> + today.toString());
+    setTimeout(<span class="hljs-string">'showTime()'</span>,<span class="hljs-number">10000</span>);<span class="hljs-comment">// 函数执行方法不带引号能跑死浏览器</span>
+}
+
+setInterval(showNewTime,<span class="hljs-number">1000</span>); <span class="hljs-comment">//MAC IE 5对此不支持,谁在乎</span>
+<span class="hljs-comment">//setInterval('showNewTime()',1000);</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showNewTime</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> today = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'This time is '</span> + today.toString());
+}
+</code></pre>
+<p>这两种方法可能看起来非常像，而且显示的结果也会很相似，不过两者的最大区别就是，setTimeout方法不会每隔5秒钟就执行一次showTime函数，它是在每次调用setTimeout后过5秒钟再去执行showTime函数。这意味着如果showTime函数的主体部分需要2秒钟执行完，那么整个函数则要每7秒钟才执行一次。而setInterval却没有被自己所调用的函数所束缚，它只是简单地每隔一定时间就重复执行一次那个函数。<br>
+<strong>如果要求在每隔一个固定的时间间隔后就精确地执行某动作，那么最好使用setInterval，而如果不想由于连续调用产生互相干扰的问题，尤其是每次函数的调用需要繁重的计算以及很长的处理时间，那么最好使用setTimeout。</strong></p>
+<h2 id="函数指针的使用">函数指针的使用 <a class="markdownIt-Anchor" href="#函数指针的使用">#</a></h2>
+<p>两个计时函数中的第一个参数是一段代码的字符串，其实该参数也可以是一个函数指针。<br>
+如果用函数指针作为setTimeout和setInterval函数的第二个参数，那么它们就可以去执行一个在别处定义的函数了：</p>
+<pre class="hljs"><code>setTimeout(showTime, <span class="hljs-number">500</span>);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showTime</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> today = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"The time is: "</span> + today.toString());
+}
+</code></pre>
+<p>另外，匿名函数还可以声明为内联函数:</p>
+<pre class="hljs"><code>setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{<span class="hljs-keyword">var</span> today = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();alert(<span class="hljs-string">"The time is: "</span> + today.toString());}, <span class="hljs-number">500</span>);
+</code></pre>
+<p>如果对计时函数不加以处理，那么setInterval将会持续执行相同的代码，一直到浏览器窗口关闭，或者用户转到了另外一个页面为止。不过还是有办法可以终止setTimeout和setInterval函数的执行。</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"stopInterval"</span>&gt;</span>停止<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+```html
+```javascript
+var intervalProcess = setInterval("console.log('GOAL!')", 3000);
+var stopInterval = document.getElementById("stopInterval");
+stopInterval.addEventListener("click", stopGoal, false);
+function stopGoal(){
+    clearInterval(intervalProcess);
+}
+</code></pre>
+<p>只要点击了stopInterval，不管是什么时候点击，intervalProcess都会被取消掉，以后都不会再继续反复执行intervalProcess。如果在超时时间段内就取消setTimeout，那么这种终止效果也可以在setTimeout身上实现，具体实现如下：</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"stopTimeout"</span>&gt;</span>停止<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> timeoutProcess = setTimeout(<span class="hljs-string">"alert('GOAL!')"</span>, <span class="hljs-number">3000</span>);
+<span class="hljs-keyword">var</span> stopTimeout = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"stopTimeout"</span>);
+addEventListener(stopTimeout, <span class="hljs-string">"click"</span>, stopGoal, <span class="hljs-literal">false</span>);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stopGoal</span>(<span class="hljs-params"></span>)
+</span>{
+   clearTimeout(timeoutProcess);
+}
+</code></pre>
+<p><a href="http://www.cnblogs.com/qiantuwuliang/archive/2009/06/20/1507304.html" target="_blank" rel="noopener">转自：</a></p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="reflow_repaint.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="设计模式.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item chapter-item-current"><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'setTimeout_setInterval.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E7%9A%84%E4%BD%BF%E7%94%A8\">函数指针的使用</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+

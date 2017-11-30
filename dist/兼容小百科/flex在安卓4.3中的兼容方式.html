@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>flex在安卓4.3中的兼容方式 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="../../assets/css/bulma.min.css">
+<link rel="stylesheet" href="../../assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="../../index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="../../index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="../.././兼容小百科/flex在安卓4.3中的兼容方式.html" class="breadcrumb-item">兼容小百科 - flex在安卓4.3中的兼容方式</a></div>
+    <h1 class="article-title">flex在安卓4.3中的兼容方式</h1>
+    <div class="article">
+      <p>在实际使用中发现flex对于安卓系统的较低版本（&lt;4.3）中还是有一些兼容问题的，除了用相应的浏览器前缀外还需要加上width属性。</p>
+<pre class="hljs"><code><span class="hljs-selector-class">.foo</span> {
+    <span class="hljs-attribute">display</span>: box;              <span class="hljs-comment">/* OLD - Android 4.4- */</span>
+    <span class="hljs-attribute">display</span>: -webkit-box;      <span class="hljs-comment">/* OLD - iOS 6-, Safari 3.1-6 */</span>
+    <span class="hljs-attribute">display</span>: -moz-box;         <span class="hljs-comment">/* OLD - Firefox 19- (buggy but mostly works) */</span>
+    <span class="hljs-attribute">display</span>: -ms-flexbox;      <span class="hljs-comment">/* TWEENER - IE 10 */</span>
+    <span class="hljs-attribute">display</span>: -webkit-flex;     <span class="hljs-comment">/* NEW - Chrome */</span>
+    <span class="hljs-attribute">display</span>: flex;
+
+    <span class="hljs-attribute">-webkit-box-flex</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">34.4%</span>;      <span class="hljs-comment">/* OLD - iOS 6-, Safari 3.1-6 */</span>
+    <span class="hljs-attribute">-moz-box-flex</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">34.4%</span>;         <span class="hljs-comment">/* OLD - Firefox 19- */</span>
+    <span class="hljs-attribute">-webkit-flex</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">34.4%</span>;          <span class="hljs-comment">/* Chrome */</span>
+    <span class="hljs-attribute">-ms-flex</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">34.4%</span>;              <span class="hljs-comment">/* IE 10 */</span>
+    <span class="hljs-attribute">flex</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">34.4%</span>;
+
+    <span class="hljs-comment">/*For Android 4.3*/</span>
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">34.4%</span>;
+
+    <span class="hljs-comment">/* 09版 */</span>
+    <span class="hljs-attribute">-webkit-box-lines</span>: multiple;
+    <span class="hljs-comment">/* 12版 */</span>
+    <span class="hljs-attribute">-webkit-flex-wrap</span>: wrap;
+    <span class="hljs-attribute">-moz-flex-wrap</span>: wrap;
+    <span class="hljs-attribute">-ms-flex-wrap</span>: wrap;
+    <span class="hljs-attribute">-o-flex-wrap</span>: wrap;
+    <span class="hljs-attribute">flex-wrap</span>: wrap;
+
+    <span class="hljs-comment">/* 09版 */</span>
+    <span class="hljs-attribute">-webkit-box-align</span>: center;
+    <span class="hljs-comment">/* 12版 */</span>
+    <span class="hljs-attribute">-webkit-align-items</span>: center;
+    <span class="hljs-attribute">-moz-align-items</span>: center;
+    <span class="hljs-attribute">-ms-align-items</span>: center;
+    <span class="hljs-attribute">-o-align-items</span>: center;
+    <span class="hljs-attribute">align-items</span>: center;
+
+    <span class="hljs-comment">/* 09版 */</span>
+    <span class="hljs-attribute">-webkit-box-pack</span>: center;
+    <span class="hljs-comment">/* 12版 */</span>
+    <span class="hljs-attribute">-webkit-justify-content</span>: center;
+    <span class="hljs-attribute">-moz-justify-content</span>: center;
+    <span class="hljs-attribute">-ms-justify-content</span>: center;
+    <span class="hljs-attribute">-o-justify-content</span>: center;
+    <span class="hljs-attribute">justify-content</span>: center;
+}
+</code></pre>
+<p>附录：<br>
+<a href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html?utm_source=tuicool" target="_blank" rel="noopener">flex教程：</a><br>
+<a href="http://www.ruanyifeng.com/blog/2015/07/flex-examples.html" target="_blank" rel="noopener">flex使用实例：</a><br>
+<a href="http://caniuse.com/#search=flex" target="_blank" rel="noopener">flex兼容性：</a></p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="../../设计模式.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link link-disabled"><span class="icon icon-next-disabled" data-icon="next-disabled"></span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="../../前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="../../jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="../../ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="../../vue插件.html">vue插件</a></li><li class="chapter-item "><a href="../../BFC.html">BFC</a></li><li class="chapter-item "><a href="../../reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="../../setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="../../设计模式.html">设计模式白话篇</a></li><li class="chapter-item chapter-item-current"><a href="../.././兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = './兼容小百科/flex在安卓4.3中的兼容方式.md';
+  LOPPO.relative_root_path = '../../';
+  LOPPO.article_toc = "";
+</script>
+<script src="../../assets/js/app.js"></script>
+
+</body>
+</html>
+
