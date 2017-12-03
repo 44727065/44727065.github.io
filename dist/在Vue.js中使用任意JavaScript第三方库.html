@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>在 Vue.js 中使用任意 JavaScript 第三方库 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="在Vue.js中使用任意JavaScript第三方库.html" class="breadcrumb-item">在Vue.js中使用任意JavaScript第三方库</a></div>
+    <h1 class="article-title">在 Vue.js 中使用任意 JavaScript 第三方库</h1>
+    <div class="article">
+      <p>Lodash, Moment, Axios, Async … 等等, 这些非常有用的 JavaScript 库。你可能会在你的很多 Vue.js 应用中使用它们。<br>
+但随着项目的不断增长，您通常会将代码拆分成多个组件文件或模块文件。您也可能希望在不同的环境中能够运行你的 APP ，包括服务器渲染。<br>
+除非你已经找到一个简单而强大的方法来将这些 JavaScript 库包含到你的组件和模块文件中，否则这将是一件非常麻烦的事情！</p>
+<h2 id="如何在-vuejs-项目中-引入-javascript-第三方库">如何在 Vue.js 项目中 引入 JavaScript 第三方库 <a class="markdownIt-Anchor" href="#如何在-vuejs-项目中-引入-javascript-第三方库">#</a></h2>
+<h3 id="全局变量">全局变量 <a class="markdownIt-Anchor" href="#全局变量">#</a></h3>
+<p>将 JavaScript 第三方库 添加到项目中，最简单的办法是通过将其附加到 window 对象上，以使其成为全局变量：</p>
+<pre class="hljs"><code><span class="hljs-comment">// entry.js 文件</span>
+<span class="hljs-built_in">window</span>._ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lodash'</span>);
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment">// MyComponent.vue 文件</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  created() {
+    <span class="hljs-built_in">console</span>.log(_.isEmpty() ? <span class="hljs-string">'Lodash everywhere!'</span> : <span class="hljs-string">'Uh oh..'</span>);
+  }
+}
+</code></pre>
+<p>这种情况会使 <code>window</code> 变量不断增长，但是最关键的是，他们不能使用服务器渲染。当应用程序在服务端运行时，<code>window</code> 对象是 <code>undefined</code> 的，因此尝试访问 <code>window</code> 下的属性将会抛出一个错误。</p>
+<h2 id="在每个文件中导入">在每个文件中导入 <a class="markdownIt-Anchor" href="#在每个文件中导入">#</a></h2>
+<p>另一种二流的方法是将库导入到每个文件中：</p>
+<pre class="hljs"><code><span class="hljs-comment">// MyComponent.vue 文件</span>
+<span class="hljs-keyword">import</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">'lodash'</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  created() {
+    <span class="hljs-built_in">console</span>.log(_.isEmpty() ? <span class="hljs-string">'Lodash is available here!'</span> : <span class="hljs-string">'Uh oh..'</span>);
+  }
+}
+</code></pre>
+<p>这是有效的，但是你需要重复手动导入和移除，这是一个痛点：你必须记住将这个库导入到每个文件中，然后当你的某个文件不用这个库的时候, 记得要将它从这个文件中移除。如果你没有正确地设置你的构建工具，则可能会最终导致在构建包中存在同一个库的多个副本。</p>
+<h2 id="一个更好的方式">一个更好的方式 <a class="markdownIt-Anchor" href="#一个更好的方式">#</a></h2>
+<p>在Vue项目中使用Javascript库的最干净，最健壮的方法是将其代理为 Vue 原型对象的属性。我们用这种方式，将 Moment日期和时间库添加到我们的项目中：</p>
+<pre class="hljs"><code><span class="hljs-comment">// entry.js 文件</span>
+<span class="hljs-keyword">import</span> moment <span class="hljs-keyword">from</span> <span class="hljs-string">'moment'</span>;
+<span class="hljs-built_in">Object</span>.definePrototype(Vue.prototype, <span class="hljs-string">'$moment'</span>, { <span class="hljs-attr">value</span>: moment });
+</code></pre>
+<p>由于所有组件都会继承 Vue 原型对象上方法，这将使 <code>Moment</code> 自动可用于任何组件，没有全局变量或任何需要手动导入的组件。它可以在任何 实例/组件 中简单地通过 <code>this.$moment</code> 访问被访问：</p>
+<pre class="hljs"><code><span class="hljs-comment">// MyComponent.vue 文件</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  created() {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'The time is '</span> . this.$moment().format(<span class="hljs-string">"HH:mm"</span>));
+  }
+}
+</code></pre>
+<p>现在让我们花点时间了解一下这是如何工作的。</p>
+<h2 id="objectdefineproperty"><strong><code>Object.defineProperty</code></strong> <a class="markdownIt-Anchor" href="#objectdefineproperty">#</a></h2>
+<p>我们通常会像这样设置一个对象属性：</p>
+<pre class="hljs"><code>Vue.prototype.$moment = moment;
+</code></pre>
+<p>你可以这么做，但是通过使用 <code>Object.defineProperty</code> ，我们可以使用 描述符 来定义我们的属性。<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="noopener">描述符</a>允许我们设置一些低级细节，例如我们的属性是否可写，以及在 for 循环中枚举期间是否显示。<br>
+我们通常不会在日常使用 Javascript 中使用到描述符，因为 99％ 的时间我们不需要这么细致的属性分配。但这里给我们一个明显的优势：默认情况下，使用描述符创建的属性是只读的。<br>
+这意味着，一些糊涂的开发人员（可能是你）不能在组件内去做一些很愚蠢的事情, 并且破坏一切.<br>
+相反, 我们的只读实例则能很好的保护我们的库, 因为如果有人试图去覆盖它, 将会获得一个错误:<br>
+<code>TypeError: Cannot assign to read only property</code>.</p>
+<h3 id="">$ <a class="markdownIt-Anchor" href="#">#</a></h3>
+<p>您会注意到，我们将库代理为以美元符号“”为前缀的属性名。 你可能还看过其他的属性和方法，例如，refs, $on, mount等等也都是以””开头。<br>
+虽然属性名上添加前缀不是必须的，但是这样做可以提醒糊涂的开发人员（可能是你），这是一个公共API属性或方法，欢迎你使用，不像其他属性的实例，可能只是为了 Vue 的内部使用。<br>
+作为基于原型的语言，Javascript 中没有（真正的）类，因此也没有 “私有” 和 “公共” 变量或 “静态” 方法。 这个惯例是一种很好的替代品，我们认为是值得遵守的约定。</p>
+<h3 id="this">this <a class="markdownIt-Anchor" href="#this">#</a></h3>
+<p>你还会注意到，你可以使用 <code>this.libraryName</code> 来使用这个库 ，但是这样做会有个小小的问题，因为它现在是一个实例方法。<br>
+然而，这样做的结果是，与全局变量不同，您在使用库时必须确保处于正确的作用域中。内部的回调方法不能通过 <code>this</code> 来访问你的库。<br>
+幸好，ES6中的箭头函数是一个不错的解决方案, 它能确保你在正确的作用域中:</p>
+<pre class="hljs"><code><span class="hljs-comment">// script.js</span>
+<span class="hljs-keyword">this</span>.$http.get(<span class="hljs-string">'/'</span>).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> {
+  <span class="hljs-keyword">if</span> (res.status !== <span class="hljs-number">200</span>) {
+    <span class="hljs-keyword">this</span>.$http.get(<span class="hljs-string">'/'</span>) <span class="hljs-comment">// etc</span>
+    <span class="hljs-comment">// 只在箭头回调函数中起作用。愚人码头注：你也可以使用ES5 的 bind();</span>
+  }
+});
+</code></pre>
+<h3 id="为什么不使它成为一个插件？">为什么不使它成为一个插件？ <a class="markdownIt-Anchor" href="#为什么不使它成为一个插件？">#</a></h3>
+<p>如果您打算在多个 Vue 项目中使用 JavaScript 第三方库，或者您想与世界分享你的库，您可以将其构建成插件！<br>
+插件提取复杂性的部分，允许你在项目中简单地执行以下操作来添加你选择的库：</p>
+<pre class="hljs"><code><span class="hljs-comment">// script.js</span>
+<span class="hljs-keyword">import</span> MyLibraryPlugin <span class="hljs-keyword">from</span> <span class="hljs-string">'my-library-plugin'</span>;
+Vue.use(MyLibraryPlugin);
+</code></pre>
+<p>使用这两行，我们可以在任何组件中使用 JavaScript 第三方库，就像我们可以使用 Vue Router ，Vuex 和其他使用 Vue.use 的插件一样。</p>
+<h3 id="编写一个插件">编写一个插件 <a class="markdownIt-Anchor" href="#编写一个插件">#</a></h3>
+<p>首先，为您的插件创建一个文件。在这个例子中，我将创建一个插件，将 Axios 添加到你所有的 Vue 实例和组件中，因此我将调用文件 axios.js。<br>
+要了解的主要内容是：插件必须公开一个 install 方法，并且将 Vue 构造函数作为第一个参数：</p>
+<pre class="hljs"><code><span class="hljs-comment">// axios.js</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">install</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">Vue</span>) </span>{
+    <span class="hljs-comment">// Do stuff</span>
+  }
+}
+</code></pre>
+<p>现在我们可以使用之前介绍的方法将库添加到原型对象中:</p>
+<pre class="hljs"><code><span class="hljs-comment">// axios.js</span>
+<span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">'axios'</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">install</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">Vue,</span>) </span>{
+    <span class="hljs-built_in">Object</span>.defineProperty(Vue.prototype, <span class="hljs-string">'$http'</span>, { <span class="hljs-attr">value</span>: axios });
+  }
+}
+</code></pre>
+<p>我们现在需要做的事情是 <code>use</code> 实例方法将我们的库添加到一个项目。例如，我们现在可以轻松地添加 Axios 库：</p>
+<pre class="hljs"><code><span class="hljs-comment">// entry.js</span>
+<span class="hljs-keyword">import</span> AxiosPlugin <span class="hljs-keyword">from</span> <span class="hljs-string">'./axios.js'</span>;
+Vue.use(AxiosPlugin);
+<span class="hljs-keyword">new</span> Vue({
+  created() {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.$http ? <span class="hljs-string">'Axios works!'</span> : <span class="hljs-string">'Uh oh..'</span>);
+  }
+</code></pre>
+<h3 id="彩蛋-插件可选参数">彩蛋: 插件可选参数 <a class="markdownIt-Anchor" href="#彩蛋-插件可选参数">#</a></h3>
+<p>你插件里的 <code>install</code> 方法允许接受可选参数。 一些开发人员可能不是很喜欢使用 axios 实例的方法名  <code>$http</code> ，因为 Vue <code>Resource</code> 已经使用了这个名字，所以让我们使用一个可选参数来让它们变成你所喜欢的方法名：</p>
+<pre class="hljs"><code><span class="hljs-comment">// axios.js</span>
+<span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">'axios'</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">install</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">Vue, name = <span class="hljs-string">'$http'</span></span>) </span>{
+    <span class="hljs-built_in">Object</span>.defineProperty(Vue.prototype, name, { <span class="hljs-attr">value</span>: axios });
+  }
+}
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment">// entry.js</span>
+<span class="hljs-keyword">import</span> AxiosPlugin <span class="hljs-keyword">from</span> <span class="hljs-string">'./axios.js'</span>;
+Vue.use(AxiosPlugin, <span class="hljs-string">'$axios'</span>);
+<span class="hljs-keyword">new</span> Vue({
+  created() {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.$axios ? <span class="hljs-string">'Axios works!'</span> : <span class="hljs-string">'Uh oh..'</span>);
+  }
+})
+</code></pre>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="vue插件.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="BFC.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item chapter-item-current"><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = '在Vue.js中使用任意JavaScript第三方库.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E5%A6%82%E4%BD%95%E5%9C%A8-vuejs-%E9%A1%B9%E7%9B%AE%E4%B8%AD-%E5%BC%95%E5%85%A5-javascript-%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93\">如何在 Vue.js 项目中 引入 JavaScript 第三方库</a>\n<ul>\n<li><a href=\"#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F\">全局变量</a></li>\n</ul>\n</li>\n<li><a href=\"#%E5%9C%A8%E6%AF%8F%E4%B8%AA%E6%96%87%E4%BB%B6%E4%B8%AD%E5%AF%BC%E5%85%A5\">在每个文件中导入</a></li>\n<li><a href=\"#%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A5%BD%E7%9A%84%E6%96%B9%E5%BC%8F\">一个更好的方式</a></li>\n<li><a href=\"#objectdefineproperty\"><strong><code>Object.defineProperty</code></strong></a>\n<ul>\n<li><a href=\"#\">$</a></li>\n<li><a href=\"#this\">this</a></li>\n<li><a href=\"#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BD%BF%E5%AE%83%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E6%8F%92%E4%BB%B6%EF%BC%9F\">为什么不使它成为一个插件？</a></li>\n<li><a href=\"#%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E6%8F%92%E4%BB%B6\">编写一个插件</a></li>\n<li><a href=\"#%E5%BD%A9%E8%9B%8B-%E6%8F%92%E4%BB%B6%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0\">彩蛋: 插件可选参数</a></li>\n</ul>\n</li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+

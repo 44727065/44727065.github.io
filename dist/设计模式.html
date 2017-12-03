@@ -35,6 +35,7 @@
       <p>Design Patterns: Elements of Reusable Object-Oriented Software（即后述《设计模式》一书），由 Erich Gamma、Richard Helm、Ralph Johnson 和 John Vlissides 合著（Addison-Wesley，1995）。这几位作者常被称为“四人组（Gang of Four）”，而这本书也就被称为“四人组（或 GoF）”书。<br>
 在《设计模式》这本书的最大部分是一个目录，该目录列举并描述了 23 种设计模式。</p>
 <h1 id="创建型模式">创建型模式 <a class="markdownIt-Anchor" href="#创建型模式">#</a></h1>
+<h2 id="工厂模式-factory">工厂模式 FACTORY <a class="markdownIt-Anchor" href="#工厂模式-factory">#</a></h2>
 <ol>
 <li>FACTORY—追MM少不了请吃饭了，麦当劳的鸡翅和肯德基的鸡翅都是MM爱吃的东西，虽然口味有所不同，但不管你带MM去麦当劳或肯德基，只管向服务员说“来四个鸡翅”就行了。麦当劳和肯德基就是生产鸡翅的Factory</li>
 </ol>
@@ -169,6 +170,7 @@ book2.getName();
 <span class="hljs-keyword">var</span> userNameAlert = createPop(<span class="hljs-string">'alert'</span>,<span class="hljs-string">'用户名字只能是26个字母'</span>)
 userNameAlert.show();
 </code></pre>
+<h2 id="建造模式-builder">建造模式 BUILDER <a class="markdownIt-Anchor" href="#建造模式-builder">#</a></h2>
 <ol start="2">
 <li>BUILDER—MM最爱听的就是“我爱你”这句话了，见到不同地方的MM,要能够用她们的方言跟她说这句话哦，我有一个多种语言翻译机，上面每种语言都有一个按键，见到MM我只要按对应的键，它就能够用相应的语言说出“我爱你”这句话了，国外的MM也可以轻松搞掂，这就是我的“我爱你”builder。（这一定比美军在伊拉克用的翻译机好卖）</li>
 </ol>
@@ -262,6 +264,7 @@ Work.prototype.changeDescript = <span class="hljs-function"><span class="hljs-ke
 <span class="hljs-built_in">console</span>.log(person.name.firstName);
 <span class="hljs-built_in">console</span>.log(person.skill)
 </code></pre>
+<h2 id="工厂方法模式-factory-method">工厂方法模式 FACTORY METHOD <a class="markdownIt-Anchor" href="#工厂方法模式-factory-method">#</a></h2>
 <ol start="3">
 <li>FACTORY METHOD—请MM去麦当劳吃汉堡，不同的MM有不同的口味，要每个都记住是一件烦人的事情，我一般采用Factory Method模式，带着MM到服务员那儿，说“要一个汉堡”，具体要什么样的汉堡呢，让MM直接跟服务员说就行了。</li>
 </ol>
@@ -391,6 +394,7 @@ Factory.prototype = {
     Factory(data[i].type,data[i].content)
 }
 </code></pre>
+<h2 id="原始模型模式-prototype">原始模型模式 PROTOTYPE <a class="markdownIt-Anchor" href="#原始模型模式-prototype">#</a></h2>
 <ol start="4">
 <li>PROTOTYPE—跟MM用QQ聊天，一定要说些深情的话语了，我搜集了好多肉麻的情话，需要时只要copy出来放到QQ里面就行了，这就是我的情话prototype了。（100块钱一份，你要不要）</li>
 </ol>
@@ -548,6 +552,7 @@ Penguim.run(<span class="hljs-number">10</span>); <span class="hljs-comment">// 
 Penguim.jump(); <span class="hljs-comment">// 跳跃动作</span>
 <span class="hljs-comment">// 将一些模版合成一个对象</span>
 </code></pre>
+<h2 id="单例模式-singleton">单例模式 SINGLETON <a class="markdownIt-Anchor" href="#单例模式-singleton">#</a></h2>
 <ol start="5">
 <li>SINGLETON—俺有6个漂亮的老婆，她们的老公都是我，我就是我们家里的老公Sigleton，她们只要说道“老公”，都是指的同一个人，那就是我(刚才做了个梦啦，哪有这么好的事)</li>
 </ol>
@@ -595,6 +600,7 @@ Ming.on(<span class="hljs-string">'test'</span>,<span class="hljs-string">'click
 })
 </code></pre>
 <h1 id="结构型模式">结构型模式 <a class="markdownIt-Anchor" href="#结构型模式">#</a></h1>
+<h2 id="适配器-adapter">适配器 ADAPTER <a class="markdownIt-Anchor" href="#适配器-adapter">#</a></h2>
 <ol start="6">
 <li>ADAPTER—在朋友聚会上碰到了一个美女Sarah，从香港来的，可我不会说粤语，她不会说普通话，只好求助于我的朋友kent了，他作为我和Sarah之间的Adapter，让我和Sarah可以相互交谈了(也不知道他会不会耍我)</li>
 </ol>
@@ -690,10 +696,335 @@ $.ajax({
 <li>BRIDGE—早上碰到MM，要说早上好，晚上碰到MM，要说晚上好；碰到MM穿了件新衣服，要说你的衣服好漂亮哦，碰到MM新做的发型，要说你的头发好漂亮哦。不要问我“早上碰到MM新做了个发型怎么说”这种问题，自己用BRIDGE组合一下不就行了</li>
 </ol>
 <p>桥梁模式：将抽象化与实现化脱耦，使得二者可以独立的变化，也就是说将他们之间的强关联变成弱关联，也就是指在一个软件系统的抽象化和实现化之间使用组合/聚合关系而不是继承关系，从而使两者可以独立的变化。</p>
+<pre class="hljs"><code><span class="hljs-comment">// 第一步，提取共同点</span>
+<span class="hljs-comment">// 对相同的逻辑做抽象提取处理，让代码简介，重用率提升。比如他们都处理每个原件中的某个元素，比如他们都会是处理每个部件中的某个元素，都会处理该元素的字体颜色和背景色。对相似点的抽象提取是很有必要的，因此你可以创建下面这样一个函数，让它接触与事件中的this的耦合。</span>
+
+<span class="hljs-comment">// 抽象</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">changeColor</span>(<span class="hljs-params">dom,color,bg</span>)</span>{
+    <span class="hljs-comment">// 设置元素的字体颜色</span>
+    dom.style.color = color;
+    <span class="hljs-comment">// 设置元素的背景颜色</span>
+    dom.style.bg = bg;
+}
+
+<span class="hljs-comment">// 事件与业务逻辑之间的桥梁</span>
+<span class="hljs-comment">// 知道元素绑定事件与抽象提取的设置方式方法 changeColor 还是不够，需要用一个方法将他们链接起来。这个方法就是桥接方法，这种模式就是桥接模式。对于事件的桥接方法，我们可以使用一个匿名函数来代替，否则直接将 changeColor 作为事件的回调函数，那么我们刚才所做的事情就白做了，因为它们还将耦合在一起。</span>
+
+<span class="hljs-keyword">var</span> spans = <span class="hljs-built_in">document</span>.getElementsByTagName(<span class="hljs-string">'span'</span>);
+spans[<span class="hljs-number">0</span>].onmouseover = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    changeColor(<span class="hljs-keyword">this</span>,<span class="hljs-string">'#333'</span>,<span class="hljs-string">'#666'</span>);
+}
+<span class="hljs-comment">// 它的成本是新增一个桥接函数。</span>
+<span class="hljs-comment">// 桥接模式对于多位的变化也适用。比如我们书写一个 canvas 跑步游戏的时候，对于游戏中的人、小精灵、小球都有动作但愿，每个动作实现起来方式又都是统一的，这样我们可以将这些多维变化提取出来，当我们创建实体时，将需要的每个抽象动作单元通过桥接，链接在一起运作，他们之间不会相互影响并且降低了它们之间的耦合。</span>
+<span class="hljs-comment">// 多维变量类</span>
+<span class="hljs-comment">// 运动</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Speed</span>(<span class="hljs-params">x,y</span>)</span>{
+    <span class="hljs-keyword">this</span>.x = x;
+    <span class="hljs-keyword">this</span>.y = y;
+}
+Speed.prototype.run = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'运动起来'</span>);
+}
+<span class="hljs-comment">// 着色</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Color</span>(<span class="hljs-params">cl</span>)</span>{
+    <span class="hljs-keyword">this</span>.color = cl;
+}
+Color.prototype.draw = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'绘制色彩'</span>);
+}
+
+<span class="hljs-comment">// 我们创建一个球类，让她运动 着色</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Ball</span>(<span class="hljs-params">x,y,c</span>)</span>{
+    <span class="hljs-keyword">this</span>.speed = <span class="hljs-keyword">new</span> Speed(x,y);
+    <span class="hljs-keyword">this</span>.color = <span class="hljs-keyword">new</span> Color(c);
+}
+Ball.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-comment">// 实现运动</span>
+    <span class="hljs-keyword">this</span>.speed.run();
+    <span class="hljs-comment">// 实现着色</span>
+    <span class="hljs-keyword">this</span>.color.draw();
+}
+<span class="hljs-comment">// 创建一个人</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">People</span>(<span class="hljs-params">x,y,c</span>)</span>{
+    <span class="hljs-keyword">this</span>.speed = <span class="hljs-keyword">new</span> Speed(x,y);
+    <span class="hljs-keyword">this</span>.color = <span class="hljs-keyword">new</span> Color(c);
+}
+People.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-comment">// 实现运动</span>
+    <span class="hljs-keyword">this</span>.speed.run();
+    <span class="hljs-comment">// 实现着色</span>
+    <span class="hljs-keyword">this</span>.color.draw();
+}
+
+<span class="hljs-comment">// 实例化</span>
+<span class="hljs-keyword">var</span> ball = <span class="hljs-keyword">new</span> Ball(<span class="hljs-number">10</span>,<span class="hljs-number">100</span>,<span class="hljs-string">'#333'</span>);
+<span class="hljs-keyword">var</span> people = <span class="hljs-keyword">new</span> People(<span class="hljs-number">10</span>,<span class="hljs-number">100</span>,<span class="hljs-string">'#333'</span>);
+</code></pre>
 <ol start="8">
 <li>COMPOSITE—Mary今天过生日。“我过生日，你要送我一件礼物。”“嗯，好吧，去商店，你自己挑。”“这件T恤挺漂亮，买，这条裙子好看，买，这个包也不错，买。”“喂，买了三件了呀，我只答应送一件礼物的哦。”“什么呀，T恤加裙子加包包，正好配成一套呀，小姐，麻烦你包起来。”“……”，MM都会用Composite模式了，你会了没有？</li>
 </ol>
 <p>合成模式：合成模式将对象组织到树结构中，可以用来描述整体与部分的关系。合成模式就是一个处理对象的树结构的模式。合成模式把部分与整体的关系用树结构表示出来。合成模式使得客户端把一个个单独的成分对象和由他们复合而成的合成对象同等看待。</p>
+<pre class="hljs"><code><span class="hljs-comment">// 合成模式又称为部分整体模式，将对象组合成树形结构以表示‘部分整体’的层次结构。组合模式使得用户对单个对象和组合对象的使用具有一致性。</span>
+<span class="hljs-comment">// 在此用一个新闻列表举例子，新闻列表有文字新闻、带直播图标的新闻、包含分类的文字新闻、图片新闻、图片和文字组合的新闻</span>
+<span class="hljs-comment">// 将新闻氛围相互独立的几种类型，对某类新闻修改时不会影响到其它。将每一类新闻抽象称面向对象编程中的一个类，这样不会担心以后对某类新闻需求修改而影响到其他新闻，只需对这类新闻做相应的修改即可。抽象类类组合来满足需求。先抽象拆解再组合。</span>
+<span class="hljs-comment">// 统一接口，就是每个成员都要又祖先</span>
+<span class="hljs-comment">// 接口统一在javascript 下可以通过继承同一个虚拟类来实现，比如这个需求可以让所有的新闻都继承一个新闻虚拟父类 News。</span>
+<span class="hljs-comment">// 原型继承</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inheritObject</span>(<span class="hljs-params">o</span>)</span>{
+    <span class="hljs-comment">// 声明一个过渡函数对象</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">F</span>(<span class="hljs-params"></span>)</span>{};
+    <span class="hljs-comment">// 过渡对象的原型继承父对象</span>
+    F.prototype = o;
+    <span class="hljs-comment">// 返回过渡对象的实例</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> F();
+}
+<span class="hljs-comment">// 寄生继承</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inheritPrototype</span>(<span class="hljs-params">subClass, superClass</span>) </span>{
+    <span class="hljs-comment">// 复制一份父类的原型副本保存在变量中</span>
+    <span class="hljs-keyword">var</span> p = inheritObject( superClass.prototype );
+    <span class="hljs-comment">// 修正因为重写子类原型导致子类的 constructor 属性被修改</span>
+    p.constructor = subClass;
+    <span class="hljs-comment">// 设置子类的原型</span>
+    subClass.prototype = p;
+}
+
+<span class="hljs-keyword">var</span> News = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-comment">// 子组件容器</span>
+    <span class="hljs-keyword">this</span>.children = [];
+    <span class="hljs-comment">// 当前组件元素</span>
+    <span class="hljs-keyword">this</span>.element = <span class="hljs-literal">null</span>;
+}
+News.prototype = {
+    <span class="hljs-attr">init</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'请重写方法'</span>);
+    },
+    <span class="hljs-attr">add</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'请重写方法'</span>);
+    },
+    <span class="hljs-attr">getElement</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'请重写方法'</span>);
+    }
+}
+<span class="hljs-comment">// 通常虚拟类是定义而不实现的，但我们在虚拟类的构造函数中定义两个特权变量是因为后面的所有继承子类都要声明这两个变量，为了简化子类我们也可以将这些共有的变量提前声明在父类中。</span>
+<span class="hljs-comment">// 在实现过程中要注意他们的层次关系，组合模式不仅仅是单层次组合，也可以是一个多层次的，比如实现图片新闻和文字新闻放在一行的条件就是说，我们将组合后的整体作为一个部分，继续组合。这样就需要在拆分整体后还要确定他们的层次关系，比如最顶层是一个新闻模块的容器，再往下面是每一行新闻成员集合，每一行还可能有新闻组合体，当然最后一层组合体里面的成员就是新闻对象。</span>
+
+
+<span class="hljs-comment">// 组合要有容器类,在此用到寄生组合模式</span>
+<span class="hljs-comment">// 容器类构造函数</span>
+<span class="hljs-keyword">var</span> Container = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id,parent</span>)</span>{
+    <span class="hljs-comment">// 构造函数继承类</span>
+    News.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-comment">// 模块id</span>
+    <span class="hljs-keyword">this</span>.id = id;
+    <span class="hljs-comment">// 模块的父容器</span>
+    <span class="hljs-keyword">this</span>.parent = parent;
+    <span class="hljs-comment">// 构建方法</span>
+    <span class="hljs-keyword">this</span>.init();
+}
+<span class="hljs-comment">// 寄生式继承父类原型方法</span>
+inheritPrototype(Container, News);
+<span class="hljs-comment">// 构建方法</span>
+Container.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.element = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'ul'</span>);
+    <span class="hljs-keyword">this</span>.element.id = <span class="hljs-keyword">this</span>.id;
+    <span class="hljs-keyword">this</span>.element.className = <span class="hljs-string">'new-container'</span>;
+}
+<span class="hljs-comment">// 添加子元素方法</span>
+Container.prototype.add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">child</span>)</span>{
+    <span class="hljs-comment">// 在子元素容器中插入子元素</span>
+    <span class="hljs-keyword">this</span>.children.push(child);
+    <span class="hljs-comment">// 插入当前组件元素树中</span>
+    <span class="hljs-keyword">this</span>.element.appendChild(child.getElement());
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+}
+<span class="hljs-comment">// 获取当前元素方法</span>
+Container.prototype.getElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+}
+<span class="hljs-comment">// 显示方法</span>
+Container.prototype.show = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.parent.appendChild(<span class="hljs-keyword">this</span>.element);
+}
+<span class="hljs-comment">// 下一级的行成员集合类以及后面的新闻组合体类实现的方式与之类似</span>
+<span class="hljs-keyword">var</span> Item = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">classname</span>)</span>{
+    News.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.classname = classname || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">this</span>.init();
+}
+inheritPrototype(Item,News);
+Item.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.element = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'li'</span>);
+    <span class="hljs-keyword">this</span>.element.classname = <span class="hljs-keyword">this</span>.classname;
+}
+Item.prototype.add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">child</span>)</span>{
+    <span class="hljs-comment">// 在子元素容器中插入子元素</span>
+    <span class="hljs-keyword">this</span>.children.push(child);
+    <span class="hljs-comment">// 插入当前组件树中</span>
+    <span class="hljs-keyword">this</span>.element.appendChild(child.getElement());
+}
+
+Item.prototype.getElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+}
+Item.prototype.add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">child</span>)</span>{
+    <span class="hljs-comment">// 在子元素中插入子元素</span>
+    <span class="hljs-keyword">this</span>.children.push(child);
+    <span class="hljs-comment">// 插入当前组件元素树中</span>
+    <span class="hljs-keyword">this</span>.element.appendChild(child.getElement());
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+}
+Item.prototype.getElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+}
+
+<span class="hljs-keyword">var</span> NewsGroup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">classname</span>)</span>{
+    News.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.classname = classname || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">this</span>.init();
+}
+inheritPrototype(NewsGroup,News);
+NewsGroup.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.element = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+    <span class="hljs-keyword">this</span>.element.classname = <span class="hljs-keyword">this</span>.classname;
+}
+NewsGroup.prototype.add =<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">child</span>)</span>{
+    <span class="hljs-comment">// 在子元素容器中插入子元素</span>
+    <span class="hljs-keyword">this</span>.children.push(child);
+    <span class="hljs-comment">// 插入当前组件元素树中</span>
+    <span class="hljs-keyword">this</span>.element.appendChild(child.getElement());
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+}
+NewsGroup.prototype.getElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+}
+
+<span class="hljs-comment">// 上面已经把所有子成员创建出来了，但是都是容器，还需要更底层的新闻类，这些新闻成员类是不能拥有子成员的，但是他们继承了父类，所以对 add 方法需要声明一下</span>
+
+<span class="hljs-keyword">var</span> ImageNews = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">url,href,classname</span>)</span>{
+    News.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.url = url || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">this</span>.href = url || <span class="hljs-string">'#'</span>;
+    <span class="hljs-keyword">this</span>.classname = classname || <span class="hljs-string">'normal'</span>;
+    <span class="hljs-keyword">this</span>.init();
+}
+inheritPrototype(ImageNews,News);
+ImageNews.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.element = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'a'</span>);
+    <span class="hljs-keyword">var</span> img = <span class="hljs-keyword">new</span> Image();
+    img.src = <span class="hljs-keyword">this</span>.url;
+    <span class="hljs-keyword">this</span>.element.appendChild(img);
+    <span class="hljs-keyword">this</span>.element.classname = <span class="hljs-string">'image-news '</span> + <span class="hljs-keyword">this</span>.classname;
+    <span class="hljs-keyword">this</span>.element.href = <span class="hljs-keyword">this</span>.href;
+}
+ImageNews.prototype.add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{};
+ImageNews.prototype.getElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+}
+<span class="hljs-comment">// 新闻类与上面的容器类很像，接下来创建其他基类新闻</span>
+<span class="hljs-keyword">var</span> IconNews = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text,href,type</span>)</span>{
+    News.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.text = text || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">this</span>.href = href || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">this</span>.type = type || <span class="hljs-string">'Video'</span>;
+    <span class="hljs-keyword">this</span>.init();
+}
+inheritPrototype(IconNews,News);
+IconNews.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.element = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'a'</span>);
+    <span class="hljs-keyword">this</span>.element.innerHTML = <span class="hljs-keyword">this</span>.text;
+    <span class="hljs-keyword">this</span>.element.href = <span class="hljs-keyword">this</span>.href;
+    <span class="hljs-keyword">this</span>.element.className = <span class="hljs-string">'icon'</span> + <span class="hljs-keyword">this</span>.type;
+}
+IconNews.prototype.add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{}
+IconNews.prototype.getElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+}
+
+<span class="hljs-keyword">var</span> EasyNews = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text,href</span>)</span>{
+    News.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.text = text || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">this</span>.href = href || <span class="hljs-string">'#'</span>;
+    <span class="hljs-keyword">this</span>.init();
+}
+inheritPrototype(EasyNews,News);
+EasyNews.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.element = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'a'</span>);
+    <span class="hljs-keyword">this</span>.element.innerHTML = <span class="hljs-keyword">this</span>.text;
+    <span class="hljs-keyword">this</span>.element.href = <span class="hljs-keyword">this</span>.href;
+    <span class="hljs-keyword">this</span>.element.className = <span class="hljs-string">'text'</span>;
+}
+EasyNews.prototype.add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{}
+EasyNews.prototype.getElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+}
+
+<span class="hljs-keyword">var</span> TypeNews = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text,href,type,pos</span>)</span>{
+    News.call(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.text = text || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">this</span>.href = href || <span class="hljs-string">'#'</span>;
+    <span class="hljs-keyword">this</span>.type = type || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">this</span>.pos = pos || <span class="hljs-string">'left'</span>;
+    <span class="hljs-keyword">this</span>.init();
+}
+inheritPrototype(TypeNews,News);
+TypeNews.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.element = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'a'</span>);
+    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.pos === <span class="hljs-string">'left'</span>){
+        <span class="hljs-keyword">this</span>.element.innerHTML = <span class="hljs-string">'['</span> + <span class="hljs-keyword">this</span>.type + <span class="hljs-string">']'</span> + <span class="hljs-keyword">this</span>.text;
+    }<span class="hljs-keyword">else</span>{
+        <span class="hljs-keyword">this</span>.element.innerHTML = <span class="hljs-keyword">this</span>.text + <span class="hljs-string">'['</span> + <span class="hljs-keyword">this</span>.type + <span class="hljs-string">']'</span>;
+    }
+    <span class="hljs-keyword">this</span>.element.href = <span class="hljs-keyword">this</span>.href;
+    <span class="hljs-keyword">this</span>.element.className = <span class="hljs-string">'text'</span>;
+}
+TypeNews.prototype.add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{}
+TypeNews.prototype.getElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+}
+<span class="hljs-comment">// 把新闻模块创建出来</span>
+<span class="hljs-keyword">var</span> news1 = <span class="hljs-keyword">new</span> Container(<span class="hljs-string">'news'</span>,<span class="hljs-built_in">document</span>.body);
+news1.add(
+    <span class="hljs-keyword">new</span> Item(<span class="hljs-string">'normal'</span>).add(
+        <span class="hljs-keyword">new</span> IconNews(<span class="hljs-string">'一条新闻'</span>,<span class="hljs-string">'#'</span>,<span class="hljs-string">'video'</span>)
+    )
+).add(
+    <span class="hljs-keyword">new</span> Item(<span class="hljs-string">'normal'</span>).add(
+        <span class="hljs-keyword">new</span> IconNews(<span class="hljs-string">'这是一条普通新闻'</span>,<span class="hljs-string">'#'</span>,<span class="hljs-string">'video'</span>)
+    )
+).add(
+    <span class="hljs-keyword">new</span> Item(<span class="hljs-string">'normal'</span>).add(
+        <span class="hljs-keyword">new</span> NewsGroup(<span class="hljs-string">'has-img'</span>).add(
+            <span class="hljs-keyword">new</span> ImageNews(<span class="hljs-string">'./1.jpg'</span>,<span class="hljs-string">'#'</span>,<span class="hljs-string">'small'</span>)
+        ).add(
+            <span class="hljs-keyword">new</span> EasyNews(<span class="hljs-string">'瘦身成功'</span>,<span class="hljs-string">'#'</span>)
+        ).add(
+            <span class="hljs-keyword">new</span> EasyNews(<span class="hljs-string">'瘦身成功'</span>,<span class="hljs-string">'#'</span>)
+        )
+    )
+).add(
+    <span class="hljs-keyword">new</span> Item(<span class="hljs-string">'normal'</span>).add(
+        <span class="hljs-keyword">new</span> NewsGroup(<span class="hljs-string">'has-img'</span>).add(
+            <span class="hljs-keyword">new</span> ImageNews(<span class="hljs-string">'./1.jpg'</span>,<span class="hljs-string">'#'</span>,<span class="hljs-string">'small'</span>)
+        ).add(
+            <span class="hljs-keyword">new</span> EasyNews(<span class="hljs-string">'瘦身成功'</span>,<span class="hljs-string">'#'</span>)
+        ).add(
+            <span class="hljs-keyword">new</span> EasyNews(<span class="hljs-string">'瘦身成功'</span>,<span class="hljs-string">'#'</span>)
+        )
+    )
+).add(
+    <span class="hljs-keyword">new</span> Item(<span class="hljs-string">'normal'</span>).add(
+        <span class="hljs-keyword">new</span> ImageNews(<span class="hljs-string">'./1.jpg'</span>,<span class="hljs-string">'#'</span>,<span class="hljs-string">'small'</span>)
+    ).add(
+        <span class="hljs-keyword">new</span> EasyNews(<span class="hljs-string">'减肥成功'</span>,<span class="hljs-string">'#'</span>)
+    ).add(
+        <span class="hljs-keyword">new</span> EasyNews(<span class="hljs-string">'跑步机'</span>,<span class="hljs-string">'#'</span>)
+    )
+).add(
+    <span class="hljs-keyword">new</span> Item(<span class="hljs-string">'normal'</span>).add(
+        <span class="hljs-keyword">new</span> TypeNews(<span class="hljs-string">'AK47打球'</span>,<span class="hljs-string">'#'</span>,<span class="hljs-string">'NBA'</span>,<span class="hljs-string">'left'</span>)
+    )
+).show();
+</code></pre>
 <ol start="9">
 <li>DECORATOR—Mary过完轮到Sarly过生日，还是不要叫她自己挑了，不然这个月伙食费肯定玩完，拿出我去年在华山顶上照的照片，在背面写上“最好的的礼物，就是爱你的Fita”，再到街上礼品店买了个像框（卖礼品的MM也很漂亮哦），再找隔壁搞美术设计的Mike设计了一个漂亮的盒子装起来……，我们都是Decorator，最终都在修饰我这个人呀，怎么样，看懂了吗？</li>
 </ol>
@@ -842,6 +1173,152 @@ A.on(<span class="hljs-string">'box'</span>,<span class="hljs-string">'click'</s
 <li>FLYWEIGHT—每天跟MM发短信，手指都累死了，最近买了个新手机，可以把一些常用的句子存在手机里，要用的时候，直接拿出来，在前面加上MM的名字就可以发送了，再不用一个字一个字敲了。共享的句子就是Flyweight，MM的名字就是提取出来的外部特征，根据上下文情况使用。</li>
 </ol>
 <p>享元模式：FLYWEIGHT在拳击比赛中指最轻量级。享元模式以共享的方式高效的支持大量的细粒度对象。享元模式能做到共享的关键是区分内蕴状态和外蕴状态。内蕴状态存储在享元内部，不会随环境的改变而有所不同。外蕴状态是随环境的改变而改变的。外蕴状态不能影响内蕴状态，它们是相互独立的。将可以共享的状态和不可以共享的状态从常规类中区分开来，将不可以共享的状态从类里剔除出去。客户端不可以直接创建被共享的对象，而应当使用一个工厂对象负责创建被共享的对象。享元模式大幅度的降低内存中对象的数量。</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"next"</span>&gt;</span>下一页<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<pre class="hljs"><code>        <span class="hljs-comment">// 享元模式（Flyweight）： 运用共享技术有效地支持大量的细粒度的对象，避免对象间拥有相同内容造成多余的开销。</span>
+
+        <span class="hljs-comment">// 比如写下面的翻页效果</span>
+        <span class="hljs-comment">// var dom = null, //缓存创建的新闻标题</span>
+        <span class="hljs-comment">//     paper = 0,  //当前页数</span>
+        <span class="hljs-comment">//     num = 5,    //每页显示新闻数目</span>
+        <span class="hljs-comment">//     i = 0,      //创建新闻元素时保存变量</span>
+        <span class="hljs-comment">//     len = articel.length;   //新闻长度数据</span>
+        <span class="hljs-comment">// for(; i&lt;len ; i++){</span>
+        <span class="hljs-comment">//     dom = document.createElement('div');</span>
+        <span class="hljs-comment">//     dom.innerHTML = articel[i];</span>
+        <span class="hljs-comment">//     if(i &gt;= 5){</span>
+        <span class="hljs-comment">//         dom.style.display = 'none';</span>
+        <span class="hljs-comment">//     }</span>
+        <span class="hljs-comment">//     document.getElementById('container').appendChild(dom);</span>
+        <span class="hljs-comment">// }</span>
+        <span class="hljs-comment">// // 下一页绑定事件</span>
+        <span class="hljs-comment">// document.getElementById('next_page').onclick = function(){</span>
+        <span class="hljs-comment">//     var div = document.getElementById('container').getElementsByTagName('div');</span>
+        <span class="hljs-comment">//     // 获取所有新闻包装元素</span>
+        <span class="hljs-comment">//     j = k = n = 0; // j,k 循环变量，n 当前页显示的第一个新闻序号</span>
+        <span class="hljs-comment">//     n = ++paper % Math.ceil(len / num) * num; //获取当前页显示的第一个新闻序号</span>
+        <span class="hljs-comment">//     for(;j&lt;len;j++){</span>
+        <span class="hljs-comment">//         div[j].style.display = 'none';</span>
+        <span class="hljs-comment">//     }</span>
+        <span class="hljs-comment">//     for(;k&lt;5;k++){</span>
+        <span class="hljs-comment">//         if(div[n + k]){</span>
+        <span class="hljs-comment">//             div[n + k].style.display = 'block'; // 显示当前新闻</span>
+        <span class="hljs-comment">//         }</span>
+        <span class="hljs-comment">//     }</span>
+        <span class="hljs-comment">// }</span>
+        <span class="hljs-comment">// 思路是将所有的新闻都推到 dom 里面，通过显示隐藏控制</span>
+        <span class="hljs-comment">// 问题是严重的性能问题，需要对相同的数据结构进行提取</span>
+        <span class="hljs-comment">// 享元模式主要是对其数据、方法共享分离，他将数据和方法氛围内部数据、内部方法和外部数据、外部方法</span>
+        <span class="hljs-comment">// 内部方法和内部数据指的是相似或者共有的数据和方法，</span>
+        <span class="hljs-comment">/*
+            将这一部分提取出来减少开销，提升性能
+            像上面的情况，新闻个体有共同的结构，所以他们应该作为内部数据，
+            下一页 按钮绑定的事件已经不能再抽象提取了，所以应该是外部的方法。
+            既然内部的方法都提取出来了，为了能使用它们，我们还需要提供一个操作方法。
+        */</span>
+        <span class="hljs-keyword">var</span> Flyweight = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            <span class="hljs-comment">// 已创建的元素</span>
+            <span class="hljs-keyword">var</span> created = [];
+            <span class="hljs-comment">// 创建一个新闻包装容器</span>
+            <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span>(<span class="hljs-params"></span>)</span>{
+                <span class="hljs-keyword">var</span> dom = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+                <span class="hljs-comment">// 将容器插入新闻列表容器中</span>
+                <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'container'</span>).appendChild(dom);
+                <span class="hljs-comment">// 缓存新创建的元素</span>
+                created.push(dom);
+                <span class="hljs-comment">// 返回创建的新元素</span>
+                <span class="hljs-keyword">return</span> dom;
+            }
+            <span class="hljs-keyword">return</span> {
+                <span class="hljs-comment">// 获取创建新闻元素方法</span>
+                getDiv : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+                    <span class="hljs-comment">// 如果已创建的元素小于当前页元素总个数，则创建</span>
+                    <span class="hljs-keyword">if</span>(created.length &lt; <span class="hljs-number">5</span>){
+                        <span class="hljs-keyword">return</span> create();
+                    }<span class="hljs-keyword">else</span>{
+                        <span class="hljs-comment">// 获取第一个元素，并插入最后面</span>
+                        <span class="hljs-keyword">var</span> div = created.shift();
+                        created.push(div);
+                        <span class="hljs-keyword">return</span> div;
+                    }
+                }
+            }
+        }();
+        <span class="hljs-comment">/*
+         创建一个享元类，由于每页显示 5条新闻，
+         所以我们创建 5 个元素，保存在享元类内部，
+         我们可以通过享元类为我们提供的 getDiv 来获取创建的元素。
+         内部的数据和方法实现后，我们就要实现外部的数据和外部的方法，
+         外部数据是我们要显示的所有新闻内容，每个内容都不一样，
+         所以他们不能被共享。
+         下一页绑定的数据是独立的，它只能绑定一次。然后我们要做两件事情
+         1. 根据新闻的内容实例化页面
+         2. 对下一页绑定一个点击事件，显示下一页的过程有个优化策略，
+         就是如果当前页面显示的新闻数据不够5条，那么我们可以在新闻数据初始化处获取。
+        这就要求我们新闻数据的总条数大于页面最多显示的条数 - 5 条。
+        初始化页面
+        */</span>
+        <span class="hljs-keyword">var</span> articel = [
+            <span class="hljs-string">'这是一条新闻1'</span>,
+            <span class="hljs-string">'这是一条新闻2'</span>,
+            <span class="hljs-string">'这是一条新闻3'</span>,
+            <span class="hljs-string">'这是一条新闻4'</span>,
+            <span class="hljs-string">'这是一条新闻5'</span>,
+            <span class="hljs-string">'这是一条新闻6'</span>,
+            <span class="hljs-string">'这是一条新闻7'</span>,
+            <span class="hljs-string">'这是一条新闻8'</span>,
+            <span class="hljs-string">'这是一条新闻9'</span>,
+            <span class="hljs-string">'这是一条新闻10'</span>,
+            <span class="hljs-string">'这是一条新闻11'</span>,
+            <span class="hljs-string">'这是一条新闻12'</span>,
+            <span class="hljs-string">'这是一条新闻13'</span>,
+            <span class="hljs-string">'这是一条新闻14'</span>,
+            <span class="hljs-string">'这是一条新闻15'</span>,
+            <span class="hljs-string">'这是一条新闻16'</span>,
+            <span class="hljs-string">'这是一条新闻17'</span>,
+            <span class="hljs-string">'这是一条新闻18'</span>
+        ];
+
+
+
+        <span class="hljs-keyword">var</span> paper = <span class="hljs-number">0</span>,
+            num = <span class="hljs-number">5</span>,
+            len = articel.length;
+        <span class="hljs-comment">// 添加 5 条新闻</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;i &lt; <span class="hljs-number">5</span>;i++){
+            <span class="hljs-keyword">if</span>(articel[i]){
+                <span class="hljs-comment">// 通过享元类获取创建的元素并写入新闻内容</span>
+                Flyweight.getDiv().innerHTML = articel[i]
+            }
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">page</span>(<span class="hljs-params">sub</span>)</span>{
+
+        }
+
+        <span class="hljs-comment">// 下一页绑定事件</span>
+        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'next'</span>).onclick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            <span class="hljs-comment">// 如果新闻内容不足5条不现实</span>
+            <span class="hljs-keyword">if</span>(len &lt; <span class="hljs-number">5</span>) {
+                <span class="hljs-keyword">return</span>;
+            };
+            <span class="hljs-keyword">var</span> n, j = <span class="hljs-number">0</span>;
+            n = ++paper * num % len;
+            <span class="hljs-comment">// 插入5条新闻</span>
+            <span class="hljs-keyword">for</span>(;j&lt;<span class="hljs-number">5</span>;j++){
+                <span class="hljs-comment">// 如果存在第 n + j 条则插入</span>
+                <span class="hljs-keyword">if</span>(articel[n+j]){
+                    Flyweight.getDiv().innerHTML = articel[n+j];
+                }
+                <span class="hljs-comment">// 否则插入其实位置第  n + j -len</span>
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(articel[n + j - len]){
+                    Flyweight.getDiv().innerHTML = articel[n + j -len];
+                }<span class="hljs-keyword">else</span>{
+                    Flyweight.getDiv().innerHTML = <span class="hljs-string">''</span>;
+                }
+            }
+        }
+</code></pre>
 <ol start="12">
 <li>PROXY—跟MM在网上聊天，一开头总是“hi,你好”,“你从哪儿来呀？”“你多大了？”“身高多少呀？”这些话，真烦人，写个程序做为我的Proxy吧，凡是接收到这些话都设置好了自动的回答，接收到其他的话时再通知我回答，怎么样，酷吧。</li>
 </ol>
@@ -925,7 +1402,7 @@ Mary：“你的小弟弟必须要有50cm长”<br>
         </a>
       </div>
       <div class="level-item has-text-centered">
-        <a title="next page" class="next-article-link" href="./兼容小百科/flex在安卓4.3中的兼容方式.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+        <a title="next page" class="next-article-link" href="JavaScript调试技巧.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
       </div>
     </div>
   </div>
@@ -941,7 +1418,7 @@ Mary：“你的小弟弟必须要有50cm长”<br>
 
 <div class="book-toc notification is-warning is-hidden">
   <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
-  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item chapter-item-current"><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item chapter-item-current"><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
 </div>
 
 <div class="progress-indicator"></div>
@@ -951,7 +1428,7 @@ Mary：“你的小弟弟必须要有50cm长”<br>
   var LOPPO = {};
   LOPPO.current_path = '设计模式.md';
   LOPPO.relative_root_path = '';
-  LOPPO.article_toc = "";
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-factory\">工厂模式 FACTORY</a></li>\n<li><a href=\"#%E5%BB%BA%E9%80%A0%E6%A8%A1%E5%BC%8F-builder\">建造模式 BUILDER</a></li>\n<li><a href=\"#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F-factory-method\">工厂方法模式 FACTORY METHOD</a></li>\n<li><a href=\"#%E5%8E%9F%E5%A7%8B%E6%A8%A1%E5%9E%8B%E6%A8%A1%E5%BC%8F-prototype\">原始模型模式 PROTOTYPE</a></li>\n<li><a href=\"#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-singleton\">单例模式 SINGLETON</a></li>\n<li><a href=\"#%E9%80%82%E9%85%8D%E5%99%A8-adapter\">适配器 ADAPTER</a></li>\n</ul>\n";
 </script>
 <script src="assets/js/app.js"></script>
 

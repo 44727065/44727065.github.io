@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>JavaScript调试技巧 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="JavaScript调试技巧.html" class="breadcrumb-item">JavaScript调试技巧</a></div>
+    <h1 class="article-title">JavaScript调试技巧</h1>
+    <div class="article">
+      <p><strong> <a href="http://www.css88.com/archives/8468" target="_blank" rel="noopener">文章转载自：你可能不知道的14个JavaScript调试技巧 http://www.css88.com/archives/8468</a> </strong></p>
+<h2 id="debugger"><code>‘debugger;’</code> <a class="markdownIt-Anchor" href="#debugger">#</a></h2>
+<p>除了 <code>console.log</code> , <code>debugger;</code> 是我们最喜欢、快速且肮脏的调试工具。一旦执行到这行代码，Chrome 会在执行时自动停止。 你甚至可以使用条件语句加上判断，这样可以只在你需要的时候运行。愚人码头注：本人实在觉得这种调试方面很不好，因为后续的调试步骤和断点调试没什么区别。而且调试完成后，还要记住删掉这行代码。确实有点肮脏。</p>
+<pre class="hljs"><code><span class="hljs-keyword">if</span> (thisThing) {
+    <span class="hljs-keyword">debugger</span>;
+}
+</code></pre>
+<h2 id="将-objects-显示为表格">将 objects 显示为表格 <a class="markdownIt-Anchor" href="#将-objects-显示为表格">#</a></h2>
+<p>有时，你有一个复杂的对象要查看。你可以用 <code>console.log</code> 查看并滚动浏览该对象，或者使用 <code>console.table</code> 展开，更容易看到正在处理的内容！</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> animals = [
+    { <span class="hljs-attr">animal</span>: <span class="hljs-string">'Horse'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Henry'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">43</span> },
+    { <span class="hljs-attr">animal</span>: <span class="hljs-string">'Dog'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Fred'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">13</span> },
+    { <span class="hljs-attr">animal</span>: <span class="hljs-string">'Cat'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Frodo'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">18</span> }
+];
+<span class="hljs-built_in">console</span>.table(animals);
+</code></pre>
+<h2 id="尝试所有的屏幕尺寸">尝试所有的屏幕尺寸 <a class="markdownIt-Anchor" href="#尝试所有的屏幕尺寸">#</a></h2>
+<p>虽然在桌面设备上安装不同移动设备模拟器非常棒，但在现实世界中并不可行。 应该是调整你的可视窗口，而不是替换移动设备？ Chrome为你提供所需的一切。 进入Chrome 开发者调试工具，然后点击 <strong>‘toggle device mode(切换设备模式)’</strong> 按钮。 实时观察窗口变化即可!<br>
+<img src="./images/Debugging1.png" alt=""></p>
+<h2 id="如何快速找到dom元素">如何快速找到DOM元素 <a class="markdownIt-Anchor" href="#如何快速找到dom元素">#</a></h2>
+<p>在 Elements(元素) 面板中标记 DOM 元素，并可以在 console(控制台) 中使用它。Chrome 检测器会保留其历史记录中的最后 5 个元素，以便最终标记的元素显示 $0 ，倒数第二个标记元素 $1 ，依此类推。<br>
+如果你按照“item-4”，“item-3”，“item-2”，“item-1”，“item-0”的顺序标记下列项，则可以在控制台中像这样访问DOM节点：<br>
+<img src="./images/Debugging2.png" alt=""></p>
+<h2 id="使用-consoletime-和-consoletimeend-来标记循环耗时">使用 <code>console.time()</code> 和 <code>console.timeEnd()</code> 来标记循环耗时 <a class="markdownIt-Anchor" href="#使用-consoletime-和-consoletimeend-来标记循环耗时">#</a></h2>
+<p>要确切地知道某段代码需要执行多长时间，尤其是在调试慢循环时，可能会非常有用。您甚至可以通过为该方法分配标签来设置多个定时器。让我们看看它是如何工作的：</p>
+<pre class="hljs"><code><span class="hljs-built_in">console</span>.time(<span class="hljs-string">'Timer1'</span>);
+
+<span class="hljs-keyword">var</span> items = [];
+
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100000</span>; i++){
+   items.push({<span class="hljs-attr">index</span>: i});
+}
+
+<span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">'Timer1'</span>);
+</code></pre>
+<p>运行结果<br>
+<img src="./images/Debugging4.png" alt=""></p>
+<h2 id="获取函数的堆栈跟踪信息">获取函数的堆栈跟踪信息 <a class="markdownIt-Anchor" href="#获取函数的堆栈跟踪信息">#</a></h2>
+<p>你可能知道JavaScript框架，会引入大量代码。<br>
+它创建视图触发事件，而且你最终会想知道函数调用是怎么发生的。<br>
+因为 JavaScript 不是一个很结构化的语言，有时候很难完整的了解到底 发生了什么 以及 什么时候发生 的。 使用 <code>console.trace</code>（(仅仅只是在控制台中跟踪) 可以方便地调试JavaScript 。<br>
+假设你现在想看 <code>car</code> 实例在第24行调用 <code>funcZ</code> 函数的完整堆栈轨迹信息:</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> car;
+<span class="hljs-keyword">var</span> func1 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    func2();
+}
+<span class="hljs-keyword">var</span> func2 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    func4();
+}
+<span class="hljs-keyword">var</span> func3 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+}
+<span class="hljs-keyword">var</span> func4 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    car = <span class="hljs-keyword">new</span> Car();
+    car.funcX();
+}
+<span class="hljs-keyword">var</span> Car = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">this</span>.brand = ‘volvo’;
+    <span class="hljs-keyword">this</span>.color = ‘red’;
+    <span class="hljs-keyword">this</span>.funcX = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">this</span>.funcY();
+    }
+    <span class="hljs-keyword">this</span>.funcY = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">this</span>.funcZ();
+    }
+    <span class="hljs-keyword">this</span>.funcZ = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">console</span>.trace(‘trace car’)
+    }
+}
+func1();
+</code></pre>
+<p>24行将输出：<br>
+<img src="./images/Debugging5.png" alt=""><br>
+现在我们可以看到 func1 调用 func2， func2 调用 func4。 Func4 创建了一个 Car 的实例，然后调用函数 car.funcX，依此类推。<br>
+即使你认为非常了解自己的代码，这种分析仍然可以让你感到很方便。假如你想改进你的代码。获取跟踪信息和所有涉及的函数名单，每一项都可以点击，你可以在他们之间来回切换。这就像一个特地为你准备的菜单。</p>
+<h2 id="美化代码使调试-javascript-变得简单">美化代码使调试 JavaScript 变得简单 <a class="markdownIt-Anchor" href="#美化代码使调试-javascript-变得简单">#</a></h2>
+<p>有时你可能在生产环境中遇到问题，但是你的source maps没有部署在服务器上。 <em>不要害怕</em> 。Chrome 可以将你的 Javascript 文件美化为更易阅读的格式。虽然代码不会像你的真实代码那样有用 – 但至少你可以看到发生了什么。点击检查器中源代码查看器下方的 <code>{}</code> 美化按钮即可。<br>
+<img src="./images/Debugging6.png" alt=""></p>
+<h2 id="快速查找要调试的函数">快速查找要调试的函数 <a class="markdownIt-Anchor" href="#快速查找要调试的函数">#</a></h2>
+<p>假设你想在一个函数中设置一个断点。</p>
+<p>最常见的两种方法是：</p>
+<ul>
+<li>在源代码查看器查找到相应的行，并添加一个断点</li>
+<li>在代码中添加debugger<br>
+在这两个解决方案中，您必须在文件中单击以调试特定行。<br>
+使用控制台打断点可能不太常见。在控制台中使用 debug(funcName)，当到达传入的函数时，代码将停止。<br>
+这个调试方法很快, 但缺点是不适用于私有函数或匿名函数。但除了私有和匿名函数, 这可能是找到调试函数的最快方法。（注意：这个函数和console.debug 函数是不同的东西。）</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> func1 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    func2();
+};
+
+<span class="hljs-keyword">var</span> Car = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">this</span>.funcX = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">this</span>.funcY();
+    }
+
+    <span class="hljs-keyword">this</span>.funcY = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">this</span>.funcZ();
+    }
+}
+
+<span class="hljs-keyword">var</span> car = <span class="hljs-keyword">new</span> Car();
+</code></pre>
+<p>在控制台中输入 <code>debug(car.funcY)</code> ，当调用 <code>car.funcY</code> 时，脚本将以调试模式停止：<br>
+<img src="./images/Debugging7.png" alt=""></p>
+<h2 id="屏蔽不相关的代码">屏蔽不相关的代码 <a class="markdownIt-Anchor" href="#屏蔽不相关的代码">#</a></h2>
+<p>现在，我们经常在应用中引入多个库或框架。其中大多数都经过良好的测试且相对没有陷阱。 但是，调试器仍然会进入与调试任务无关的文件。解决方案是屏蔽不需要调试的脚本。当然也可以包括你自己的脚本。<a href="https://raygun.com/blog/javascript-debugging-with-black-box/" target="_blank" rel="noopener">在这篇文章中阅读更多关于调试不相关代码</a>。<br>
+<img src="./images/Debugging13.png" alt=""></p>
+<h2 id="在复杂的调试过程中寻找重点">在复杂的调试过程中寻找重点 <a class="markdownIt-Anchor" href="#在复杂的调试过程中寻找重点">#</a></h2>
+<p>在更复杂的调试中，我们有时希望输出很多行。你可以做的事情就是使用更多控制台函数来保持良好的输出结构，例如, <code>console.log</code>, <code>console.debug</code>, <code>console.warn</code>, <code>console.info</code>,  <code>console.error</code>等等。然后，可以在控制台中快速浏览。但有时候，某些 JavaScrip 调试信息并不是你需要的。现在，可以自己美化调试信息了。在调试 JavaScript 时，可以使用 CSS 并自定义控制台信息：</p>
+<pre class="hljs"><code><span class="hljs-built_in">console</span>.todo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(‘ % c % s % s % s‘, ‘color: yellow; background - color: black;’, ‘–‘, msg, ‘–‘);
+}
+
+<span class="hljs-built_in">console</span>.important = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(‘ % c % s % s % s’, ‘color: brown; font - weight: bold; text - decoration: underline;’, ‘–‘, msg, ‘–‘);
+}
+
+<span class="hljs-built_in">console</span>.todo(“This is something that’ s need to be fixed”);
+<span class="hljs-built_in">console</span>.important(‘This is an important message’);
+</code></pre>
+<p>输出：<br>
+<img src="./images/Debugging8.png" alt=""><br>
+<em>例如：</em><br>
+在 <code>console.log()</code> 中， 可以用 <code>%s</code> 设置字符串，<code>%i</code> 设置数字，<code>%c</code> 设置自定义样式等等，还有很多更好的 <code>console.log()</code> 使用方法。 如果使用的是单页应用框架，可以为视图（view）消息创建一个样式，为模型（models），集合（collections），控制器（controllers）等创建另一个样式。也许还可以像 wlog，clog 和 mlog 一样发挥想象力！</p>
+<h2 id="观察特定函数的调用及其参数">观察特定函数的调用及其参数 <a class="markdownIt-Anchor" href="#观察特定函数的调用及其参数">#</a></h2>
+<p>在 Chrome 控制台中，您可以关注特定的函数。 每次调用该函数时，都会对传入的参数值进行记录。</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> func1 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x, y, z</span>) </span>{
+<span class="hljs-comment">//....</span>
+};
+</code></pre>
+<p><img src="./images/Debugging9.png" alt=""><br>
+这是查看哪些参数传递给函数的好方法。 但是我必须说，如果控制台可以告诉我们需要多少参数，那将是一件好事。 在上面的例子中，func1 期望 3个参数，但是只有 2 个参数被传入。如果在代码中没有处理这个参数，它可能导致一个可能的 bug 。</p>
+<h2 id="在控制台中快速访问元素">在控制台中快速访问元素 <a class="markdownIt-Anchor" href="#在控制台中快速访问元素">#</a></h2>
+<p>在控制台中执行 <code>querySelector</code> 一种更快的方法是使用美元符。<code>$('css-selector')</code> 将会返回CSS选择器的第一个匹配项。<code>$$('css-selector')</code> 将会返回所有匹配项。如果多次使用一个元素，可以把它保存为一个变量。<br>
+<img src="./images/Debugging10.png" alt=""></p>
+<h2 id="postman-很棒（但firefox更快）">Postman 很棒（但Firefox更快） <a class="markdownIt-Anchor" href="#postman-很棒（但firefox更快）">#</a></h2>
+<p>许多开发人员使用 Postman 查看ajax请求。Postman真的很优秀。但打开一个新的浏览器窗口，新写一个请求对象来测试，这确实显得很麻烦。<br>
+有时使用浏览器更容易。<br>
+当你使用浏览器查看时，如果请求一个密码验证页面，你不需要担心身份验证的cookie。下面看，在Firefox中如何编辑并重新发送请求。<br>
+打开检查员并转到网络选项卡。 右键单击所需的请求，然后选择编辑并重新发送。 现在你可以改变任何你想要的。 更改标题并编辑您的参数并点击重新发送。<br>
+下面我用不同的属性提出两次请求：<br>
+<img src="./images/Debugging11.png" alt=""></p>
+<h2 id="节点变化时中断">节点变化时中断 <a class="markdownIt-Anchor" href="#节点变化时中断">#</a></h2>
+<p>DOM 是一个有趣的东西。 有时候它会被修改，但是你并不知道为什么。 但是，当您需要调试 JavaScript 时，Chrome会让您在DOM元素发生更改时暂停。 你甚至可以监视它的属性。 在Chrome 检查器中，右键单击该元素，然后在设置中选择一个中断就可以了：<br>
+<img src="./images/Debugging11.png" alt=""><br>
+如果你想更加详细的了解 Chrome DevTools 的使用说明，请查看 Chrome <a href="http://www.css88.com/doc/chrome-devtools/" target="_blank" rel="noopener">开发者工具中文文档</a></p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="设计模式.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="跳转到当前位置.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item chapter-item-current"><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'JavaScript调试技巧.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#debugger\"><code>‘debugger;’</code></a></li>\n<li><a href=\"#%E5%B0%86-objects-%E6%98%BE%E7%A4%BA%E4%B8%BA%E8%A1%A8%E6%A0%BC\">将 objects 显示为表格</a></li>\n<li><a href=\"#%E5%B0%9D%E8%AF%95%E6%89%80%E6%9C%89%E7%9A%84%E5%B1%8F%E5%B9%95%E5%B0%BA%E5%AF%B8\">尝试所有的屏幕尺寸</a></li>\n<li><a href=\"#%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%89%BE%E5%88%B0dom%E5%85%83%E7%B4%A0\">如何快速找到DOM元素</a></li>\n<li><a href=\"#%E4%BD%BF%E7%94%A8-consoletime-%E5%92%8C-consoletimeend-%E6%9D%A5%E6%A0%87%E8%AE%B0%E5%BE%AA%E7%8E%AF%E8%80%97%E6%97%B6\">使用 <code>console.time()</code> 和 <code>console.timeEnd()</code> 来标记循环耗时</a></li>\n<li><a href=\"#%E8%8E%B7%E5%8F%96%E5%87%BD%E6%95%B0%E7%9A%84%E5%A0%86%E6%A0%88%E8%B7%9F%E8%B8%AA%E4%BF%A1%E6%81%AF\">获取函数的堆栈跟踪信息</a></li>\n<li><a href=\"#%E7%BE%8E%E5%8C%96%E4%BB%A3%E7%A0%81%E4%BD%BF%E8%B0%83%E8%AF%95-javascript-%E5%8F%98%E5%BE%97%E7%AE%80%E5%8D%95\">美化代码使调试 JavaScript 变得简单</a></li>\n<li><a href=\"#%E5%BF%AB%E9%80%9F%E6%9F%A5%E6%89%BE%E8%A6%81%E8%B0%83%E8%AF%95%E7%9A%84%E5%87%BD%E6%95%B0\">快速查找要调试的函数</a></li>\n<li><a href=\"#%E5%B1%8F%E8%94%BD%E4%B8%8D%E7%9B%B8%E5%85%B3%E7%9A%84%E4%BB%A3%E7%A0%81\">屏蔽不相关的代码</a></li>\n<li><a href=\"#%E5%9C%A8%E5%A4%8D%E6%9D%82%E7%9A%84%E8%B0%83%E8%AF%95%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%AF%BB%E6%89%BE%E9%87%8D%E7%82%B9\">在复杂的调试过程中寻找重点</a></li>\n<li><a href=\"#%E8%A7%82%E5%AF%9F%E7%89%B9%E5%AE%9A%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8%E5%8F%8A%E5%85%B6%E5%8F%82%E6%95%B0\">观察特定函数的调用及其参数</a></li>\n<li><a href=\"#%E5%9C%A8%E6%8E%A7%E5%88%B6%E5%8F%B0%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%AE%BF%E9%97%AE%E5%85%83%E7%B4%A0\">在控制台中快速访问元素</a></li>\n<li><a href=\"#postman-%E5%BE%88%E6%A3%92%EF%BC%88%E4%BD%86firefox%E6%9B%B4%E5%BF%AB%EF%BC%89\">Postman 很棒（但Firefox更快）</a></li>\n<li><a href=\"#%E8%8A%82%E7%82%B9%E5%8F%98%E5%8C%96%E6%97%B6%E4%B8%AD%E6%96%AD\">节点变化时中断</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+

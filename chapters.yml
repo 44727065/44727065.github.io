@@ -2,8 +2,13 @@
 - jQuery插件开发.md: jQuery插件开发
 - ajax技术相关.md: ajax技术相关
 - vue插件.md: vue插件
+- 在Vue.js中使用任意JavaScript第三方库.md : 在Vue.js中使用任意JavaScript第三方库
 - BFC.md: BFC
 - reflow_repaint.md : 页面回流和重绘
 - setTimeout_setInterval.md : setTimeout 和 setInterval 的使用区别
 - 设计模式.md : 设计模式白话篇
+- JavaScript调试技巧.md : JavaScript调试技巧
+- 跳转到当前位置.md : 跳转到当前位置
+- return.md : return 的小问题
 - ./兼容小百科/flex在安卓4.3中的兼容方式.md : 兼容小百科 - flex在安卓4.3中的兼容方式
+
