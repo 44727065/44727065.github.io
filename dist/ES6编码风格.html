@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>ES6编码风格(Airbnb公司的规范) - 2017.12.6 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="ES6编码风格.html" class="breadcrumb-item">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></div>
+    <h1 class="article-title">ES6编码风格(Airbnb公司的规范) - 2017.12.6</h1>
+    <div class="article">
+      <ol>
+<li>块级作用域<br>
+(1) <strong> let 取代 var </strong><br>
+防止不经意生成的全局变量<br>
+不会有变量提升，更容易理解，符合先声明后使用的原则。<br>
+(2) <strong> 全局变量和线程安全 </strong><br>
+在 let 和 const 之间，建议先使用 const，尤其在全局环境，不应该设置变量，只应该设置常量。<br>
+const 的优点
+<ol>
+<li>提醒阅读程序的人，这个变量不应该更改。</li>
+<li>const 比较符合函数式编程思想，运算不会改变值，只是新建值，这样有利于将来的分布式运算</li>
+<li>javascript 编译器会对 const 进行优化，所以多使用 const ，有利于提高程序的运行效率，也就是 let 和 const 的本质区别，其实是编译器内部的处理不同。<br>
+所有的函数都应该设置为常量。</li>
+</ol>
+</li>
+<li>字符串<br>
+静态字符串一律使用单引号或反引号，不使用双引号。动态字符串使用反引号。</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> a = <span class="hljs-string">"foobar"</span>;
+<span class="hljs-keyword">const</span> b = <span class="hljs-string">'foo'</span> + a + <span class="hljs-string">'bar'</span>;
+
+<span class="hljs-comment">// acceptable</span>
+<span class="hljs-keyword">const</span> c = <span class="hljs-string">`foobar`</span>;
+
+<span class="hljs-comment">// good</span>
+<span class="hljs-keyword">const</span> a = <span class="hljs-string">'foobar'</span>;
+<span class="hljs-keyword">const</span> b = <span class="hljs-string">`foo<span class="hljs-subst">${a}</span>bar`</span>;
+<span class="hljs-keyword">const</span> c = <span class="hljs-string">'foobar'</span>;
+</code></pre>
+<ol start="3">
+<li>结构赋值<br>
+使用数组成员对变量赋值时，优先使用解构赋值。</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>];
+
+<span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> first = arr[<span class="hljs-number">0</span>];
+<span class="hljs-keyword">const</span> second = arr[<span class="hljs-number">1</span>];
+
+<span class="hljs-comment">// good</span>
+<span class="hljs-keyword">const</span> [first, second] = arr;
+</code></pre>
+<p>函数的参数如果是对象的成员，优先使用解构赋值。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFullName</span>(<span class="hljs-params">user</span>)</span>{
+    <span class="hljs-keyword">const</span> firstName = user.firstName;
+    <span class="hljs-keyword">const</span> lastName = user.lastName;
+}
+<span class="hljs-comment">// good</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFullName</span>(<span class="hljs-params">obj</span>)</span>{
+    <span class="hljs-keyword">const</span> {firstName,lastName} = obj
+}
+<span class="hljs-comment">//best</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFullName</span>(<span class="hljs-params">{firstName,lastName}</span>)</span>{
+
+}
+</code></pre>
+<p>如果函数返回多个值，优先使用对象的解构赋值，而不是数组的解构赋值。这样便于以后添加返回值，以及更改返回值的顺序。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processInput</span>(<span class="hljs-params">input</span>)</span>{
+    <span class="hljs-keyword">return</span> [left,right,top,bottom]
+}
+<span class="hljs-comment">// good</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processInput</span>(<span class="hljs-params">input</span>)</span>{
+    <span class="hljs-keyword">return</span> {left,right,top,bottom};
+}
+<span class="hljs-keyword">const</span> {left, right} = processInput(input);
+</code></pre>
+<ol start="4">
+<li>对象<br>
+单行定义的对象，最后一个成员不以逗号结尾。多行定义的对象，最后一个成员以逗号结尾。</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> a = {<span class="hljs-attr">k1</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">k2</span>:<span class="hljs-number">2</span>,};
+<span class="hljs-keyword">const</span> b = {
+    <span class="hljs-attr">k1</span>:<span class="hljs-number">1</span>,
+    <span class="hljs-attr">k2</span>:<span class="hljs-number">2</span>
+}
+<span class="hljs-comment">//good</span>
+<span class="hljs-keyword">const</span> a = {<span class="hljs-attr">k1</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">k2</span>:<span class="hljs-number">2</span>};
+<span class="hljs-keyword">const</span> b = {
+    <span class="hljs-attr">k1</span>:<span class="hljs-number">1</span>,
+    <span class="hljs-attr">k2</span>:<span class="hljs-number">2</span>,
+}
+</code></pre>
+<p>对象尽量静态化，一旦定义，就不得随意添加新的属性。如果添加属性无法避免，要使用 <code>Object.assign()</code>方法</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> a = {};
+a.x = <span class="hljs-number">3</span>;
+
+<span class="hljs-comment">// if reshape unavoidable</span>
+<span class="hljs-keyword">const</span> a = {};
+<span class="hljs-built_in">Object</span>.assign(a, { <span class="hljs-attr">x</span>:<span class="hljs-number">3</span> });
+<span class="hljs-comment">//good</span>
+<span class="hljs-keyword">const</span> a = { <span class="hljs-attr">x</span>:<span class="hljs-literal">null</span> };
+a.x =<span class="hljs-number">3</span>
+</code></pre>
+<p>如果对象的属性是动态的，可以在创造对象的时候，使用属性表达式。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> obj = {
+    <span class="hljs-attr">id</span> : <span class="hljs-number">5</span>,
+    <span class="hljs-attr">name</span> : <span class="hljs-string">'San Francisco'</span>,
+}
+Obj[getKey[<span class="hljs-string">'enabled'</span>]] = <span class="hljs-literal">true</span>;
+<span class="hljs-comment">// good</span>
+<span class="hljs-keyword">const</span> obj = {
+    <span class="hljs-attr">id</span> : <span class="hljs-number">5</span>,
+    <span class="hljs-attr">name</span> : <span class="hljs-string">'San Francisco'</span>,
+    [getKey(<span class="hljs-string">'enabled'</span>)] : <span class="hljs-literal">true</span>
+}
+</code></pre>
+<p>上面代码中，对象 <code>obj</code> 的最后一个属性名，需要计算得到。这时最好采用属性表达式，在新建 <code>obj</code> 的时候，将属性与其它属性定义在一起。这样以来，属性就在一个地方定义了。<br>
+另外，对象属性和方法，尽可能采用简洁表达法，这样易于描述和书写。</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> ref = <span class="hljs-string">`some value`</span>;
+
+<span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> atom = {
+    <span class="hljs-attr">ref</span> : ref,
+    <span class="hljs-attr">value</span> : <span class="hljs-number">1</span>,
+    <span class="hljs-attr">addValue</span> : <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>)</span>{
+        <span class="hljs-keyword">return</span> atom.value + value;
+    }
+}
+
+<span class="hljs-comment">// good</span>
+<span class="hljs-keyword">const</span> atom = {
+    ref,
+    <span class="hljs-attr">value</span> : <span class="hljs-number">1</span>,
+    addValue(value){
+        <span class="hljs-keyword">return</span> atom.value + value;
+    }
+}
+</code></pre>
+<ol start="5">
+<li>数组<br>
+使用扩展运算符（...）拷贝数组。</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> len = items.length;
+<span class="hljs-keyword">const</span> itemsCopy = [];
+<span class="hljs-keyword">let</span> i;
+<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; len; i++){
+    itemsCopy[i] = items[i]
+}
+<span class="hljs-comment">// good</span>
+<span class="hljs-keyword">const</span> itemsCopy = [...items];
+</code></pre>
+<p>使用 Array.from 方法，将类似数组的对象转为数组。</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> foo = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'.foo'</span>);
+<span class="hljs-keyword">const</span> nodes = <span class="hljs-built_in">Array</span>.from(foo);
+</code></pre>
+<ol start="6">
+<li>函数<br>
+立即执行函数尽可能写成箭头函数的形式。</li>
+</ol>
+<pre class="hljs"><code>(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Welcome to the Internet.'</span>);
+})();
+</code></pre>
+<p>那些需要函数表达式的场合，尽量用箭头函数代替。因为这样更简洁，而且绑定了 <code>this</code> 。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>].map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x</span>)</span>{
+    <span class="hljs-keyword">return</span> x * x;
+})
+<span class="hljs-comment">// good</span>
+[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>].map(<span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> {
+    <span class="hljs-keyword">return</span> x * x;
+})
+<span class="hljs-comment">//bset</span>
+[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>].map((x) = &gt; x * x)
+</code></pre>
+<p>箭头函数取代 <code>Function.prototype.bind</code> ,不应用 self／_this/that 绑定 <code>this</code></p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> self = <span class="hljs-keyword">this</span>;
+<span class="hljs-keyword">const</span> boundMethod = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...params</span>)</span>{
+    <span class="hljs-keyword">return</span> method.apply(self,params);
+}
+<span class="hljs-comment">// acceptable</span>
+<span class="hljs-keyword">const</span> boundMethod = method.bind(<span class="hljs-keyword">this</span>);
+
+<span class="hljs-comment">// best</span>
+<span class="hljs-keyword">const</span> boundMethod = <span class="hljs-function">(<span class="hljs-params">...params</span>) =&gt;</span> method.apply(<span class="hljs-keyword">this</span>, params); <span class="hljs-comment">// 没懂</span>
+</code></pre>
+<p>简单的、单行的、不会复用的函数，建议采用箭头函数。如果函数体较为复杂，函数较多，还是应该采用传统的函数写法。<br>
+所有的配置项都应该集中在一个对象，放在最后一个参数，布尔值不可以直接作为参数。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">divide</span>(<span class="hljs-params">a, b, option = false</span>)</span>{
+
+}
+<span class="hljs-comment">// good</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">divide</span>(<span class="hljs-params">a, b, { option = false} = {}</span>) // 没懂
+</span></code></pre>
+<p>不要在函数体内使用 <code>arguments</code> 变量，使用 <code>rest</code> 运算符（...）代替。因为 <code>rest</code> 运算符显式表明你想要获取参数，而且 <code>arguments</code> 时一个类数组的对象，而 rest 运算符可以提供一个真正的数组。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">concatenateAll</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">const</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">return</span> args.join(<span class="hljs-string">''</span>);
+}
+<span class="hljs-comment">// good</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">concatenateAll</span>(<span class="hljs-params">...args</span>)</span>{
+    <span class="hljs-keyword">return</span> args.join(<span class="hljs-string">''</span>);
+}
+</code></pre>
+<p>使用默认值语法设置函数参数的默认值。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleThings</span>(<span class="hljs-params">opts</span>)</span>{
+    opts = opts || {}
+}
+<span class="hljs-comment">// good</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleThings</span>(<span class="hljs-params">opts = {}</span>)</span>{
+    <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<ol start="7">
+<li>Map 结构<br>
+注意区分 Object 和 Map，只有模拟现实世界的实体对象时，才使用 Object。如果只是区分 key:value 的数据结构，使用 Map 结构。因为 Map 有内建的遍历机制。</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> map = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>(arr);
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">of</span> map.keys()){
+    <span class="hljs-built_in">console</span>.log(key);
+}
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> value <span class="hljs-keyword">of</span> map.value()){
+    <span class="hljs-built_in">console</span>.log(value);
+}
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> item <span class="hljs-keyword">of</span> map.entries()){
+    <span class="hljs-built_in">console</span>.log(item);
+}
+</code></pre>
+<ol start="8">
+<li>Class<br>
+总是使用 Class,取代需要 prototype 的操作。因为 Class 的语法更简洁，更易于理解。</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Queue</span>(<span class="hljs-params">contents = []</span>) </span>{
+  <span class="hljs-keyword">this</span>._queue = [...contents];
+}
+Queue.prototype.pop = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> value = <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>];
+  <span class="hljs-keyword">this</span>._queue.splice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+  <span class="hljs-keyword">return</span> value;
+}
+
+<span class="hljs-comment">// good</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Queue</span> </span>{
+  <span class="hljs-keyword">constructor</span>(contents = []) {
+    <span class="hljs-keyword">this</span>._queue = [...contents];
+  }
+  pop() {
+    <span class="hljs-keyword">const</span> value = <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">this</span>._queue.splice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span> value;
+  }
+}
+</code></pre>
+<p>使用extends实现继承，因为这样更简单，不会有破坏instanceof运算的危险。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> inherits = <span class="hljs-built_in">require</span>(<span class="hljs-string">'inherits'</span>);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">PeekableQueue</span>(<span class="hljs-params">contents</span>) </span>{
+  Queue.apply(<span class="hljs-keyword">this</span>, contents);
+}
+inherits(PeekableQueue, Queue);
+PeekableQueue.prototype.peek = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>];
+}
+
+<span class="hljs-comment">// good</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PeekableQueue</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Queue</span> </span>{
+  peek() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>];
+  }
+}
+</code></pre>
+<ol start="9">
+<li>模块<br>
+首先，Module 语法是 JavaScript 模块的标准写法，坚持使用这种写法。使用<code>import</code>取代<code>require</code>。</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">const</span> moduleA = <span class="hljs-built_in">require</span>(<span class="hljs-string">'moduleA'</span>);
+<span class="hljs-keyword">const</span> func1 = moduleA.func1;
+<span class="hljs-keyword">const</span> func2 = moduleA.func2;
+
+<span class="hljs-comment">// good</span>
+<span class="hljs-keyword">import</span> { func1, func2 } <span class="hljs-keyword">from</span> <span class="hljs-string">'moduleA'</span>;
+</code></pre>
+<p>使用<code>export</code>取代<code>module.exports</code>。</p>
+<pre class="hljs"><code><span class="hljs-comment">// commonJS的写法</span>
+<span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">'react'</span>);
+
+<span class="hljs-keyword">var</span> Breadcrumbs = React.createClass({
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">nav</span> /&gt;</span>;
+  }
+});
+
+module.exports = Breadcrumbs;
+
+// ES6的写法
+import React from 'react';
+
+class Breadcrumbs extends React.Component {
+  render() {
+    return <span class="hljs-tag">&lt;<span class="hljs-name">nav</span> /&gt;</span>;
+  }
+};
+
+export default Breadcrumbs;
+</span></code></pre>
+<p>如果模块只有一个输出值，就使用<code>export default</code>，如果模块有多个输出值，就不使用<code>export default</code>，<code>export default</code>与普通的<code>export</code>不要同时使用。<br>
+不要在模块输入中使用通配符。因为这样可以确保你的模块之中，有一个默认输出（<code>export default</code>）。</p>
+<pre class="hljs"><code><span class="hljs-comment">// bad</span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> myObject <span class="hljs-keyword">from</span> <span class="hljs-string">'./importModule'</span>;
+
+<span class="hljs-comment">// good</span>
+<span class="hljs-keyword">import</span> myObject <span class="hljs-keyword">from</span> <span class="hljs-string">'./importModule'</span>;
+</code></pre>
+<p>如果模块默认输出一个函数，函数名的首字母应该小写。</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeStyleGuide</span>(<span class="hljs-params"></span>) </span>{
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> makeStyleGuide;
+</code></pre>
+<p>如果模块默认输出一个对象，对象名的首字母应该大写。</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> StyleGuide = {
+  <span class="hljs-attr">es6</span>: {
+  }
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> StyleGuide;
+</code></pre>
+<ol start="10">
+<li>ESLint 的使用</li>
+</ol>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="js中__proto__和prototype的区别和关系.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="设计模式.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item chapter-item-current"><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'ES6编码风格.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+
