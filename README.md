@@ -7,6 +7,8 @@
 [在线图片压缩TinyPng](https://tinypng.com/)
 [线上字体转化工具](https://www.fontsquirrel.com/tools/webfont-generator)
 [BASE64编码解码](http://base64.xpcha.com/)
+[资源CDN](http://www.bootcdn.cn/)
+[IconFont](http://www.iconfont.cn/)
 # 常用网站
 [talkingcoder](http://talkingcoder.com)
 [segmentfault](https://segmentfault.com)

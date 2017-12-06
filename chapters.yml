@@ -6,6 +6,7 @@
 - BFC.md: BFC
 - reflow_repaint.md : 页面回流和重绘
 - setTimeout_setInterval.md : setTimeout 和 setInterval 的使用区别
+- js中__proto__和prototype的区别和关系.md : js中__proto__和prototype的区别和关系(2017.12.6)
 - 设计模式.md : 设计模式白话篇
 - JavaScript调试技巧.md : JavaScript调试技巧
 - 跳转到当前位置.md : 跳转到当前位置

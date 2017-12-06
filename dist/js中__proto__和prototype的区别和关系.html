@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>js中__proto__和prototype的区别和关系 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="js中__proto__和prototype的区别和关系.html" class="breadcrumb-item">js中__proto__和prototype的区别和关系(2017.12.6)</a></div>
+    <h1 class="article-title">js中__proto__和prototype的区别和关系</h1>
+    <div class="article">
+      <p>几乎任何对象有一个<code>prototype</code>属性，在标准中，这是一个隐藏属性。该属性指向的是这个对象的原型。</p>
+<ol>
+<li>通过对象字面量构造对象</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> person1 = {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'cyl'</span>,
+    <span class="hljs-attr">sex</span>: <span class="hljs-string">'male'</span>
+};
+</code></pre>
+<p>形如这个形式的叫做对象字面量。这样子构造出的对象，其<code>prototype</code>指向<code>Object.prototype</code><br>
+2. 构造函数</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params"></span>)</span>{}
+<span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> Person();
+</code></pre>
+<p>通过new操作符调用的函数就是构造函数。由构造函数构造的对象，其<code>prototype</code>指向其构造函数的<code>prototype</code>属性指向的对象。每个函数都有一个<code>prototype</code>属性，其所指向的对象带有<code>constructor</code>属性，这一属性指向函数自身。（在本例中，person1的[[prototype]]指向Person.prototype）<br>
+3. 函数 <code>Object.create</code>构造</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> person1 = {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'cyl'</span>,
+    <span class="hljs-attr">sex</span>: <span class="hljs-string">'male'</span>
+};
+<span class="hljs-keyword">var</span> person2 = <span class="hljs-built_in">Object</span>.create(person1);
+</code></pre>
+<p>本例中，对象person2的<code>prototype</code>指向对象person1。在没有<code>Object.create</code>函数的日子里，人们是这样做的：</p>
+<pre class="hljs"><code><span class="hljs-built_in">Object</span>.create = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">p</span>) </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params"></span>)</span>{}
+    f.prototype = p;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> f();
+}
+</code></pre>
+<p>然而虽然说<code>prototype</code>是一个隐藏属性，但很多浏览器都给每一个对象提供<code>.__proto__</code>这一属性，这个属性就是上文反复提到的该对象的<code>prototype</code>。由于这个属性不标准，因此一般不提倡使用。ES5中用<code>Object.getPrototypeOf</code>函数获得一个对象的<code>prototype</code>。ES6中，使用<code>Object.setPrototypeOf</code>可以直接修改一个对象的<code>prototype</code><br>
+某答案说<code>.__proto__ === .constructor.prototype</code>是不对的，如果一个对象是通过<code>Object.create</code>函数构造出来的，.那其<code>__proto__</code>就不一定是<code>.constructor.prototype</code>了。</p>
+<p><code>__proto__</code>（隐式原型）与<code>prototype</code>（显式原型）<br>
+是什么<br>
+<strong> 显式原型 explicit prototype property：</strong><br>
+每一个函数在创建之后都会拥有一个名为prototype的属性，这个属性指向函数的原型对象。<br>
+Note：通过Function.prototype.bind方法构造出来的函数是个例外，它没有prototype属性。<br>
+<strong> 隐式原型 implicit prototype link：</strong><br>
+那么一个对象的<code>prototype</code>属性究竟怎么决定呢？这是由构造该对象的方法决定的。据我所知有三种构造一个对象的方法：<br>
+JavaScript中任意对象都有一个内置属性<code>prototype</code>，在ES5之前没有标准的方法访问这个内置属性，但是大多数浏览器都支持通过<code>__proto__</code>来访问。ES5中有了对于这个内置属性标准的Get方法<code>Object.getPrototypeOf()</code>.<br>
+Note: Object.prototype 这个对象是个例外，它的<code>__proto__</code>值为<code>null</code><br>
+二者关系<br>
+隐式原型指向创建这个对象的函数(<code>constructor</code>)的<code>prototype</code><br>
+作用是什么<br>
+显式原型的作用：用来实现基于原型的继承与属性的共享。</p>
+<blockquote>
+<p>ECMAScript does not use classes such as those in C++, Smalltalk, or Java. Instead objects may be created in various ways including via a literal notation or via constructors which create objects and then execute code that initialises all or part of them by assigning initial values to their properties. Each constructor is a function that has a property named “prototype” that is used to implement prototype-based inheritance and shared properties.Objects are created by using constructors in new expressions; for example, new Date(2009,11) creates a new Date object. ----ECMAScript Language Specification<br>
+隐式原型的作用：构成原型链，同样用于实现基于原型的继承。举个例子，当我们访问obj这个对象中的x属性时，如果在obj中找不到，那么就会沿着<code>__proto__</code>依次查找。<br>
+Every object created by a constructor has an implicit reference (called the object’s prototype) to the value of its constructor’s “prototype” ----ECMAScript Language Specification<br>
+<code>__proto__</code>的指向<br>
+<strong>proto</strong>的指向到底如何判断呢？根据ECMA定义 'to the value of its constructor’s &quot;prototype&quot; ' ----指向创建这个对象的函数的显式原型。所以关键的点在于找到创建这个对象的构造函数，接下来就来看一下JS中对象被创建的方式，一眼看过去似乎有三种方式：（1）对象字面量的方式 （2）new 的方式 （3）ES5中的Object.create() 但是我认为本质上只有一种方式，也就是通过new来创建。为什么这么说呢，首先字面量的方式是一种为了开发人员更方便创建对象的一个语法糖，本质就是 var o = new Object(); o.xx = xx;o.yy=yy; 再来看看Object.create(),这是ES5中新增的方法，在这之前这被称为原型式继承，<br>
+道格拉斯在2006年写了一篇文章，题为 Prototypal Inheritance In JavaScript。在这篇文章中，他介绍了一种实现继承的方法，这种方法并没有使用严格意义上的构造函数。他的想法是借助原型可以基于已有的对象创建新对象，同时还不比因此创建自定义类型，为了达到这个目的，他给出了如下函数:</p>
+</blockquote>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">object</span>(<span class="hljs-params">o</span>)</span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">F</span>(<span class="hljs-params"></span>)</span>{}
+    F.prototype = o;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> F()
+}
+</code></pre>
+<p>所以从实现代码 return new F() 中我们可以看到，这依然是通过new来创建的。不同之处在于由 Object.create() 创建出来的对象没有构造函数，看到这里你是不是要问，没有构造函数我怎么知道它的<strong>proto</strong>指向哪里呢，其实这里说它没有构造函数是指在 Object.create() 函数外部我们不能访问到它的构造函数，然而在函数内部实现中是有的，它短暂地存在了那么一会儿。假设我们现在就在函数内部，可以看到对象的构造函数是F, 现在</p>
+<pre class="hljs"><code><span class="hljs-comment">//以下是用于验证的伪代码</span>
+<span class="hljs-keyword">var</span> f = <span class="hljs-keyword">new</span> F();
+<span class="hljs-comment">//于是有</span>
+f.__proto__ === F.prototype <span class="hljs-comment">//true</span>
+<span class="hljs-comment">//又因为</span>
+F.prototype === o;<span class="hljs-comment">//true</span>
+<span class="hljs-comment">//所以</span>
+f.__proto__ === o;
+</code></pre>
+<p>因此由Object.create(o)创建出来的对象它的隐式原型指向o。好了，对象的创建方式分析完了，现在你应该能够判断一个对象的<code>__proto__</code>指向谁了。<br>
+好吧，还是举一些一眼看过去比较疑惑的例子来巩固一下。</p>
+<ul>
+<li>构造函数的显示原型的隐式原型：</li>
+</ul>
+<ol>
+<li>内建对象(built-in object)：比如<code>Array()</code>，<code>Array.prototype.__proto__</code>指向什么？<code>Array.prototype</code>也是一个对象，对象就是由 <code>Object()</code> 这个构造函数创建的，因此<code>Array.prototype.__proto__ === Object.prototype //true</code>，或者也可以这么理解，所有的内建对象都是由<code>Object()</code>创建而来。<br>
+自定义对象</li>
+<li>默认情况下：</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Foo</span>(<span class="hljs-params"></span>)</span>{}
+<span class="hljs-keyword">var</span> foo = <span class="hljs-keyword">new</span> Foo()
+Foo.prototype.__proto__ === <span class="hljs-built_in">Object</span>.prototype <span class="hljs-comment">//true 理由同上</span>
+</code></pre>
+<ol start="2">
+<li>其他情况：<br>
+(1)</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Bar</span>(<span class="hljs-params"></span>)</span>{}
+<span class="hljs-comment">//这时我们想让Foo继承Bar</span>
+Foo.prototype = <span class="hljs-keyword">new</span> Bar()
+ Foo.prototype.__proto__ === Bar.prototype <span class="hljs-comment">//true</span>
+</code></pre>
+<p>(2)</p>
+<pre class="hljs"><code><span class="hljs-comment">//我们不想让Foo继承谁，但是我们要自己重新定义Foo.prototype</span>
+Foo.prototype = {
+  <span class="hljs-attr">a</span>:<span class="hljs-number">10</span>,
+  <span class="hljs-attr">b</span>:<span class="hljs-number">-10</span>
+}
+<span class="hljs-comment">//这种方式就是用了对象字面量的方式来创建一个对象，根据前文所述</span>
+Foo.prototype.__proto__ === <span class="hljs-built_in">Object</span>.prototype
+</code></pre>
+<p>注： 以上两种情况都等于完全重写了Foo.prototype，所以Foo.prototype.constructor也跟着改变了，于是乎constructor这个属性和原来的构造函数Foo（）也就切断了联系。<br>
+<strong>  构造函数的隐式原型 </strong><br>
+既然是构造函数那么它就是Function（）的实例，因此也就指向Function.prototype,比如 Object.<strong>proto</strong> === Function.prototype</p>
+<p>instanceof<br>
+instanceof 操作符的内部实现机制和隐式原型、显式原型有直接的关系。instanceof的左值一般是一个对象，右值一般是一个构造函数，用来判断左值是否是右值的实例。它的内部实现原理是这样的：</p>
+<pre class="hljs"><code><span class="hljs-comment">//设 L instanceof R</span>
+<span class="hljs-comment">//通过判断</span>
+ L.__proto__.__proto__ ..... === R.prototype ？
+<span class="hljs-comment">//最终返回true or false</span>
+</code></pre>
+<p>也就是沿着L的<code>__proto__</code>一直寻找到原型链末端，直到等于<code>R.prototype</code>为止。知道了这个也就知道为什么以下这些奇怪的表达式为什么会得到相应的值了</p>
+<pre class="hljs"><code><span class="hljs-built_in">Function</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Object</span> <span class="hljs-comment">// true</span>
+ <span class="hljs-built_in">Object</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Function</span> <span class="hljs-comment">// true</span>
+ <span class="hljs-built_in">Function</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Function</span> <span class="hljs-comment">//true</span>
+ <span class="hljs-built_in">Object</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Object</span> <span class="hljs-comment">// true</span>
+ <span class="hljs-built_in">Number</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Number</span> <span class="hljs-comment">//false</span>
+</code></pre>
+<figure><img src="./images/prototype.jpg" alt=""></figure>
+<p>作者：苏墨橘<br>
+链接：<a href="https://www.zhihu.com/question/34183746/answer/59043879" target="_blank" rel="noopener">https://www.zhihu.com/question/34183746/answer/59043879</a><br>
+来源：知乎<br>
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>作者：郑航<br>
+链接：<a href="https://www.zhihu.com/question/34183746/answer/58068402" target="_blank" rel="noopener">https://www.zhihu.com/question/34183746/answer/58068402</a><br>
+来源：知乎</p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="setTimeout_setInterval.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="设计模式.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item chapter-item-current"><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系(2017.12.6)</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'js中__proto__和prototype的区别和关系.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+
