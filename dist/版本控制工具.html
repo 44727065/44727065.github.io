@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>一张图看明白Git的四个区五种状态 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="版本控制工具.html" class="breadcrumb-item">Git - 2017.12.9</a></div>
+    <h1 class="article-title">一张图看明白Git的四个区五种状态</h1>
+    <div class="article">
+      <h2 id="五种状态间的顺序操作">五种状态间的顺序操作 <a class="markdownIt-Anchor" href="#五种状态间的顺序操作">#</a></h2>
+<h3 id="四个区">四个区 <a class="markdownIt-Anchor" href="#四个区">#</a></h3>
+<p>工作区(Working Area)<br>
+暂存区(Stage)<br>
+本地仓库(Local Repository)<br>
+远程仓库(Remote Repository)</p>
+<h3 id="五种状态">五种状态 <a class="markdownIt-Anchor" href="#五种状态">#</a></h3>
+<p>未修改(Origin)<br>
+已修改(Modified)&amp;未追踪(Untracked)<br>
+已暂存(Staged)<br>
+已提交(Committed)<br>
+已推送(Pushed)</p>
+<h3 id="顺序操作">顺序操作 <a class="markdownIt-Anchor" href="#顺序操作">#</a></h3>
+<p>第零步：工作区与仓库保持一致<br>
+第一步：文件增删改，变为已修改状态<br>
+第二步：git add ，变为已暂存状态</p>
+<pre class="hljs"><code>$ git add --all <span class="hljs-comment"># 当前项目下的所有更改</span>
+$ git add .  <span class="hljs-comment"># 当前目录下的所有更改</span>
+$ git add xx/xx.py xx/xx2.py  <span class="hljs-comment"># 添加某几个文件</span>
+</code></pre>
+<p>第三步：git commit，变为已提交状态</p>
+<pre class="hljs"><code>$ git commit -m&quot;&lt;这里写commit的描述&gt;&quot;
+</code></pre>
+<p>第四步：git push，变为已推送状态</p>
+<pre class="hljs"><code>$ git push -u origin master # 第一次需要关联上
+$ git push # 之后再推送就不用指明应该推送的远程分支了
+</code></pre>
+<figure><img src="./images/git-four-areas-five-states.png" alt=""></figure>
+<h2 id="五种状态间的撤销操作">五种状态间的撤销操作 <a class="markdownIt-Anchor" href="#五种状态间的撤销操作">#</a></h2>
+<h3 id="已修改，但未暂存">已修改，但未暂存 <a class="markdownIt-Anchor" href="#已修改，但未暂存">#</a></h3>
+<pre class="hljs"><code>$ git diff # 列出所有的修改
+$ git diff xx/xx.py xx/xx2.py # 列出某(几)个文件的修改
+$ git checkout # 撤销项目下所有的修改
+$ git checkout . # 撤销当前文件夹下所有的修改
+$ git checkout xx/xx.py xx/xx2.py # 撤销某几个文件的修改
+$ git clean -f # untracked状态，撤销新增的文件
+$ git clean -df # untracked状态，撤销新增的文件和文件夹
+
+# Untracked files:
+#  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+#
+#	xxx.py
+</code></pre>
+<h3 id="已暂存，未提交">已暂存，未提交 <a class="markdownIt-Anchor" href="#已暂存，未提交">#</a></h3>
+<p>这个时候已经执行过git add，但未执行git commit，但是用git diff已经看不到任何修改。<br>
+因为git diff检查的是工作区与暂存区之间的差异。</p>
+<pre class="hljs"><code>$ git diff --cached # 这个命令显示暂存区和本地仓库的差异
+$ git reset # 暂存区的修改恢复到工作区
+$ git reset --soft # 与git reset等价，回到已修改状态，修改的内容仍然在工作区中
+$ git reset --hard # 回到未修改状态，清空暂存区和工作区
+</code></pre>
+<pre class="hljs"><code>git reset --hard 操作等价于 git reset 和 git checkout 2步操作
+</code></pre>
+<h3 id="已提交，未推送">已提交，未推送 <a class="markdownIt-Anchor" href="#已提交，未推送">#</a></h3>
+<p>执行完commit之后，会在仓库中生成一个版本号(hash值)，标志这次提交。之后任何时候，都可以借助这个hash值回退到这次提交。</p>
+<pre class="hljs"><code>$ git diff &lt;branch-name1&gt; &lt;branch-name2&gt; # 比较2个分支之间的差异
+$ git diff master origin/master # 查看本地仓库与本地远程仓库的差异
+$ git reset --hard origin/master # 回退与本地远程仓库一致
+$ git reset --hard HEAD^ # 回退到本地仓库上一个版本
+$ git reset --hard &lt;hash code&gt; # 回退到任意版本
+$ git reset --soft/git reset # 回退且回到已修改状态，修改仍保留在工作区中。
+</code></pre>
+<h3 id="已推送到远程">已推送到远程 <a class="markdownIt-Anchor" href="#已推送到远程">#</a></h3>
+<pre class="hljs"><code>$ git push -f orgin master # 强制覆盖远程分支
+$ git push -f # 如果之前已经用 -u 关联过，则可省略分支名
+</code></pre>
+<p>慎用，一般情况下，本地分支比远程要新，所以可以直接推送到远程，但有时推送到远程后发现有问题，进行了版本回退，旧版本或者分叉版本推送到远程，需要添加 -f参数，表示强制覆盖。</p>
+<h2 id="总结">总结 <a class="markdownIt-Anchor" href="#总结">#</a></h2>
+<p>首先，先用git status查看下当前状态。<br>
+git reset可以作用于本地仓库，用于回退/前进到任意版本，也可以作用于暂存区，用于撤销暂存区修改。有hard和soft2个参数。soft参数可以省略，soft参数表示撤销的修改仍放在工作区中。<br>
+git checkout用于撤销删除和修改，git clean -df用于撤销新增。<br>
+git diff可以查看工作区、暂存区、仓库之间的修改和差异，参数不同。</p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="index.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="vue数据的双向绑定.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item chapter-item-current"><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = '版本控制工具.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E4%BA%94%E7%A7%8D%E7%8A%B6%E6%80%81%E9%97%B4%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%93%8D%E4%BD%9C\">五种状态间的顺序操作</a>\n<ul>\n<li><a href=\"#%E5%9B%9B%E4%B8%AA%E5%8C%BA\">四个区</a></li>\n<li><a href=\"#%E4%BA%94%E7%A7%8D%E7%8A%B6%E6%80%81\">五种状态</a></li>\n<li><a href=\"#%E9%A1%BA%E5%BA%8F%E6%93%8D%E4%BD%9C\">顺序操作</a></li>\n</ul>\n</li>\n<li><a href=\"#%E4%BA%94%E7%A7%8D%E7%8A%B6%E6%80%81%E9%97%B4%E7%9A%84%E6%92%A4%E9%94%80%E6%93%8D%E4%BD%9C\">五种状态间的撤销操作</a>\n<ul>\n<li><a href=\"#%E5%B7%B2%E4%BF%AE%E6%94%B9%EF%BC%8C%E4%BD%86%E6%9C%AA%E6%9A%82%E5%AD%98\">已修改，但未暂存</a></li>\n<li><a href=\"#%E5%B7%B2%E6%9A%82%E5%AD%98%EF%BC%8C%E6%9C%AA%E6%8F%90%E4%BA%A4\">已暂存，未提交</a></li>\n<li><a href=\"#%E5%B7%B2%E6%8F%90%E4%BA%A4%EF%BC%8C%E6%9C%AA%E6%8E%A8%E9%80%81\">已提交，未推送</a></li>\n<li><a href=\"#%E5%B7%B2%E6%8E%A8%E9%80%81%E5%88%B0%E8%BF%9C%E7%A8%8B\">已推送到远程</a></li>\n</ul>\n</li>\n<li><a href=\"#%E6%80%BB%E7%BB%93\">总结</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+
