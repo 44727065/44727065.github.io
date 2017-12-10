@@ -54,15 +54,25 @@ function getFullName({firstName,lastName}){
 ```
 如果函数返回多个值，优先使用对象的解构赋值，而不是数组的解构赋值。这样便于以后添加返回值，以及更改返回值的顺序。
 ```javascript
+let input = {
+        left : 1,
+        right : 0,
+        top:0,
+        bottom:0
+    }
 // bad
 function processInput(input){
     return [left,right,top,bottom]
 }
 // good
 function processInput(input){
-    return {left,right,top,bottom};
+    let left = input.left;
+    let right = input.right;
+    return {left,right};
 }
+
 const {left, right} = processInput(input);
+console.log(left);
 ```
 4. 对象
 单行定义的对象，最后一个成员不以逗号结尾。多行定义的对象，最后一个成员以逗号结尾。
@@ -102,6 +112,7 @@ const obj = {
 }
 Obj[getKey['enabled']] = true;
 // good
+getKey = (value) => value ? 'a' : 'b';
 const obj = {
     id : 5,
     name : 'San Francisco',

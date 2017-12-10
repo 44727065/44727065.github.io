@@ -1,3 +1,6 @@
+- vue数据的双向绑定.md : vue数据的双向绑定 - 2017.12.8
+- js中__proto__和prototype的区别和关系.md : js中__proto__和prototype的区别和关系 - 2017.12.6
+- ES6编码风格.md : ES6编码风格(Airbnb公司的规范) - 2017.12.6
 - 前端面试题.md: 面试复盘
 - jQuery插件开发.md: jQuery插件开发
 - ajax技术相关.md: ajax技术相关
@@ -6,11 +9,10 @@
 - BFC.md: BFC
 - reflow_repaint.md : 页面回流和重绘
 - setTimeout_setInterval.md : setTimeout 和 setInterval 的使用区别
-- js中__proto__和prototype的区别和关系.md : js中__proto__和prototype的区别和关系 - 2017.12.6
-- ES6编码风格.md : ES6编码风格(Airbnb公司的规范) - 2017.12.6
 - 设计模式.md : 设计模式白话篇
 - JavaScript调试技巧.md : JavaScript调试技巧
 - 跳转到当前位置.md : 跳转到当前位置
 - return.md : return 的小问题
+- 服务器.md : 服务器相关
 - ./兼容小百科/flex在安卓4.3中的兼容方式.md : 兼容小百科 - flex在安卓4.3中的兼容方式
 
