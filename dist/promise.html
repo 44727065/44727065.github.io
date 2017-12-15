@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>Promise 怎么用 - 2017.12.14 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="promise.html" class="breadcrumb-item">Promise 怎么用 - 2017.12.14</a></div>
+    <h1 class="article-title">Promise 怎么用 - 2017.12.14</h1>
+    <div class="article">
+      <p><a href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html" target="_blank" rel="noopener">原文地址</a></p>
+<h2 id="promise-是啥">Promise 是啥 <a class="markdownIt-Anchor" href="#promise-是啥">#</a></h2>
+<pre class="hljs"><code><span class="hljs-built_in">console</span>.dir(<span class="hljs-built_in">Promise</span>);
+</code></pre>
+<p><img src="./images/promise1.png" alt=""><br>
+简单粗暴狠的看一眼，其实他就是一个构造函数，输出后能看到我们将会用到的 <code>all</code> <code>race</code> <code>reject</code> <code>reject</code> <code>reject</code> 的方法。原型链上有 <code>catch</code> <code>then</code> 我们会用到的方法。</p>
+<h2 id="直接运行一个">直接运行一个 <a class="markdownIt-Anchor" href="#直接运行一个">#</a></h2>
+<p>Promise 构造函数接收两个参数 resolve，reject，分别表示异步操作执行成功后的回调函数和异步操作失败后的回调函数。<br>
+这里用成功和失败描述并不准确，按照标准来讲，resolve 是将 Promise 的状态置为 fullfiled，<br>
+reject 是将 Promise 的状态置为 rejected。</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve,reject</span>)</span>{
+    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'执行完成'</span>);
+        resolve(<span class="hljs-string">'随便点什么数据'</span>);
+    },<span class="hljs-number">2000</span>)
+})
+</code></pre>
+<p>上面的代码执行了异步操作，并且调用 resolve 方法,代码运行 2 秒后输出“执行完成”。注意！这里只是 new 了一个对象，并没有调用它，我们传进去的函数就已经执行了，这是需要注意的一个细节。所以我们用 Promise 的时候一般是抱在一个函数中，在需要运行的时候去运行这个函数(要不然你怎么调用)。</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAsync</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve,reject</span>)</span>{
+        <span class="hljs-comment">// 做一些异步操作</span>
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'执行完成'</span>);
+            resolve(<span class="hljs-string">'随便什么数据'</span>);
+        },<span class="hljs-number">2000</span>)
+    })
+    <span class="hljs-keyword">return</span> p;
+}
+runAsync();
+</code></pre>
+<p><strong> 现在的疑问点是 </strong></p>
+<ol>
+<li>包装这么一个函数有什么意义</li>
+<li>resolve('随便什么数据') 的用途是啥<br>
+我们包装好这个函数之后，会 return 出 promise 对象，也就是说我们执行这个函数，我们得到一个 Promise 对象。这个 Promise 对象上有 then、catch 方法。</li>
+</ol>
+<h2 id="then-的用法">then() 的用法 <a class="markdownIt-Anchor" href="#then-的用法">#</a></h2>
+<pre class="hljs"><code>runAsync().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(data);
+    <span class="hljs-comment">// 后面用传过来的数据做其它操作</span>
+    <span class="hljs-comment">// ...</span>
+})
+</code></pre>
+<p><code>runAsync</code> 的返回上直接调用 <code>then</code> 方法，<code>then</code> 接收一个函数作为参数，并且会拿到我们在 <code>runAsync</code> 中调用的 <code>resolve</code> 时传的参数，运行这段代码，两秒后输出“执行完成”，紧接着输出“随便什么数据”。</p>
+<p><code>then</code> 里面的函数就是我们平时回调函数的意思，能够在 <code>runAsync</code> 这个异步任务执行完成之后被执行。这就是 <code>Promise</code> 的作用了，简单来讲就是能把原来的回调写法分离出来，在异步操作执行完后，用链式调用的方式执行回调函数。<br>
+让我们回顾一下传统 <code>callback</code> 写法，不用 <code>Promise</code> 的写法。</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAsync</span>(<span class="hljs-params">callback</span>)</span>{
+    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'执行完成'</span>);
+        callback(<span class="hljs-string">'随便什么数据'</span>)
+    },<span class="hljs-number">2000</span>)
+}
+
+runAsync(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(data);
+})
+</code></pre>
+<p>看似效果是一样的，还费劲用 <code>Promise</code> 干嘛。那么问题来了，有多层回调该怎么办？如果 <code>callback</code> 也是一个异步操作，而且执行完后也需要有相应的回调函数怎么办？总不能再定义一个 <code>callback2</code>，然后给 <code>callback</code> 传进去。而 <code>Promise</code> 的优势在于，<br>
+可以在 <code>then</code> 方法中继续写 <code>Promise</code> 对象并返回，然后继续调用 <code>then</code> 来进行回调操作。</p>
+<p><strong> 用于链式操作的优雅 </strong><br>
+从表面看，Promise 是能简化层层回调的写法，而实质上，Promise 的实质是“状态”，用维护状态、传递状态的方式来使得回调函数能够及时调用，它比传递 callback 函数要简单、灵活。<br>
+所以下面是使用场景。</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAsyn1</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve,reject</span>)</span>{
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            resolve(<span class="hljs-string">'随便点数据1'</span>);
+        },<span class="hljs-number">2000</span>);
+    })
+    <span class="hljs-keyword">return</span> p;
+}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAsyn2</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve,reject</span>)</span>{
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            resolve(<span class="hljs-string">'随便点数据2'</span>);
+        },<span class="hljs-number">2000</span>);
+    })
+    <span class="hljs-keyword">return</span> p;
+}
+
+runAsyn1().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(data);
+    <span class="hljs-keyword">return</span> runAsyn2();
+    <span class="hljs-comment">// 这里也可以直接使用 return '直接返回数据';</span>
+}).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(data);
+})
+</code></pre>
+<h2 id="reject-的用法">reject 的用法 <a class="markdownIt-Anchor" href="#reject-的用法">#</a></h2>
+<p>reject 就是把 Promise 的状态置为 rejected，这样我们在 then 中就能捕捉到，然后执行“失败”情况的回调。</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNumber</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve,reject</span>)</span>{
+        <span class="hljs-comment">// 做一些异步操作</span>
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            <span class="hljs-keyword">var</span> num = <span class="hljs-built_in">Math</span>.ceil(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">10</span>);<span class="hljs-comment">// 生成 1 到 10 的随机数</span>
+            <span class="hljs-keyword">if</span>(num &lt; <span class="hljs-number">5</span>){
+                resolve(num);
+            }<span class="hljs-keyword">else</span>{
+                reject(<span class="hljs-string">'数字太大了'</span>);
+            }
+        },<span class="hljs-number">2000</span>)
+    });
+    <span class="hljs-keyword">return</span> p;
+}
+
+getNumber().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'resolved'</span>)
+},<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason,data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'rejected'</span>);
+    <span class="hljs-built_in">console</span>.log(reason);
+})
+</code></pre>
+<p><code>getNumber</code> 函数用来异步获取一个数字，两秒后执行完成，如果数字小于等于5，我们认为是成功了，调用 resolve 修改 Promise 的状态，否则我们认为是“失败”了，调用reject并传递一个参数，作为失败原因。运行 getNumber 并且在 then 中传了两个参数， then 方法可以接受两个参数，第一个对应的 resolve 的回调，第二个对应 reject 的回调。</p>
+<h2 id="catch-的用法">catch 的用法 <a class="markdownIt-Anchor" href="#catch-的用法">#</a></h2>
+<p>catch 和 then 中传入的第二个参数一样，用来指定 reject 的回调，用法如下。</p>
+<pre class="hljs"><code>getNumber().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'resolved'</span>);
+    <span class="hljs-built_in">console</span>.log(data);
+}).catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason,data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'rejected'</span>);
+    <span class="hljs-built_in">console</span>.log(reson);
+})
+</code></pre>
+<p><strong> 和两个参数写在一起有什么区别呢？ </strong><br>
+在执行resolve的回调（也就是then中的第一个参数）时，如果抛出异常（代码出错），<br>
+那么并不会报错卡死，而是会进入到这个 catch 方法中。</p>
+<pre class="hljs"><code>getNumber()
+.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'resolved'</span>);
+    <span class="hljs-built_in">console</span>.log(data);
+    <span class="hljs-built_in">console</span>.log(somedata); <span class="hljs-comment">//此处的somedata未定义</span>
+})
+.catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'rejected'</span>);
+    <span class="hljs-built_in">console</span>.log(reason);
+});
+</code></pre>
+<p>在<code>resolve</code>的回调中，我们<code>console.log(somedata)</code>;而<code>somedata</code>这个变量是没有被定义的。如果我们不用<code>Promise</code>，代码运行到这里就直接在控制台报错了，不往下运行了。但是在这里，会正常运行。<br>
+也就是说进到<code>catch</code>方法里面去了，而且把错误原因传到了reason参数中。即便是有错误的代码也不会报错了，这与我们的try/catch语句有相同的功能。</p>
+<h2 id="all-的用法">all 的用法 <a class="markdownIt-Anchor" href="#all-的用法">#</a></h2>
+<p><code>Promise</code> 的<code>all</code>方法提供了并行执行异步操作的能力，并且在所有异步操作执行完后才执行回调。</p>
+<pre class="hljs"><code><span class="hljs-built_in">Promise</span>.all([runAsyn(),runAsyn1(),runAsyn2()]).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(results);
+})
+</code></pre>
+<p>用<code>Promise.all</code>来执行，all接收一个数组参数，里面的值最终都算返回<code>Promise</code>对象。这样，三个异步操作的并行执行的，等到它们都执行完后才会进到then里面。那么，三个异步操作返回的数据哪里去了呢？都在<code>then</code>里面呢，<br>
+<code>all</code>会把所有异步操作的结果放进一个数组中传给then，就是上面的<code>results</code>。</p>
+<p>有了<code>all</code>，你就可以并行执行多个异步操作，并且在一个回调中处理所有的返回数据，是不是很酷？有一个场景是很适合用这个的，一些游戏类的素材比较多的应用，打开网页时，预先加载需要用到的各种资源如图片、flash以及各种静态文件。所有的都加载完后，我们再进行页面的初始化。(万一有一个跑不完？)</p>
+<h2 id="race-的用法"><code>race</code> 的用法 <a class="markdownIt-Anchor" href="#race-的用法">#</a></h2>
+<p><code>all</code>方法的效果实际上是「谁跑的慢，以谁为准执行回调」，那么相对的就有另一个方法「谁跑的快，以谁为准执行回调」，这就是race方法，这个词本来就是赛跑的意思。<code>race</code>的用法与<code>all</code>一样，我们把上面<code>runAsync1</code>的延时改为1秒来看一下：</p>
+<pre class="hljs"><code><span class="hljs-built_in">Promise</span>
+.race([runAsync1(), runAsync2(), runAsync3()])
+.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(results);
+});
+</code></pre>
+<p>这三个异步操作同样是并行执行的。结果你应该可以猜到，1秒后runAsync1已经执行完了，此时then里面的就执行了。结果是这样的：<br>
+你猜对了吗？不完全，是吧。在then里面的回调开始执行时，runAsync2()和runAsync3()并没有停止，仍旧再执行。于是再过1秒后，输出了他们结束的标志。</p>
+<p>这个<code>race</code>有什么用呢？使用场景还是很多的，比如我们可以用<code>race</code>给某个异步请求设置超时时间，并且在超时后执行相应的操作，代码如下：</p>
+<pre class="hljs"><code><span class="hljs-comment">//请求某个图片资源</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">requestImg</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve, reject</span>)</span>{
+        <span class="hljs-keyword">var</span> img = <span class="hljs-keyword">new</span> Image();
+        img.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            resolve(img);
+        }
+        img.src = <span class="hljs-string">'xxxxxx'</span>;
+    });
+    <span class="hljs-keyword">return</span> p;
+}
+
+<span class="hljs-comment">//延时函数，用于给请求计时</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">timeout</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve, reject</span>)</span>{
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            reject(<span class="hljs-string">'图片请求超时'</span>);
+        }, <span class="hljs-number">5000</span>);
+    });
+    <span class="hljs-keyword">return</span> p;
+}
+
+<span class="hljs-built_in">Promise</span>
+.race([requestImg(), timeout()])
+.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(results);
+})
+.catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(reason);
+});
+</code></pre>
+<p>requestImg函数会异步请求一张图片，我把地址写为&quot;xxxxxx&quot;，所以肯定是无法成功请求到的。timeout函数是一个延时5秒的异步操作。我们把这两个返回Promise对象的函数放进race，于是他俩就会赛跑，如果5秒之内图片请求成功了，那么遍进入then方法，执行正常的流程。如果5秒钟图片还未成功返回，那么timeout就跑赢了，则进入catch，报出“图片请求超时”的信息。运行结果如下：</p>
+<h2 id="总结">总结 <a class="markdownIt-Anchor" href="#总结">#</a></h2>
+<p>文中没有提到 <code>done</code>、<code>finally</code>、<code>success</code>、<code>fail</code>等，这些是啥？这些并不在Promise标准中，而是我们自己实现的语法糖。<br>
+本文中所有异步操作均以<code>setTimeout</code>为例子，之所以不使用<code>ajax</code>是为了避免引起混淆，因为谈起ajax，很多人的第一反应就是jquery的ajax，而jquery又有自己的Promise实现。如果你理解了原理，就知道使用setTimeout和使用ajax是一样的意思。说起jquery，我不得不吐槽一句，jquery的Promise实现太过垃圾，各种语法糖把人都搞蒙了，我认为Promise之所以没有全面普及和jquery有很大的关系。后面我们会细讲jquery。</p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="index.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="Array的应用场景.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item chapter-item-current"><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item "><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'promise.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#promise-%E6%98%AF%E5%95%A5\">Promise 是啥</a></li>\n<li><a href=\"#%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA\">直接运行一个</a></li>\n<li><a href=\"#then-%E7%9A%84%E7%94%A8%E6%B3%95\">then() 的用法</a></li>\n<li><a href=\"#reject-%E7%9A%84%E7%94%A8%E6%B3%95\">reject 的用法</a></li>\n<li><a href=\"#catch-%E7%9A%84%E7%94%A8%E6%B3%95\">catch 的用法</a></li>\n<li><a href=\"#all-%E7%9A%84%E7%94%A8%E6%B3%95\">all 的用法</a></li>\n<li><a href=\"#race-%E7%9A%84%E7%94%A8%E6%B3%95\"><code>race</code> 的用法</a></li>\n<li><a href=\"#%E6%80%BB%E7%BB%93\">总结</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+

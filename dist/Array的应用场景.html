@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title># 目的 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="Array的应用场景.html" class="breadcrumb-item">Array的应用场景 - 2017.12.13</a></div>
+    <h1 class="article-title"># 目的</h1>
+    <div class="article">
+      <p>Array的api介绍 ， 这里就应用场景举例说明</p>
+<h2 id="前提">前提 <a class="markdownIt-Anchor" href="#前提">#</a></h2>
+<p>了解apply和call</p>
+<blockquote>
+<p>一句话概括：用别人的方法，完成自己的功能。(借鸡下单)</p>
+</blockquote>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span>(<span class="hljs-params">name,gender,age</span>)</span>{
+    <span class="hljs-keyword">this</span>.name = name;
+    <span class="hljs-keyword">this</span>.gender = gender;
+    <span class="hljs-keyword">this</span>.age = age;
+
+    <span class="hljs-keyword">this</span>.introduce = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'name : '</span> + <span class="hljs-keyword">this</span>.name + <span class="hljs-string">',
+                   gender : '</span> + <span class="hljs-keyword">this</span>.gender + <span class="hljs-string">', age : '</span> +<span class="hljs-keyword">this</span>.age);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Empolyee</span>(<span class="hljs-params">name,gender,age,work</span>)</span>{
+
+    Student.apply(<span class="hljs-keyword">this</span>,<span class="hljs-built_in">arguments</span>);          <span class="hljs-comment">//apply方法</span>
+    <span class="hljs-comment">//Student.call(this,name,gender,age);   //call方法</span>
+
+    <span class="hljs-keyword">this</span>.work = work;
+
+}
+
+<span class="hljs-keyword">var</span> e = <span class="hljs-keyword">new</span> Empolyee(<span class="hljs-string">'lee'</span>,<span class="hljs-string">'male'</span>,<span class="hljs-string">'26'</span>,<span class="hljs-string">'programmer'</span>);
+<span class="hljs-built_in">console</span>.log(e)
+e.introduce();
+</code></pre>
+<p>用Student构造函数的属性和方法，来为自己所用！<br>
+你可能发现apply和call很相似，apply接受一个数组，call接受多个值。<br>
+<strong> 应用：得到一组数的最大值 </strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> array = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>];
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Math</span>.max.apply(<span class="hljs-keyword">this</span>,array));<span class="hljs-comment">// 全局写法</span>
+
+<span class="hljs-comment">// 不指定函数参数写法</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMax</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.max.apply(<span class="hljs-keyword">this</span>,<span class="hljs-built_in">Array</span>.prototype.slice.apply(<span class="hljs-built_in">arguments</span>));
+}
+
+<span class="hljs-built_in">console</span>.log(getMax(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">45</span>,<span class="hljs-number">3</span>));
+
+<span class="hljs-comment">// 指定参数写法</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMax</span>(<span class="hljs-params">array</span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.max.apply(<span class="hljs-keyword">this</span>,array);
+}
+<span class="hljs-built_in">console</span>.log(getMax(array));
+</code></pre>
+<h2 id="正文">正文 <a class="markdownIt-Anchor" href="#正文">#</a></h2>
+<h3 id="扁平化规则数组">扁平化规则数组 <a class="markdownIt-Anchor" href="#扁平化规则数组">#</a></h3>
+<p>有这样的数组，需要将其扁平化</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> array = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]];
+
+<span class="hljs-keyword">var</span> result = array.reduce(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">p, c</span>) </span>{
+    <span class="hljs-keyword">return</span> p.concat(c);
+});
+<span class="hljs-built_in">console</span>.log(result);
+<span class="hljs-comment">// [ 1, 2, 3, 4, 5, 6 ]</span>
+
+<span class="hljs-comment">// 注解：reduce的callback中，p指代上一个元素，c指代当前元素。</span>
+<span class="hljs-comment">// 第一次迭代：p -- &gt; [1,2]      c -- &gt; [3,4]</span>
+<span class="hljs-comment">// 第二次迭代：p -- &gt; [1,2,3,4]  c -- &gt; [5,6]</span>
+</code></pre>
+<h3 id="扁平化随机数组">扁平化随机数组 <a class="markdownIt-Anchor" href="#扁平化随机数组">#</a></h3>
+<p>既然有规则数组，那么就肯定有不规则数组，这就需要递归操作</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> array = [<span class="hljs-number">1</span>,[<span class="hljs-number">2</span>,[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,<span class="hljs-number">8</span>],[<span class="hljs-string">' '</span>,<span class="hljs-number">3</span>]],<span class="hljs-number">1</span>];
+<span class="hljs-comment">// 随机嵌套数组</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flatten</span>(<span class="hljs-params">array</span>)</span>{
+    <span class="hljs-keyword">var</span> result = [];
+
+    array.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ele</span>)</span>{
+        <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">Array</span>.isArray(ele)){     <span class="hljs-comment">//判断是否为数组</span>
+            result.push(ele);
+        }<span class="hljs-keyword">else</span>{
+            result = result.concat(flatten(ele));
+            <span class="hljs-comment">// 由于result是函数内部定义的，及每次递归result都会重置；</span>
+            <span class="hljs-comment">// 如果不将result保存，则到递归完成后，之前的数据将会被覆盖</span>
+        }
+    });
+    <span class="hljs-keyword">return</span> result;
+}
+<span class="hljs-built_in">console</span>.log(flatten(array));
+<span class="hljs-comment">// [ 1, 2, 3, 4, 1, 9, 8, ' ', 3, 1 ]</span>
+
+<span class="hljs-comment">// 注解：map会迭代数组里每一个元素，并应用callback函数对其操作，在这里就是判断是否继续递归。</span>
+</code></pre>
+<h3 id="检查数组是否通过给定函数检查">检查数组是否通过给定函数检查 <a class="markdownIt-Anchor" href="#检查数组是否通过给定函数检查">#</a></h3>
+<p>有一个成绩数组，需要检查通过和未通过的情况</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> score = [<span class="hljs-number">56</span>,<span class="hljs-number">90</span>,<span class="hljs-number">40</span>,<span class="hljs-number">80</span>,<span class="hljs-number">76</span>,<span class="hljs-number">88</span>,<span class="hljs-number">94</span>,<span class="hljs-number">27</span>,<span class="hljs-number">83</span>,<span class="hljs-number">66</span>];
+<span class="hljs-comment">// 成绩</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isPassExam</span>(<span class="hljs-params">ele,index,array</span>)</span>{
+    <span class="hljs-keyword">return</span> ele &gt;= <span class="hljs-number">60</span>;
+}
+<span class="hljs-comment">// 通过规则</span>
+<span class="hljs-keyword">var</span> isAllPass = score.every(isPassExam);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'is all pass the exam : '</span> + isAllPass);
+<span class="hljs-comment">// is all pass the exam : false</span>
+
+<span class="hljs-keyword">var</span> isSomeonePass = score.some(isPassExam);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'is someone pass the exam : '</span> + isSomeonePass);
+<span class="hljs-comment">// is someone pass the exam : true</span>
+
+<span class="hljs-keyword">var</span> passedScore = score.filter(isPassExam);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'score : '</span> + passedScore);
+<span class="hljs-comment">// score : 90,80,76,88,94,83,66</span>
+
+<span class="hljs-comment">// 注解：</span>
+<span class="hljs-comment">// - every会遍历所有元素，直到有不能通过函数检查的元素为止，返回 false</span>
+<span class="hljs-comment">// - some会遍历所有元素，直到有能通过函数检查的元素为止，返回true</span>
+<span class="hljs-comment">// - filter会遍历所有元素，并将能通过函数检查的元素返回</span>
+</code></pre>
+<h3 id="过滤函数参数">过滤函数参数 <a class="markdownIt-Anchor" href="#过滤函数参数">#</a></h3>
+<p>有时我们可能需要过滤我们接受的函数参数，如：只需要number类型</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> array = [];
+
+    <span class="hljs-built_in">Array</span>.prototype.slice.apply(<span class="hljs-built_in">arguments</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ele</span>) </span>{
+        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> ele == <span class="hljs-string">'number'</span>){
+            array.push(ele);
+        }
+    });
+
+    <span class="hljs-keyword">return</span> array;
+    <span class="hljs-comment">// do something</span>
+    <span class="hljs-comment">// ....</span>
+}
+<span class="hljs-keyword">var</span> result = filter(<span class="hljs-number">1</span>,<span class="hljs-string">'123'</span>,<span class="hljs-number">4</span>,<span class="hljs-string">'qianjiahao'</span>,<span class="hljs-number">2</span>,<span class="hljs-literal">false</span>,[]);
+<span class="hljs-built_in">console</span>.log(result);
+<span class="hljs-comment">// [ 1, 4, 2 ]</span>
+
+<span class="hljs-comment">// 注解：由于函数参数arguments并不是真正意义上的"数组"，只是"类数组"</span>
+<span class="hljs-comment">// 通过  console.log(arguments); 我们可以看到</span>
+<span class="hljs-comment">/*
+{ '0': 1,
+  '1': '123',
+  '2': 4,
+  '3': 'qianjiahao',
+  '4': 2,
+  '5': false,
+  '6': [] }
+  */</span>
+<span class="hljs-comment">// arguments是个"类数组"，在使用"map"方法之前我们需要将其"slice"后转化为"数组"，但是因为"类数组"没有"slice"方法，所以我们使用了"apply"，让Array帮我们完成这个工作。</span>
+</code></pre>
+<h3 id="乱序字符串数组">乱序字符串/数组 <a class="markdownIt-Anchor" href="#乱序字符串数组">#</a></h3>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> str = <span class="hljs-string">'6ab3c5de1f4g7'</span>;
+
+<span class="hljs-keyword">var</span> array = str.split(<span class="hljs-string">''</span>);
+
+<span class="hljs-keyword">var</span> result = str.split(<span class="hljs-string">''</span>).sort(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.random() &gt; <span class="hljs-number">0.5</span>;
+}).join(<span class="hljs-string">''</span>);
+<span class="hljs-built_in">console</span>.log(result);
+<span class="hljs-comment">// d7gfc51a34be7</span>
+
+result = array.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.random() &gt; <span class="hljs-number">0.5</span>;
+});
+<span class="hljs-built_in">console</span>.log(result);
+<span class="hljs-comment">// [ 'd', '6', 'b', '4', 'e', 'a', 'c', '1', 'f', '5', '7', '3', 'g' ]</span>
+
+<span class="hljs-comment">// 注解：通过在sort中随机返回一个数并与0.5比较，会得到随机的true或false，然后会随机数组中的前后两个元素。</span>
+</code></pre>
+<h3 id="从数组a中去除数组b的元素">从数组a中去除数组b的元素 <a class="markdownIt-Anchor" href="#从数组a中去除数组b的元素">#</a></h3>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> a = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">9</span>,<span class="hljs-number">0</span>];
+<span class="hljs-keyword">var</span> b = [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">10</span>];
+
+<span class="hljs-keyword">var</span> result = a.filter(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ele</span>)</span>{
+    <span class="hljs-keyword">return</span> b.indexOf(ele) &lt; <span class="hljs-number">0</span>;
+});
+<span class="hljs-built_in">console</span>.log(result);
+
+<span class="hljs-comment">// 注解：通过下标，判断a中元素是否在b中，然后用filter过滤</span>
+</code></pre>
+<h2 id="注意">注意 <a class="markdownIt-Anchor" href="#注意">#</a></h2>
+<h3 id="forin">for..in.. <a class="markdownIt-Anchor" href="#forin">#</a></h3>
+<p>效率</p>
+<blockquote>
+<p>for..in..迭代效率较低，建议使用for循环迭代或Array的原生迭代方法。<br>
+缺陷 ：<code>for..in..</code>会带上原型属性或方法 :</p>
+</blockquote>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> array = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>];
+<span class="hljs-built_in">Array</span>.prototype.newVariable = <span class="hljs-number">100</span>;
+<span class="hljs-built_in">Array</span>.prototype.newFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{};
+<span class="hljs-keyword">var</span> result = [];
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i <span class="hljs-keyword">in</span> array){
+    result.push(array[i]);
+}
+<span class="hljs-built_in">console</span>.log(result);
+<span class="hljs-comment">// [ 1, 2, 3, 4, 100, [Function] ]</span>
+</code></pre>
+<p>这会很麻烦，如果需要使用for..in..，需要使用hasOwnProperty()过滤</p>
+<pre class="hljs"><code><span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i <span class="hljs-keyword">in</span> array){
+    <span class="hljs-keyword">if</span>(array.hasOwnProperty(i)){
+        result.push(array[i]);
+    }
+}
+<span class="hljs-comment">// [ 1, 2, 3, 4 ]</span>
+</code></pre>
+<p>但是，有个很蛋疼的事，就是hasOwnProperty()没有保护机制，可以被重写</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> array = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>];
+
+<span class="hljs-built_in">Array</span>.prototype.newVariable = <span class="hljs-number">100</span>;
+
+<span class="hljs-built_in">Array</span>.prototype.newFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{};
+
+<span class="hljs-built_in">Array</span>.prototype.hasOwnProperty = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">i</span>) </span>{
+    <span class="hljs-keyword">return</span> i;
+};
+<span class="hljs-comment">// 重写 hasOwnProperty() 方法</span>
+
+<span class="hljs-keyword">var</span> result = [];
+
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i <span class="hljs-keyword">in</span> array){
+    <span class="hljs-keyword">if</span>(array.hasOwnProperty(i)){
+        result.push(array[i]);
+    }
+}
+
+<span class="hljs-built_in">console</span>.log(result);
+<span class="hljs-comment">// [ 1, 2, 3, 4, 100, [Function], [Function] ]</span>
+<span class="hljs-comment">// 又悲剧了。。。</span>
+</code></pre>
+<h2 id="优化">优化 <a class="markdownIt-Anchor" href="#优化">#</a></h2>
+<p>数组迭代是可以优化的，比如</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> array = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>];
+
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;i&lt;array.length;i++){
+    <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p>这样的循环，每次都要去获取array.length，我们可以将array.length存起来</p>
+<pre class="hljs"><code><span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>,len = array.length;i&lt;len;i++){
+    <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p>这样整个循环只需要求一次length。虽然数据量小的时候效果不明显，但是当数据量很大时，提升效果就很显著了。</p>
+<h2 id="总结">总结 <a class="markdownIt-Anchor" href="#总结">#</a></h2>
+<ul>
+<li>介绍了apply和call的用法</li>
+<li>正文部分根据需求列举Array的应用场景</li>
+<li>注意事项</li>
+<li>优化方案</li>
+</ul>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="promise.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="Array.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item chapter-item-current"><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'Array的应用场景.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E5%89%8D%E6%8F%90\">前提</a></li>\n<li><a href=\"#%E6%AD%A3%E6%96%87\">正文</a>\n<ul>\n<li><a href=\"#%E6%89%81%E5%B9%B3%E5%8C%96%E8%A7%84%E5%88%99%E6%95%B0%E7%BB%84\">扁平化规则数组</a></li>\n<li><a href=\"#%E6%89%81%E5%B9%B3%E5%8C%96%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%BB%84\">扁平化随机数组</a></li>\n<li><a href=\"#%E6%A3%80%E6%9F%A5%E6%95%B0%E7%BB%84%E6%98%AF%E5%90%A6%E9%80%9A%E8%BF%87%E7%BB%99%E5%AE%9A%E5%87%BD%E6%95%B0%E6%A3%80%E6%9F%A5\">检查数组是否通过给定函数检查</a></li>\n<li><a href=\"#%E8%BF%87%E6%BB%A4%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0\">过滤函数参数</a></li>\n<li><a href=\"#%E4%B9%B1%E5%BA%8F%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B0%E7%BB%84\">乱序字符串/数组</a></li>\n<li><a href=\"#%E4%BB%8E%E6%95%B0%E7%BB%84a%E4%B8%AD%E5%8E%BB%E9%99%A4%E6%95%B0%E7%BB%84b%E7%9A%84%E5%85%83%E7%B4%A0\">从数组a中去除数组b的元素</a></li>\n</ul>\n</li>\n<li><a href=\"#%E6%B3%A8%E6%84%8F\">注意</a>\n<ul>\n<li><a href=\"#forin\">for..in..</a></li>\n</ul>\n</li>\n<li><a href=\"#%E4%BC%98%E5%8C%96\">优化</a></li>\n<li><a href=\"#%E6%80%BB%E7%BB%93\">总结</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+

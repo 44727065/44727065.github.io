@@ -35,6 +35,43 @@
       <p>停止服务：sudo /usr/sbin/apachectl stop<br>
 开启服务：sudo /usr/sbin/apachectl start<br>
 重启服务：sudo /usr/sbin/apachectl restart</p>
+<h2 id="配置">配置 <a class="markdownIt-Anchor" href="#配置">#</a></h2>
+<p>在一台Linux服务器下我们一般都会放多个网站，这样我们就要在建立虚拟目录。有时一个网站<br>
+也需要绑定多个域名，那么我们配置虚拟呢？接下我和大家分享一下我的配置过程。<br>
+xampp管理虚拟目录文件是:/opt/lampp/etc/ httpd-vhosts.conf<br>
+[root@localhost extra]# vi httpd-vhosts.conf<br>
+&lt;VirtualHost *:80&gt;<br>
+ServerAdmin <a href="mailto:webmaster@dummy-host2.example.com" target="_blank" rel="noopener">webmaster@dummy-host2.example.com</a>    #管理服务器的邮箱 一般都不需要填写<br>
+DocumentRoot /www/docs/dummy-host2.example.com   #网站的目录<br>
+ServerName <a href="http://dummy-host2.example.com" target="_blank" rel="noopener">dummy-host2.example.com</a>               #需要绑定的域名<br>
+ServerAlias  <a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a>                     #绑定多个域名<br>
+DirectoryIndex example.php                       #设置默认的访问的页面<br>
+ErrorLog logs/dummy-host2.example.com-error_log  #错误日志目录<br>
+</VirtualHost><br>
+xampp默认没有开启虚拟目录的功能<br>
+需要修改/opt/lampp/etc/httpd.conf文件<br>
+搜索下面的代码</p>
+<h1 id="include-etcextrahttpd-vhostsconf">Include etc/extra/httpd-vhosts.conf <a class="markdownIt-Anchor" href="#include-etcextrahttpd-vhostsconf">#</a></h1>
+<p>去掉前面的#<br>
+最重启apache服务器就配置成功了</p>
+<p>例如需要建立一个It资讯网站，网站目录是:/opt/lampp/htdocs/itinfo<br>
+<a href="http://xn--www-t58d4a733fu1ghkiex9fylwa336a.chinajquery.com" target="_blank" rel="noopener">需要绑定两个域名www.chinajquery.com</a> <a href="http://www.jquerychina.com" target="_blank" rel="noopener">www.jquerychina.com</a><br>
+那我们的vhosts.conf最后添加以下代码就可以<br>
+&lt;VirtualHost *:80&gt;<br>
+DocumentRoot /opt/lampp/htdocs/itinfo<br>
+ServerName   <a href="http://www.chinajquery.com" target="_blank" rel="noopener">www.chinajquery.com</a><br>
+ServerAlias  <a href="http://www.jquerychina.com" target="_blank" rel="noopener">www.jquerychina.com</a><br>
+DirectoryIndex test.php<br>
+</VirtualHost><br>
+最后重启apache服务器<br>
+[root@localhost extra] /opt/lampp/lampp restart<br>
+测试一下配置虚拟目录有没有成功<br>
+添加<br>
+192.168.139.129    <a href="http://www.chinajquery.com" target="_blank" rel="noopener">www.chinajquery.com</a><br>
+192.168.139.129    <a href="http://www.jquerychina.com" target="_blank" rel="noopener">www.jquerychina.com</a><br>
+到 /etc/hosts<br>
+[root@localhost extra]/etc/init.d/networking restart      重启网卡<br>
+然后在浏览器输入www.chinajquery.com出现下面的界面说明配置成功</p>
 
       
     </div>
@@ -75,7 +112,7 @@
 
 <div class="book-toc notification is-warning is-hidden">
   <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
-  <ul class="chapter-area"><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item chapter-item-current"><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+  <ul class="chapter-area"><li class="chapter-item "><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item "><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item chapter-item-current"><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
 </div>
 
 <div class="progress-indicator"></div>
@@ -85,7 +122,7 @@
   var LOPPO = {};
   LOPPO.current_path = '服务器.md';
   LOPPO.relative_root_path = '';
-  LOPPO.article_toc = "";
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E9%85%8D%E7%BD%AE\">配置</a></li>\n</ul>\n";
 </script>
 <script src="assets/js/app.js"></script>
 
