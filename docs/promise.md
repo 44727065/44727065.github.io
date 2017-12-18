@@ -48,6 +48,8 @@ runAsync().then(function(data){
 `then` 里面的函数就是我们平时回调函数的意思，能够在 `runAsync` 这个异步任务执行完成之后被执行。这就是 `Promise` 的作用了，简单来讲就是能把原来的回调写法分离出来，在异步操作执行完后，用链式调用的方式执行回调函数。
 让我们回顾一下传统 `callback` 写法，不用 `Promise` 的写法。
 ```javascript
+
+// 回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应。
 function runAsync(callback){
     setTimeout(function(){
         console.log('执行完成');
@@ -208,3 +210,35 @@ requestImg函数会异步请求一张图片，我把地址写为"xxxxxx"，所�
 ## 总结
 文中没有提到 `done`、`finally`、`success`、`fail`等，这些是啥？这些并不在Promise标准中，而是我们自己实现的语法糖。
 本文中所有异步操作均以`setTimeout`为例子，之所以不使用`ajax`是为了避免引起混淆，因为谈起ajax，很多人的第一反应就是jquery的ajax，而jquery又有自己的Promise实现。如果你理解了原理，就知道使用setTimeout和使用ajax是一样的意思。说起jquery，我不得不吐槽一句，jquery的Promise实现太过垃圾，各种语法糖把人都搞蒙了，我认为Promise之所以没有全面普及和jquery有很大的关系。后面我们会细讲jquery。
+最后补充一个 Promise 的 ajax 数据请求。
+```javascript
+const getJSON = function(url) {
+  const promise = new Promise(function(resolve, reject){
+    const handler = function() {
+      if (this.readyState !== 4) {
+        return;
+      }
+      if (this.status === 200) {
+        resolve(this.response);
+      } else {
+        reject(new Error(this.statusText));
+      }
+    };
+    const client = new XMLHttpRequest();
+    client.open("GET", url);
+    client.onreadystatechange = handler;
+    client.responseType = "json";
+    client.setRequestHeader("Accept", "application/json");
+    client.send();
+
+  });
+
+  return promise;
+};
+
+getJSON("/posts.json").then(function(json) {
+  console.log('Contents: ' + json);
+}, function(error) {
+  console.error('出错了', error);
+});
+```

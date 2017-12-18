@@ -78,7 +78,9 @@ runAsync();
 <p><code>runAsync</code> 的返回上直接调用 <code>then</code> 方法，<code>then</code> 接收一个函数作为参数，并且会拿到我们在 <code>runAsync</code> 中调用的 <code>resolve</code> 时传的参数，运行这段代码，两秒后输出“执行完成”，紧接着输出“随便什么数据”。</p>
 <p><code>then</code> 里面的函数就是我们平时回调函数的意思，能够在 <code>runAsync</code> 这个异步任务执行完成之后被执行。这就是 <code>Promise</code> 的作用了，简单来讲就是能把原来的回调写法分离出来，在异步操作执行完后，用链式调用的方式执行回调函数。<br>
 让我们回顾一下传统 <code>callback</code> 写法，不用 <code>Promise</code> 的写法。</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAsync</span>(<span class="hljs-params">callback</span>)</span>{
+<pre class="hljs"><code>
+<span class="hljs-comment">// 回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应。</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAsync</span>(<span class="hljs-params">callback</span>)</span>{
     setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'执行完成'</span>);
         callback(<span class="hljs-string">'随便什么数据'</span>)
@@ -224,13 +226,44 @@ getNumber().then(<span class="hljs-function"><span class="hljs-keyword">function
 <p>requestImg函数会异步请求一张图片，我把地址写为&quot;xxxxxx&quot;，所以肯定是无法成功请求到的。timeout函数是一个延时5秒的异步操作。我们把这两个返回Promise对象的函数放进race，于是他俩就会赛跑，如果5秒之内图片请求成功了，那么遍进入then方法，执行正常的流程。如果5秒钟图片还未成功返回，那么timeout就跑赢了，则进入catch，报出“图片请求超时”的信息。运行结果如下：</p>
 <h2 id="总结">总结 <a class="markdownIt-Anchor" href="#总结">#</a></h2>
 <p>文中没有提到 <code>done</code>、<code>finally</code>、<code>success</code>、<code>fail</code>等，这些是啥？这些并不在Promise标准中，而是我们自己实现的语法糖。<br>
-本文中所有异步操作均以<code>setTimeout</code>为例子，之所以不使用<code>ajax</code>是为了避免引起混淆，因为谈起ajax，很多人的第一反应就是jquery的ajax，而jquery又有自己的Promise实现。如果你理解了原理，就知道使用setTimeout和使用ajax是一样的意思。说起jquery，我不得不吐槽一句，jquery的Promise实现太过垃圾，各种语法糖把人都搞蒙了，我认为Promise之所以没有全面普及和jquery有很大的关系。后面我们会细讲jquery。</p>
+本文中所有异步操作均以<code>setTimeout</code>为例子，之所以不使用<code>ajax</code>是为了避免引起混淆，因为谈起ajax，很多人的第一反应就是jquery的ajax，而jquery又有自己的Promise实现。如果你理解了原理，就知道使用setTimeout和使用ajax是一样的意思。说起jquery，我不得不吐槽一句，jquery的Promise实现太过垃圾，各种语法糖把人都搞蒙了，我认为Promise之所以没有全面普及和jquery有很大的关系。后面我们会细讲jquery。<br>
+最后补充一个 Promise 的 ajax 数据请求。</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> getJSON = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">url</span>) </span>{
+  <span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve, reject</span>)</span>{
+    <span class="hljs-keyword">const</span> handler = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.readyState !== <span class="hljs-number">4</span>) {
+        <span class="hljs-keyword">return</span>;
+      }
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.status === <span class="hljs-number">200</span>) {
+        resolve(<span class="hljs-keyword">this</span>.response);
+      } <span class="hljs-keyword">else</span> {
+        reject(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-keyword">this</span>.statusText));
+      }
+    };
+    <span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> XMLHttpRequest();
+    client.open(<span class="hljs-string">"GET"</span>, url);
+    client.onreadystatechange = handler;
+    client.responseType = <span class="hljs-string">"json"</span>;
+    client.setRequestHeader(<span class="hljs-string">"Accept"</span>, <span class="hljs-string">"application/json"</span>);
+    client.send();
+
+  });
+
+  <span class="hljs-keyword">return</span> promise;
+};
+
+getJSON(<span class="hljs-string">"/posts.json"</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">json</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Contents: '</span> + json);
+}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
+  <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'出错了'</span>, error);
+});
+</code></pre>
 
       
     </div>
     <div  dir="ltr" class="level article-bar is-mobile">
       <div class="level-item has-text-centered">
-        <a title="previous page" class="previouse-article-link" href="index.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+        <a title="previous page" class="previouse-article-link" href="滚动.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
       </div>
       <div class="level-item has-text-centered">
         <a title="font size" class="link-item link-item-size">
@@ -265,7 +298,7 @@ getNumber().then(<span class="hljs-function"><span class="hljs-keyword">function
 
 <div class="book-toc notification is-warning is-hidden">
   <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
-  <ul class="chapter-area"><li class="chapter-item chapter-item-current"><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item "><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+  <ul class="chapter-area"><li class="chapter-item "><a href="滚动.html">滚动相关知识 - 2017.12.18</a></li><li class="chapter-item chapter-item-current"><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item "><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
 </div>
 
 <div class="progress-indicator"></div>
