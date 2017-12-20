@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>HTML5/CSS/jQuery video大小屏幕自适应及获取视频宽高 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="HTML5 CSS jQuery video大小屏幕自适应及获取视频宽高.html" class="breadcrumb-item">HTML5/CSS/jQuery video大小屏幕自适应及获取视频宽高 2017.12.20</a></div>
+    <h1 class="article-title">HTML5/CSS/jQuery video大小屏幕自适应及获取视频宽高</h1>
+    <div class="article">
+      <p>如何让 Video 的大小能够满屏（适应父容器div），就是通过判断高度、宽度，使之能够到达全屏的效果。</p>
+<h2 id="通过-css-定义-video-的宽高">通过 CSS 定义 Video 的宽高 <a class="markdownIt-Anchor" href="#通过-css-定义-video-的宽高">#</a></h2>
+<pre class="hljs"><code><span class="hljs-selector-tag">video</span> {
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+    <span class="hljs-attribute">display</span>: block;
+}
+</code></pre>
+<h2 id="获取宽高比例等比放大">获取宽高比例等比放大 <a class="markdownIt-Anchor" href="#获取宽高比例等比放大">#</a></h2>
+<p>我们通过 <code>Video</code> 标签可以获得 <code>Video</code> 的 <code>videoHeight</code> 和 <code>videoHeight</code> 属性获得原始高度和宽度（媒体本身）。</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getVideoInfo</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> video = $(<span class="hljs-string">'video'</span>);
+    <span class="hljs-keyword">var</span> videoH = video[<span class="hljs-number">0</span>].videoHeight;
+    <span class="hljs-keyword">var</span> videoW = video[<span class="hljs-number">0</span>].videoWidth;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Height: "</span> + video[<span class="hljs-number">0</span>].videoHeight + <span class="hljs-string">", Width: "</span> + video[<span class="hljs-number">0</span>].videoWidth);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Height: "</span> + videoH + <span class="hljs-string">", Width: "</span> + videoW);
+    <span class="hljs-keyword">var</span> videoRatio = videoH / videoW;
+    <span class="hljs-built_in">console</span>.log(videoRatio);
+    <span class="hljs-built_in">window</span>.onresize = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">if</span> (video.height() / video.width() &gt; videoRatio) {
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Width:'</span> + video.width() + <span class="hljs-string">' Height: '</span> + (video.width() * videoRatio));
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Width:'</span> + video.height() / videoRatio + <span class="hljs-string">' Height: '</span> + video.height());
+        }
+    }
+}
+</code></pre>
+<p>通过 <code>window.resize</code> 可以监听窗口的变化，大小变化来判断值，当然这块最好使用 函数节流，提升性能。</p>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="index.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="滚动.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item chapter-item-current"><a href="HTML5 CSS jQuery video大小屏幕自适应及获取视频宽高.html">HTML5/CSS/jQuery video大小屏幕自适应及获取视频宽高 2017.12.20</a></li><li class="chapter-item "><a href="滚动.html">滚动相关知识 - 2017.12.18</a></li><li class="chapter-item "><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item "><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'HTML5 CSS jQuery video大小屏幕自适应及获取视频宽高.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E9%80%9A%E8%BF%87-css-%E5%AE%9A%E4%B9%89-video-%E7%9A%84%E5%AE%BD%E9%AB%98\">通过 CSS 定义 Video 的宽高</a></li>\n<li><a href=\"#%E8%8E%B7%E5%8F%96%E5%AE%BD%E9%AB%98%E6%AF%94%E4%BE%8B%E7%AD%89%E6%AF%94%E6%94%BE%E5%A4%A7\">获取宽高比例等比放大</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+
