@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>箭头函数 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="箭头函数.html" class="breadcrumb-item">箭头函数 - 2017.12.20</a></div>
+    <h1 class="article-title">箭头函数</h1>
+    <div class="article">
+      <h2 id="箭头函数是什么？">箭头函数是什么？ <a class="markdownIt-Anchor" href="#箭头函数是什么？">#</a></h2>
+<p>箭头函数与 <code>function</code> 不等价，因为TC39不可能仅因为好看而引入一个语法糖。<br>
+箭头函数的渊源可以追溯lambda演算。lambda演算是数学家提出来的，数学定理那么多，今天要证三角定律，明天要证勾股定律，累不累！那能不能将所有的证明问题用一个统一的体系进行形式化描述，然后由机器来完成自动推导呢？lambda演算就是干这个的，图灵也搞了一套体系叫图灵机，两者是等价的。<br>
+关于lambda演算说了这么多，好像跟今天要讲的箭头函数没什么关系？其实是有关系的，lambda演算深刻影响了箭头函数的设计。数学家们喜欢用纯函数式编程语言，纯函数的特点是没有副作用，给予特定的输入，总是产生确定的输出，甚至有些情况下通过输出能够反推输入。<strong> 要实现纯函数，必须使函数的执行过程不依赖于任何外部状态，整个函数就像一个数学公式，</strong><br>
+箭头函数要实现类似纯函数的效果，必须剔除外部状态。所以当你定义一个箭头函数，在普通函数里常见的this、arguments、caller是统统没有的。</p>
+<h2 id="箭头函数没有this">箭头函数没有this <a class="markdownIt-Anchor" href="#箭头函数没有this">#</a></h2>
+<p>箭头函数没有this，那下面的代码明显可以取到this啊：</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">this</span>.a = <span class="hljs-number">1</span>
+  <span class="hljs-keyword">let</span> b = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.a)
+
+  b()
+}
+
+foo()  <span class="hljs-comment">// 1</span>
+</code></pre>
+<p>以上箭头函数中的this其实是父级作用域中的this，即函数foo的this。箭头函数引用了父级的变量，构成了一个闭包。以上代码等价于：</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">this</span>.a = <span class="hljs-number">1</span>
+
+  <span class="hljs-keyword">let</span> self = <span class="hljs-keyword">this</span>
+  <span class="hljs-keyword">let</span> b = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(self.a)
+
+  b()
+}
+
+foo()  <span class="hljs-comment">// 1</span>
+</code></pre>
+<p>箭头函数不仅没有this，常用的arguments也没有。如果你能获取到arguments，那它一定是来自父作用域的。</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>])
+}
+
+foo(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)  <span class="hljs-comment">// 1</span>
+</code></pre>
+<p>上例中如果箭头函数有arguments，就应该输出的是3而不是1。<br>
+一个经常犯的错误是使用箭头函数定义对象的方法，如：</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> a = {
+  <span class="hljs-attr">foo</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">bar</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.foo)
+}
+
+a.bar()  <span class="hljs-comment">//undefined</span>
+</code></pre>
+<p>以上代码中，箭头函数中的this并不是指向a这个对象。对象a并不能构成一个作用域，所以再往上到达全局作用域，this就指向全局作用域。如果我们使用普通函数的定义方法，输出结果就符合预期，这是因为a.bar()函数执行时作用域绑定到了a对象。</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> a = {
+  <span class="hljs-attr">foo</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">bar</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.foo) }
+}
+
+a.bar()  <span class="hljs-comment">// 1</span>
+</code></pre>
+<p><strong> 另一个错误是在原型上使用箭头函数，如： </strong></p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">A</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">this</span>.foo = <span class="hljs-number">1</span>
+}
+
+A.prototype.bar = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.foo)
+
+<span class="hljs-keyword">let</span> a = <span class="hljs-keyword">new</span> A()
+a.bar()  <span class="hljs-comment">//undefined</span>
+</code></pre>
+<p>同样，箭头函数中的this不是指向A，而是根据变量查找规则回溯到了全局作用域。同样，使用普通函数就不存在问题。<br>
+通过以上说明，我们可以看出，箭头函数除了传入的参数之外，真的是什么都没有！如果你在箭头函数引用了this、arguments或者参数之外的变量，那它们一定不是箭头函数本身包含的，而是从父级作用域继承的。</p>
+<h2 id="什么情况下该使用箭头函数">什么情况下该使用箭头函数 <a class="markdownIt-Anchor" href="#什么情况下该使用箭头函数">#</a></h2>
+<p>至于什么情况该使用箭头函数，《You Don’t Know JS》给出了一个决策图：<br>
+<img src="./images/arrow.png" alt=""><br>
+以上决策图看起来有点复杂，我认为有三点比较重要：</p>
+<ul>
+<li>箭头函数适合于无复杂逻辑或者无副作用的纯函数场景下，例如用在map、reduce、filter的回调函数定义中；</li>
+<li>不要在最外层定义箭头函数，因为在函数内部操作this会很容易污染全局作用域。最起码在箭头函数外部包一层普通函数，将this控制在可见的范围内；</li>
+<li>如开头所述，箭头函数最吸引人的地方是简洁。在有多层函数嵌套的情况下，箭头函数的简洁性并没有很大的提升，反而影响了函数的作用范围的识别度，这种情况不建议使用箭头函数。</li>
+</ul>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="index.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="flex三列布局.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item chapter-item-current"><a href="箭头函数.html">箭头函数 - 2017.12.20</a></li><li class="chapter-item "><a href="flex三列布局.html">flex三列布局 2017.12.20</a></li><li class="chapter-item "><a href="HTML5 CSS jQuery video大小屏幕自适应及获取视频宽高.html">HTML5/CSS/jQuery video大小屏幕自适应及获取视频宽高 2017.12.20</a></li><li class="chapter-item "><a href="滚动.html">滚动相关知识 - 2017.12.18</a></li><li class="chapter-item "><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item "><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = '箭头函数.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F\">箭头函数是什么？</a></li>\n<li><a href=\"#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E6%B2%A1%E6%9C%89this\">箭头函数没有this</a></li>\n<li><a href=\"#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E8%AF%A5%E4%BD%BF%E7%94%A8%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0\">什么情况下该使用箭头函数</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+
