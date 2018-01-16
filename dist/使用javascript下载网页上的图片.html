@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>使用javascript下载网页上的图片 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="使用javascript下载网页上的图片.html" class="breadcrumb-item">使用javascript下载网页上的图片 -2017.12.20</a></div>
+    <h1 class="article-title">使用javascript下载网页上的图片</h1>
+    <div class="article">
+      <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">downloadImage</span>(<span class="hljs-params">src</span>) </span>{
+    <span class="hljs-keyword">var</span> a = $(<span class="hljs-string">"&lt;a&gt;&lt;/a&gt;"</span>).attr(<span class="hljs-string">"href"</span>, src).attr(<span class="hljs-string">"download"</span>, <span class="hljs-string">"img.png"</span>).appendTo(<span class="hljs-string">"body"</span>);
+
+    a[<span class="hljs-number">0</span>].click();
+    a.remove();
+}
+<span class="hljs-comment">/* IE下可以通过转换为canvas，然后通过msSaveBlob方法保存图片 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">downloadImage</span>(<span class="hljs-params">src</span>) </span>{
+    <span class="hljs-keyword">var</span> canvas = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'canvas'</span>);
+    <span class="hljs-keyword">var</span> img = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'img'</span>);
+    img.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{
+        canvas.width = img.width;
+        canvas.height = img.height;
+        <span class="hljs-keyword">var</span> context = canvas.getContext(<span class="hljs-string">'2d'</span>);
+        context.drawImage(img, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, img.width, img.height);
+        <span class="hljs-built_in">window</span>.navigator.msSaveBlob(canvas.msToBlob(),<span class="hljs-string">'image.jpg'</span>);
+    }
+    img.src = src;
+}
+</code></pre>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="RESTful Web Services.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="箭头函数.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item "><a href="npm install.html">npm install、npm install --save与npm install --save-dev区别 2018.1.15</a></li><li class="chapter-item "><a href="RESTful Web Services.html">RESTful Web Services 2018.1.6</a></li><li class="chapter-item chapter-item-current"><a href="使用javascript下载网页上的图片.html">使用javascript下载网页上的图片 -2017.12.20</a></li><li class="chapter-item "><a href="箭头函数.html">箭头函数 - 2017.12.20</a></li><li class="chapter-item "><a href="flex三列布局.html">flex三列布局 2017.12.20</a></li><li class="chapter-item "><a href="HTML5 CSS jQuery video大小屏幕自适应及获取视频宽高.html">HTML5/CSS/jQuery video大小屏幕自适应及获取视频宽高 2017.12.20</a></li><li class="chapter-item "><a href="滚动.html">滚动相关知识 - 2017.12.18</a></li><li class="chapter-item "><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item "><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = '使用javascript下载网页上的图片.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+
