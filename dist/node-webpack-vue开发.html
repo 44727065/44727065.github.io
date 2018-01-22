@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>Node WebPack Vue 前端架构 - 老郭记事</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="assets/css/bulma.min.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+</head>
+<body dir="ltr">
+
+<nav class="columns navbar">
+  <div class="column logo is-3 is-offset-1">
+    <a class="is-brand" href="index.html">
+      老郭记事
+    </a>
+  </div>
+</nav>
+
+<div class="columns content">
+  <div class="column is-2-desktop is-3-widescreen is-hidden-touch">
+  </div>
+  <div class="column article-container is-11-tablet is-8-desktop is-6-widescreen">
+    <div class="breadcrumb-area"><a href="index.html" class="breadcrumb-item">Home</a><span class="breadcrumb-delimiter"> &gt; </span><a href="node-webpack-vue开发.html" class="breadcrumb-item">Node WebPack Vue 前端开发怎么跑起来 2018.1.22</a></div>
+    <h1 class="article-title">Node WebPack Vue 前端架构</h1>
+    <div class="article">
+      <h2 id="都是啥">都是啥 <a class="markdownIt-Anchor" href="#都是啥">#</a></h2>
+<p>Node 是一javascript V8 引擎，用 js 写后端应用和服务。<br>
+Webpack 是打包工具<br>
+Vue 是前端开发 MVVM 的框架</p>
+<h2 id="本地代码跑起来需要啥">本地代码跑起来需要啥 <a class="markdownIt-Anchor" href="#本地代码跑起来需要啥">#</a></h2>
+<h3 id="安装-node">安装 node <a class="markdownIt-Anchor" href="#安装-node">#</a></h3>
+<p>安装node.js，Node.js安装包及源码下载地址为：<a href="https://nodejs.org/en/download/%E3%80%82" target="_blank" rel="noopener">https://nodejs.org/en/download/。</a></p>
+<h2 id="默认已经安装-npm-（npm-是包管理工具-httpswwwnpmjscom）">默认已经安装 npm （npm 是包管理工具 <a href="https://www.npmjs.com/%EF%BC%89" target="_blank" rel="noopener">https://www.npmjs.com/）</a> <a class="markdownIt-Anchor" href="#默认已经安装-npm-（npm-是包管理工具-httpswwwnpmjscom）">#</a></h2>
+<p>命令行查看当前 npm 版本</p>
+<pre class="hljs"><code><span class="hljs-meta">$</span><span class="bash"> npm -v</span>
+</code></pre>
+<p>但是 npm 的包文件都在海外，速度会很慢，可以使用淘宝定制的 cnpm (gzip 压缩支持) 命令行工具代替默认的 npm:</p>
+<pre class="hljs"><code>npm install -g cnpm --registry=https://registry.npm.taobao.org
+</code></pre>
+<p>这样就可以使用 cnpm 命令来安装模块了：</p>
+<pre class="hljs"><code>cnpm install [name]
+</code></pre>
+<h3 id="vue-cli-安装一下咱们的项目你不用安装，因为你不需要创建-vue-项目，你是-clone-下来的">vue-cli 安装一下(咱们的项目你不用安装，因为你不需要创建 vue 项目，你是 clone 下来的) <a class="markdownIt-Anchor" href="#vue-cli-安装一下咱们的项目你不用安装，因为你不需要创建-vue-项目，你是-clone-下来的">#</a></h3>
+<pre class="hljs"><code>npm install -g vue-cli
+</code></pre>
+<h3 id="将-git-库中的代码拉下来">将 git 库中的代码拉下来 <a class="markdownIt-Anchor" href="#将-git-库中的代码拉下来">#</a></h3>
+<pre class="hljs"><code>git clone http://192.168.200.93/elion/ioc-fe.git
+cd ioc-fe
+git checkout -b 0.1 origin/0.1
+</code></pre>
+<h3 id="项目的依赖包并没有在git库里，所以你要安装一下项目的相关-npm-包">项目的依赖包并没有在git库里，所以你要安装一下项目的相关 npm 包 <a class="markdownIt-Anchor" href="#项目的依赖包并没有在git库里，所以你要安装一下项目的相关-npm-包">#</a></h3>
+<pre class="hljs"><code>cnpm install
+</code></pre>
+<h3 id="现在你就可以在本地使用-node-服务开启本地开发环境了">现在你就可以在本地使用 node 服务开启本地开发环境了 <a class="markdownIt-Anchor" href="#现在你就可以在本地使用-node-服务开启本地开发环境了">#</a></h3>
+<pre class="hljs"><code>npm run start
+</code></pre>
+<p>成功了会提示你服务在 <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> 端口打开了</p>
+<h2 id="调试页面找哪里">调试页面找哪里 <a class="markdownIt-Anchor" href="#调试页面找哪里">#</a></h2>
+<p>Vue 中的模块都是独立文件的，比如我们调整首页顶部那几个卡片形式的东西，可以在 <code>src/comp/home/topdash/topdash.vue</code> 找到具体的业务模块。</p>
+<h2 id="vue-的数据驱动">Vue 的数据驱动 <a class="markdownIt-Anchor" href="#vue-的数据驱动">#</a></h2>
+<p>和以往相比通过操作获取 dom 操作页面属性的方法， MVVM 使用数据驱动的方式，当数据改变了，不用重新获取dom 通过 innerHTML 方法重写内部内容，但是所有的数据必须在检测的队列里面，检测的队列就是 vue 实例的 data 属性里面的值。</p>
+<pre class="hljs"><code><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    data(){
+        <span class="hljs-comment">// 这里面的值都会被监测，有改变的话会被更新到页面视图中</span>
+        a: {},
+        <span class="hljs-attr">b</span>: {}
+    }
+</code></pre>
+<h2 id="项目使用的是-axios-通过-es6的-promise-的方法请求数据，你只需要关注-methods-里面带-api-的方法">项目使用的是 axios 通过 ES6的 promise 的方法请求数据，你只需要关注 methods 里面带 *Api 的方法 <a class="markdownIt-Anchor" href="#项目使用的是-axios-通过-es6的-promise-的方法请求数据，你只需要关注-methods-里面带-api-的方法">#</a></h2>
+<p>如下：</p>
+<pre class="hljs"><code>methods:{
+    <span class="hljs-comment">// 获取水的 API</span>
+    getWaterDataApi(callback){
+        <span class="hljs-comment">//获取数据的方法</span>
+        <span class="hljs-keyword">this</span>.$axios.get(<span class="hljs-string">'/api/airStation/'</span>,{
+            <span class="hljs-attr">id</span>:<span class="hljs-number">1</span>
+        }).then(<span class="hljs-function">(<span class="hljs-params">res</span>)=&gt;</span>{
+            <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> callback == <span class="hljs-string">'function'</span>){
+            callback(res);
+            }
+        }).catch(<span class="hljs-function">(<span class="hljs-params">err</span>)=&gt;</span>{
+            <span class="hljs-comment">// 发生错误的情况</span>
+            <span class="hljs-built_in">console</span>.log(err);
+        })
+    },
+    <span class="hljs-comment">// 水的数据格式化</span>
+    waterDataFormat(){
+        <span class="hljs-keyword">this</span>.getWaterDataApi(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>)</span>{
+            <span class="hljs-comment">// 这样子就修改了视图里面的数据了</span>
+            <span class="hljs-comment">// 如果有些数据不合适，你就需要处理一下</span>
+            <span class="hljs-keyword">this</span>.a = res.a;
+            <span class="hljs-keyword">this</span>.b = res.b;
+        })
+    }
+}
+</code></pre>
+
+      
+    </div>
+    <div  dir="ltr" class="level article-bar is-mobile">
+      <div class="level-item has-text-centered">
+        <a title="previous page" class="previouse-article-link" href="index.html"><span class="icon icon-previous" data-icon="previous"></span><span class="link-content">&laquo; Previous</span></a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="font size" class="link-item link-item-size">
+          <span class="icon icon-size" data-icon="size"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="table of content" class="link-item link-item-toc">
+          <span class="icon icon-toc" data-icon="toc"></span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="top" href="#">
+          <span class="icon icon-up" data-icon="up"></span>
+          <span class="link-content">⤊ Top</span>
+        </a>
+      </div>
+      <div class="level-item has-text-centered">
+        <a title="next page" class="next-article-link" href="npm install.html"><span class="icon icon-next" data-icon="next"></span><span class="link-content">Next &raquo;</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2-widescreen is-hidden">
+  </div>
+</div>
+
+<div class="columns foot">
+  <div class="column is-3 is-offset-9 build-by">
+    Build by <a href="https://github.com/ruanyf/loppo" target="_blank">Loppo</a> 0.6.4
+  </div>
+</div>
+
+<div class="book-toc notification is-warning is-hidden">
+  <h3>Table of chapters &nbsp;<span class="title-close"><a class="button is-danger"> Close </a></span></h3>
+  <ul class="chapter-area"><li class="chapter-item chapter-item-current"><a href="node-webpack-vue开发.html">Node WebPack Vue 前端开发怎么跑起来 2018.1.22</a></li><li class="chapter-item "><a href="npm install.html">npm install、npm install --save与npm install --save-dev区别 2018.1.15</a></li><li class="chapter-item "><a href="RESTful Web Services.html">RESTful Web Services 2018.1.6</a></li><li class="chapter-item "><a href="使用javascript下载网页上的图片.html">使用javascript下载网页上的图片 -2017.12.20</a></li><li class="chapter-item "><a href="箭头函数.html">箭头函数 - 2017.12.20</a></li><li class="chapter-item "><a href="flex三列布局.html">flex三列布局 2017.12.20</a></li><li class="chapter-item "><a href="HTML5 CSS jQuery video大小屏幕自适应及获取视频宽高.html">HTML5/CSS/jQuery video大小屏幕自适应及获取视频宽高 2017.12.20</a></li><li class="chapter-item "><a href="滚动.html">滚动相关知识 - 2017.12.18</a></li><li class="chapter-item "><a href="promise.html">Promise 怎么用 - 2017.12.14</a></li><li class="chapter-item "><a href="Array的应用场景.html">Array的应用场景 - 2017.12.13</a></li><li class="chapter-item "><a href="Array.html">Array 过一遍 - 2017.12.12</a></li><li class="chapter-item "><a href="如何优雅地定义font-family.html">如何优雅地定义 font-family - 2017.12.12</a></li><li class="chapter-item "><a href="MacApache.html">Mac Apache 小命令 - 2017.12.11</a></li><li class="chapter-item "><a href="实现页面无刷新切换.html">实现页面无刷新切换 - 2017.12.11</a></li><li class="chapter-item "><a href="版本控制工具.html">Git - 2017.12.9</a></li><li class="chapter-item "><a href="vue数据的双向绑定.html">vue数据的双向绑定 - 2017.12.8</a></li><li class="chapter-item "><a href="js中__proto__和prototype的区别和关系.html">js中__proto__和prototype的区别和关系 - 2017.12.6</a></li><li class="chapter-item "><a href="ES6编码风格.html">ES6编码风格(Airbnb公司的规范) - 2017.12.6</a></li><li class="chapter-item "><a href="前端面试题.html">面试复盘</a></li><li class="chapter-item "><a href="jQuery插件开发.html">jQuery插件开发</a></li><li class="chapter-item "><a href="ajax技术相关.html">ajax技术相关</a></li><li class="chapter-item "><a href="vue插件.html">vue插件</a></li><li class="chapter-item "><a href="在Vue.js中使用任意JavaScript第三方库.html">在Vue.js中使用任意JavaScript第三方库</a></li><li class="chapter-item "><a href="BFC.html">BFC</a></li><li class="chapter-item "><a href="reflow_repaint.html">页面回流和重绘</a></li><li class="chapter-item "><a href="setTimeout_setInterval.html">setTimeout 和 setInterval 的使用区别</a></li><li class="chapter-item "><a href="设计模式.html">设计模式白话篇</a></li><li class="chapter-item "><a href="JavaScript调试技巧.html">JavaScript调试技巧</a></li><li class="chapter-item "><a href="跳转到当前位置.html">跳转到当前位置</a></li><li class="chapter-item "><a href="return.html">return 的小问题</a></li><li class="chapter-item "><a href="服务器.html">服务器相关</a></li><li class="chapter-item "><a href="./兼容小百科/flex在安卓4.3中的兼容方式.html">兼容小百科 - flex在安卓4.3中的兼容方式</a></li><ul class="chapter-level-2"></ul>
+</div>
+
+<div class="progress-indicator"></div>
+
+<!-- SCRIPTS -->
+<script>
+  var LOPPO = {};
+  LOPPO.current_path = 'node-webpack-vue开发.md';
+  LOPPO.relative_root_path = '';
+  LOPPO.article_toc = "<ul class=\"markdownIt-TOC\">\n<li><a href=\"#%E9%83%BD%E6%98%AF%E5%95%A5\">都是啥</a></li>\n<li><a href=\"#%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%A0%81%E8%B7%91%E8%B5%B7%E6%9D%A5%E9%9C%80%E8%A6%81%E5%95%A5\">本地代码跑起来需要啥</a>\n<ul>\n<li><a href=\"#%E5%AE%89%E8%A3%85-node\">安装 node</a></li>\n</ul>\n</li>\n<li><a href=\"#%E9%BB%98%E8%AE%A4%E5%B7%B2%E7%BB%8F%E5%AE%89%E8%A3%85-npm-%EF%BC%88npm-%E6%98%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7-httpswwwnpmjscom%EF%BC%89\">默认已经安装 npm （npm 是包管理工具 https://www.npmjs.com/）</a>\n<ul>\n<li><a href=\"#vue-cli-%E5%AE%89%E8%A3%85%E4%B8%80%E4%B8%8B%E5%92%B1%E4%BB%AC%E7%9A%84%E9%A1%B9%E7%9B%AE%E4%BD%A0%E4%B8%8D%E7%94%A8%E5%AE%89%E8%A3%85%EF%BC%8C%E5%9B%A0%E4%B8%BA%E4%BD%A0%E4%B8%8D%E9%9C%80%E8%A6%81%E5%88%9B%E5%BB%BA-vue-%E9%A1%B9%E7%9B%AE%EF%BC%8C%E4%BD%A0%E6%98%AF-clone-%E4%B8%8B%E6%9D%A5%E7%9A%84\">vue-cli 安装一下(咱们的项目你不用安装，因为你不需要创建 vue 项目，你是 clone 下来的)</a></li>\n<li><a href=\"#%E5%B0%86-git-%E5%BA%93%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E6%8B%89%E4%B8%8B%E6%9D%A5\">将 git 库中的代码拉下来</a></li>\n<li><a href=\"#%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%BE%9D%E8%B5%96%E5%8C%85%E5%B9%B6%E6%B2%A1%E6%9C%89%E5%9C%A8git%E5%BA%93%E9%87%8C%EF%BC%8C%E6%89%80%E4%BB%A5%E4%BD%A0%E8%A6%81%E5%AE%89%E8%A3%85%E4%B8%80%E4%B8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%9B%B8%E5%85%B3-npm-%E5%8C%85\">项目的依赖包并没有在git库里，所以你要安装一下项目的相关 npm 包</a></li>\n<li><a href=\"#%E7%8E%B0%E5%9C%A8%E4%BD%A0%E5%B0%B1%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%9C%AC%E5%9C%B0%E4%BD%BF%E7%94%A8-node-%E6%9C%8D%E5%8A%A1%E5%BC%80%E5%90%AF%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%BA%86\">现在你就可以在本地使用 node 服务开启本地开发环境了</a></li>\n</ul>\n</li>\n<li><a href=\"#%E8%B0%83%E8%AF%95%E9%A1%B5%E9%9D%A2%E6%89%BE%E5%93%AA%E9%87%8C\">调试页面找哪里</a></li>\n<li><a href=\"#vue-%E7%9A%84%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8\">Vue 的数据驱动</a></li>\n<li><a href=\"#%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%E7%9A%84%E6%98%AF-axios-%E9%80%9A%E8%BF%87-es6%E7%9A%84-promise-%E7%9A%84%E6%96%B9%E6%B3%95%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%BD%A0%E5%8F%AA%E9%9C%80%E8%A6%81%E5%85%B3%E6%B3%A8-methods-%E9%87%8C%E9%9D%A2%E5%B8%A6-api-%E7%9A%84%E6%96%B9%E6%B3%95\">项目使用的是 axios 通过 ES6的 promise 的方法请求数据，你只需要关注 methods 里面带 *Api 的方法</a></li>\n</ul>\n";
+</script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
+
